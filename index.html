@@ -21,8 +21,6 @@
     @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
     .fade-in { animation: fadeIn 0.4s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    .sidebar-open { transform: translateX(0) !important; }
-    .sidebar-closed { transform: translateX(-100%) !important; }
     .ai-warning { background: linear-gradient(135deg, #dc2626, #b91c1c); }
   </style>
   <script>
@@ -149,7 +147,8 @@
       <button onclick="logoutTeacher()" class="text-slate-400 hover:text-red-400 flex items-center gap-2 text-sm font-600 bg-white/5 px-4 py-2 rounded-lg transition-colors"><i data-lucide="log-out" class="w-4 h-4"></i> Keluar</button>
      </header>
      <div class="flex-1 flex overflow-hidden relative">
-      <aside id="teacher-sidebar" class="fixed lg:relative inset-y-0 left-0 w-72 bg-slate-900 lg:bg-transparent border-r border-white/10 z-50 transform sidebar-closed lg:transform-none lg:translate-x-0 transition-transform p-5 overflow-y-auto mt-[73px] lg:mt-0 shadow-2xl lg:shadow-none">
+      
+      <aside id="teacher-sidebar" class="fixed lg:relative inset-y-0 left-0 w-72 bg-slate-900 lg:bg-transparent border-r border-white/10 z-50 transform -translate-x-full lg:translate-x-0 transition-transform p-5 overflow-y-auto mt-[73px] lg:mt-0 shadow-2xl lg:shadow-none">
        <div class="lg:hidden flex justify-end mb-4 border-b border-white/10 pb-4"><button onclick="toggleSidebar()" class="text-slate-400 bg-white/5 p-2 rounded-lg"><i data-lucide="x" class="w-5 h-5"></i></button></div>
        <nav class="space-y-1">
         <p class="text-xs font-700 text-indigo-400 uppercase tracking-widest mb-3 px-3">Filter Cepat</p>
@@ -280,7 +279,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getDatabase, ref, set, push, ref as dbRef, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    import { getDatabase, ref, set, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDTEIcErwM8rfuiaY28GHHlmQvbv8tHD_0",
@@ -351,9 +350,6 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Pastikan di HP sidebar bersembunyi di awal load
-      const sb = document.getElementById('teacher-sidebar');
-      if(sb && window.innerWidth < 1024) { sb.classList.add('sidebar-closed'); }
       lucide.createIcons();
       showToast("Terkoneksi ke Firebase Cloud!", "success");
       listenToDatabase();
@@ -362,14 +358,6 @@
     window.showPage = function(pageId) { 
       document.querySelectorAll('[id^="page-"]').forEach(p => p.classList.add('hidden')); 
       document.getElementById(pageId).classList.remove('hidden'); 
-      // Reset sidebar state pas masuk dashboard guru
-      if(pageId === 'page-teacher-dashboard') {
-        const sb = document.getElementById('teacher-sidebar');
-        if(sb) {
-          if(window.innerWidth < 1024) sb.classList.add('sidebar-closed');
-          else sb.classList.remove('sidebar-closed');
-        }
-      }
       lucide.createIcons(); 
     }
     window.closePopup = function(id) { document.getElementById(id).classList.add('hidden'); }
@@ -460,17 +448,17 @@
     window.handleTeacherLogin = function(e) { e.preventDefault(); if (btoa(document.getElementById('token-input').value) === 'Z3VydTEyMw==') { window.showPage('page-teacher-dashboard'); renderTeacherView(); } else showToast('Token salah!', 'error'); }
     window.logoutTeacher = function() { document.getElementById('token-input').value = ''; window.showPage('page-landing'); }
     
-    // FIX SIDEBAR LOGIC UNTUK LAYAR HANDPHONE
+    // PERBAIKAN LOGIKA SIDEBAR MUTLAK (Menggunakan manipulasi Class Tailwind murni)
     window.toggleSidebar = function() { 
       const sb = document.getElementById('teacher-sidebar'); 
       const ov = document.getElementById('sidebar-overlay'); 
-      if(sb.classList.contains('sidebar-closed') || !sb.classList.contains('sidebar-open')) {
-        sb.classList.remove('sidebar-closed');
-        sb.classList.add('sidebar-open');
+      if(sb.classList.contains('-translate-x-full')) {
+        sb.classList.remove('-translate-x-full');
+        sb.classList.add('translate-x-0');
         ov.classList.remove('hidden');
       } else {
-        sb.classList.remove('sidebar-open');
-        sb.classList.add('sidebar-closed');
+        sb.classList.remove('translate-x-0');
+        sb.classList.add('-translate-x-full');
         ov.classList.add('hidden');
       }
     }
@@ -510,6 +498,7 @@
       if (window.currentStatusFilter !== 'all') { sts = sts.filter(s => { const p = parseNilai(s.data_nilai); if(m !== 'all') return p[m]?.status === window.currentStatusFilter; return Object.values(p).some(x => x.status === window.currentStatusFilter); }); }
       
       const tb = document.getElementById('students-table-body');
+      if(!tb) return;
       if(!sts.length) { tb.innerHTML = ''; document.getElementById('no-students-msg').classList.remove('hidden'); return; }
       document.getElementById('no-students-msg').classList.add('hidden');
       tb.innerHTML = sts.map((s,i) => {
