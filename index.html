@@ -22,8 +22,6 @@
     .fade-in { animation: fadeIn 0.4s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .ai-warning { background: linear-gradient(135deg, #dc2626, #b91c1c); }
-    
-    /* Animasi Bar Skill CV */
     .skill-bar-fill { animation: fillBar 1.5s ease-out forwards; width: 0; }
     @keyframes fillBar { to { width: var(--target-width); } }
   </style>
@@ -36,7 +34,6 @@
    <div id="toast-container" class="fixed top-4 right-4 z-[9999] flex flex-col gap-2 pointer-events-none"></div>
    
    <div id="page-landing" class="h-full flex items-center justify-center p-4 relative">
-    
     <button onclick="document.getElementById('modal-developer').classList.remove('hidden')" class="absolute top-6 right-6 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-xs font-700 flex items-center gap-2 transition-all backdrop-blur-sm shadow-lg text-indigo-300 hover:text-indigo-200">
       <i data-lucide="code-2" class="w-4 h-4"></i> Info Kreator
     </button>
@@ -54,7 +51,7 @@
       <p id="landing-school" class="text-slate-300 text-lg font-600 tracking-wide mt-2">SMK ALHUDA SARIWANGI</p>
       <p class="text-indigo-400 font-700 text-sm mt-1 tracking-wide">Tahun Ajaran 2026-2027</p>
       <div class="w-16 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mx-auto mt-3 rounded-full"></div>
-      <p class="text-slate-400 mt-4 text-xs uppercase tracking-widest font-700">Sistem Remedial Digital & Bank Soal</p>
+      <p class="text-slate-400 mt-4 text-xs uppercase tracking-widest font-700">Platform Ulangan Harian & Remedial Digital</p>
      </div>
      <div class="space-y-4">
       <button onclick="showPage('page-student-login')" class="w-full py-4 px-6 btn-primary rounded-xl font-600 text-lg flex items-center justify-center gap-3 transition-all shadow-lg shadow-indigo-500/20 hover:scale-[1.02]"> <i data-lucide="user" class="w-5 h-5"></i> Masuk Sebagai Siswa </button> 
@@ -79,31 +76,15 @@
         <h3 class="text-2xl font-900 text-white leading-tight">Mohammad Yasir Asyafii</h3>
         <p class="text-indigo-400 font-600 text-sm mt-1 mb-4 flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4"></i> Leuwisari • 16 Tahun</p>
         
-        <p class="text-slate-300 text-sm leading-relaxed mb-6">Siswa kelas <span class="font-700 text-white bg-white/10 px-2 py-0.5 rounded">10 PPLG</span> yang bersemangat menciptakan solusi digital. "Laju Akademik" dibangun untuk mendigitalisasi proses remedial sekolah menjadi lebih efisien.</p>
+        <p class="text-slate-300 text-sm leading-relaxed mb-6">Siswa kelas <span class="font-700 text-white bg-white/10 px-2 py-0.5 rounded">10 PPLG</span> yang bersemangat menciptakan solusi digital. "Laju Akademik" dibangun untuk mendigitalisasi proses pendidikan sekolah menjadi lebih efisien.</p>
         
         <div class="space-y-4">
           <h4 class="text-xs font-800 text-slate-400 uppercase tracking-widest mb-2 border-b border-white/10 pb-2">Technical Skills</h4>
-          
-          <div>
-            <div class="flex justify-between text-xs font-600 mb-1"><span class="text-slate-200">UI/UX Design</span><span class="text-indigo-400">75%</span></div>
-            <div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full skill-bar-fill" style="--target-width: 75%;"></div></div>
-          </div>
-          <div>
-            <div class="flex justify-between text-xs font-600 mb-1"><span class="text-slate-200">Framework</span><span class="text-indigo-400">90%</span></div>
-            <div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full skill-bar-fill" style="--target-width: 90%;"></div></div>
-          </div>
-          <div>
-            <div class="flex justify-between text-xs font-600 mb-1"><span class="text-slate-200">Backend & Frontend</span><span class="text-indigo-400">70%</span></div>
-            <div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full skill-bar-fill" style="--target-width: 70%;"></div></div>
-          </div>
-          <div>
-            <div class="flex justify-between text-xs font-600 mb-1"><span class="text-slate-200">Database</span><span class="text-indigo-400">80%</span></div>
-            <div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full skill-bar-fill" style="--target-width: 80%;"></div></div>
-          </div>
-          <div>
-            <div class="flex justify-between text-xs font-600 mb-1"><span class="text-amber-300"><i data-lucide="headphones" class="w-3 h-3 inline mr-1"></i>Vibe Coding</span><span class="text-amber-400">95%</span></div>
-            <div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-amber-400 to-orange-500 rounded-full skill-bar-fill" style="--target-width: 95%; box-shadow: 0 0 10px rgba(251,191,36,0.5);"></div></div>
-          </div>
+          <div><div class="flex justify-between text-xs font-600 mb-1"><span class="text-slate-200">UI/UX Design</span><span class="text-indigo-400">75%</span></div><div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full skill-bar-fill" style="--target-width: 75%;"></div></div></div>
+          <div><div class="flex justify-between text-xs font-600 mb-1"><span class="text-slate-200">Framework</span><span class="text-indigo-400">90%</span></div><div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full skill-bar-fill" style="--target-width: 90%;"></div></div></div>
+          <div><div class="flex justify-between text-xs font-600 mb-1"><span class="text-slate-200">Backend & Frontend</span><span class="text-indigo-400">70%</span></div><div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full skill-bar-fill" style="--target-width: 70%;"></div></div></div>
+          <div><div class="flex justify-between text-xs font-600 mb-1"><span class="text-slate-200">Database</span><span class="text-indigo-400">80%</span></div><div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full skill-bar-fill" style="--target-width: 80%;"></div></div></div>
+          <div><div class="flex justify-between text-xs font-600 mb-1"><span class="text-amber-300"><i data-lucide="headphones" class="w-3 h-3 inline mr-1"></i>Vibe Coding</span><span class="text-amber-400">95%</span></div><div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-amber-400 to-orange-500 rounded-full skill-bar-fill" style="--target-width: 95%; box-shadow: 0 0 10px rgba(251,191,36,0.5);"></div></div></div>
         </div>
       </div>
     </div>
@@ -115,10 +96,10 @@
      <div class="text-center mb-6">
       <div class="w-16 h-16 mx-auto bg-indigo-500/20 rounded-full flex items-center justify-center mb-3"><i data-lucide="user-check" class="w-8 h-8 text-indigo-400"></i></div>
       <h2 class="text-2xl font-700">Login Siswa</h2>
-      <p class="text-slate-400 mt-1 text-sm">Masukkan NIS untuk melanjutkan remedial</p>
+      <p class="text-slate-400 mt-1 text-sm">Masukkan NIS untuk mengecek Ulangan / Remedial</p>
      </div>
      <form onsubmit="handleStudentLogin(event)">
-      <label class="block text-sm font-500 text-slate-300 mb-2">NIS (Nomor Induk Siswa)</label> <input type="text" id="nis-input" placeholder="Contoh: 102938" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all mb-6" required> <button type="submit" class="w-full py-3 btn-primary rounded-xl font-600 transition-all">Masuk Sekarang</button>
+      <label class="block text-sm font-500 text-slate-300 mb-2">NIS (Nomor Induk Siswa)</label> <input type="text" id="nis-input" placeholder="Contoh: 102938" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all mb-6" required> <button type="submit" class="w-full py-3 btn-primary rounded-xl font-600 transition-all">Masuk Dashboard</button>
      </form>
     </div>
    </div>
@@ -130,21 +111,32 @@
       <button onclick="logoutStudent()" class="text-slate-400 hover:text-red-400 transition-colors flex items-center gap-2 text-sm font-600 bg-white/5 px-4 py-2 rounded-lg"> <i data-lucide="log-out" class="w-4 h-4"></i> Keluar </button>
      </header>
      <div class="flex-1 overflow-y-auto p-6 max-w-6xl mx-auto w-full">
-      <h3 class="text-2xl font-800 mb-6 flex items-center gap-2"><i data-lucide="target" class="w-6 h-6 text-indigo-400"></i> Pilih Mata Pelajaran Remedial</h3>
-      <div id="student-mapel-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
-      <div id="student-remedial-area" class="hidden mt-4 fade-in">
-       <button onclick="backToMapelList()" class="text-slate-400 hover:text-white mb-4 flex items-center gap-2 bg-white/5 px-4 py-2 rounded-lg w-fit transition-colors"><i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali ke daftar mapel</button>
+      
+      <div id="dashboard-lists-area" class="fade-in space-y-10">
+        <div>
+          <h3 class="text-2xl font-800 mb-4 flex items-center gap-2 text-blue-400 border-b border-white/10 pb-3"><i data-lucide="pen-tool" class="w-6 h-6"></i> Ulangan Harian Kelas Aktif</h3>
+          <div id="student-ulangan-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+        </div>
+
+        <div>
+          <h3 class="text-2xl font-800 mb-4 flex items-center gap-2 text-red-400 border-b border-white/10 pb-3"><i data-lucide="alert-triangle" class="w-6 h-6"></i> Daftar Wajib Remedial</h3>
+          <div id="student-remedial-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+        </div>
+      </div>
+
+      <div id="student-pengerjaan-area" class="hidden fade-in">
+       <button onclick="backToDashboard()" class="text-slate-400 hover:text-white mb-4 flex items-center gap-2 bg-white/5 px-4 py-2 rounded-lg w-fit transition-colors"><i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali ke Dashboard</button>
        <div class="card-glass rounded-2xl p-6 md:p-8">
-        <h3 class="text-2xl font-800 mb-2 text-indigo-300" id="remedial-mapel-title">Remedial</h3>
+        <h3 class="text-2xl font-800 mb-2 text-indigo-300 flex items-center" id="pengerjaan-mapel-title">Nama Mapel</h3>
         <p class="text-slate-300 mb-6 border-b border-white/10 pb-4">Silakan unduh soal terlebih dahulu, lalu pilih metode untuk mengirimkan jawaban.</p>
         <div id="soal-download-area" class="mb-8 bg-indigo-500/10 p-4 rounded-xl border border-indigo-500/20">
-         <p class="text-sm font-600 text-slate-300 mb-3">Langkah 1: Unduh Soal</p>
+         <p class="text-sm font-600 text-slate-300 mb-3">Langkah 1: Unduh Berkas Soal</p>
          <button onclick="downloadSoal()" class="flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-500 rounded-xl text-sm font-600 transition-all shadow-lg shadow-emerald-500/20"><i data-lucide="download" class="w-5 h-5"></i> Unduh File Soal</button>
-         <p id="no-soal-msg" class="text-sm font-500 text-yellow-400 hidden mt-3 flex items-center gap-2"><i data-lucide="info" class="w-4 h-4"></i> Guru belum mengunggah file soal untuk kelas ini.</p>
+         <p id="no-soal-msg" class="text-sm font-500 text-yellow-400 hidden mt-3 flex items-center gap-2"><i data-lucide="info" class="w-4 h-4"></i> Guru belum mengunggah file soal untuk kategori ini.</p>
         </div>
         <p class="text-sm font-600 text-slate-300 mb-3">Langkah 2: Pilih Metode Pengerjaan</p>
         <div class="flex flex-wrap gap-3 mb-6">
-         <button onclick="selectMethod('text')" id="btn-method-text" class="px-5 py-3 rounded-xl border border-white/20 hover:border-indigo-400 hover:bg-indigo-500/10 transition-all text-sm font-600 flex items-center gap-2"><i data-lucide="keyboard" class="w-4 h-4"></i> Ketik Jawaban Langsung</button> 
+         <button onclick="selectMethod('text')" id="btn-method-text" class="px-5 py-3 rounded-xl border border-white/20 hover:border-indigo-400 hover:bg-indigo-500/10 transition-all text-sm font-600 flex items-center gap-2"><i data-lucide="keyboard" class="w-4 h-4"></i> Ketik Jawaban</button> 
          <button onclick="selectMethod('upload')" id="btn-method-upload" class="px-5 py-3 rounded-xl border border-white/20 hover:border-indigo-400 hover:bg-indigo-500/10 transition-all text-sm font-600 flex items-center gap-2"><i data-lucide="camera" class="w-4 h-4"></i> Upload Foto Kertas</button>
         </div>
         <div id="answer-text-area" class="hidden fade-in bg-white/5 p-4 rounded-xl border border-white/10">
@@ -166,15 +158,6 @@
        </div>
       </div>
      </div>
-    </div>
-   </div>
-
-   <div id="popup-lulus" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4">
-    <div class="card-glass rounded-3xl p-8 max-w-sm w-full text-center fade-in border border-emerald-500/30 shadow-2xl shadow-emerald-500/20">
-     <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg"><i data-lucide="check" class="w-10 h-10 text-white"></i></div>
-     <h3 class="text-2xl font-800 mb-2 text-white">Selamat! 🎉</h3>
-     <p class="text-emerald-100 font-500 leading-relaxed mb-6">Anda sudah tuntas di semua mata pelajaran.</p>
-     <button onclick="closePopup('popup-lulus')" class="px-8 py-3 bg-white/10 hover:bg-white/20 rounded-xl font-600 text-white transition-colors border border-white/20">Tutup Halaman</button>
     </div>
    </div>
 
@@ -208,15 +191,14 @@
        <nav class="space-y-1">
         <p class="text-xs font-700 text-indigo-400 uppercase tracking-widest mb-3 px-3">Filter Cepat</p>
         <button onclick="filterStatus(event, 'all')" class="filter-btn w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-sm font-500 flex items-center gap-3 text-white bg-white/10 transition-colors"> <div class="p-1.5 bg-slate-500/20 rounded-md"><i data-lucide="layout-grid" class="w-4 h-4 text-slate-300"></i></div> Semua Status </button> 
-        <button onclick="filterStatus(event, 'lulus')" class="filter-btn w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-sm font-500 flex items-center gap-3 text-slate-300 transition-colors"> <div class="p-1.5 bg-emerald-500/20 rounded-md"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i></div> Lulus </button> 
-        <button onclick="filterStatus(event, 'wajib_remidi')" class="filter-btn w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-sm font-500 flex items-center gap-3 text-slate-300 transition-colors"> <div class="p-1.5 bg-red-500/20 rounded-md"><i data-lucide="alert-circle" class="w-4 h-4 text-red-400"></i></div> Wajib Remidi </button> 
-        <button onclick="filterStatus(event, 'tuntas_remidi')" class="filter-btn w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-sm font-500 flex items-center gap-3 text-slate-300 transition-colors"> <div class="p-1.5 bg-blue-500/20 rounded-md"><i data-lucide="check-check" class="w-4 h-4 text-blue-400"></i></div> Tuntas Remidi </button>
+        <button onclick="filterStatus(event, 'lulus')" class="filter-btn w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-sm font-500 flex items-center gap-3 text-slate-300 transition-colors"> <div class="p-1.5 bg-emerald-500/20 rounded-md"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i></div> Lulus / Tuntas </button> 
+        <button onclick="filterStatus(event, 'wajib_remidi')" class="filter-btn w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-sm font-500 flex items-center gap-3 text-slate-300 transition-colors"> <div class="p-1.5 bg-red-500/20 rounded-md"><i data-lucide="alert-circle" class="w-4 h-4 text-red-400"></i></div> Wajib Remedial </button> 
         <hr class="border-white/10 my-6">
         <p class="text-xs font-700 text-indigo-400 uppercase tracking-widest mb-3 px-3">Menu Utama</p>
-        <button onclick="showTeacherTab('students')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-sm font-500 flex items-center gap-3 text-slate-300 transition-colors"><i data-lucide="users" class="w-5 h-5"></i> Data Siswa</button> 
-        <button onclick="showTeacherTab('upload-soal')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-sm font-500 flex items-center gap-3 text-slate-300 transition-colors"><i data-lucide="file-up" class="w-5 h-5"></i> Bank Soal</button> 
+        <button onclick="showTeacherTab('students')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-sm font-500 flex items-center gap-3 text-slate-300 transition-colors"><i data-lucide="users" class="w-5 h-5"></i> Nilai & Data Siswa</button> 
+        <button onclick="showTeacherTab('upload-soal')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-sm font-500 flex items-center gap-3 text-slate-300 transition-colors"><i data-lucide="file-up" class="w-5 h-5"></i> Bank Soal Aktif</button> 
         <button onclick="showTeacherTab('jawaban')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-sm font-500 flex items-center gap-3 text-slate-300 transition-colors"><i data-lucide="inbox" class="w-5 h-5"></i> Jawaban Masuk</button> 
-        <button onclick="showTeacherTab('settings')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-sm font-500 flex items-center gap-3 text-slate-300 transition-colors"><i data-lucide="settings" class="w-5 h-5"></i> Pengaturan</button>
+        <button onclick="showTeacherTab('settings')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-sm font-500 flex items-center gap-3 text-slate-300 transition-colors"><i data-lucide="settings" class="w-5 h-5"></i> Pengaturan KKM</button>
        </nav>
       </aside>
       <main class="flex-1 overflow-y-auto p-4 sm:p-8">
@@ -232,14 +214,14 @@
 
        <div id="tab-students" class="fade-in">
         <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
-         <div><h3 class="text-2xl font-800">Database Siswa</h3><p class="text-sm text-slate-400">Kelola data dan nilai remedial siswa</p></div>
+         <div><h3 class="text-2xl font-800">Database & Input Nilai</h3><p class="text-sm text-slate-400">Input nilai, sistem otomatis memisahkan lulus/remedial via KKM.</p></div>
          <button onclick="showAddStudentModal()" class="px-5 py-2.5 btn-primary rounded-xl text-sm font-600 flex items-center gap-2"> <i data-lucide="user-plus" class="w-4 h-4"></i> Tambah Siswa Baru </button>
         </div>
         <div class="card-glass rounded-2xl overflow-hidden">
          <div class="overflow-x-auto">
           <table class="w-full text-sm text-left">
            <thead class="bg-slate-900/80 text-slate-300 font-600 uppercase text-xs">
-            <tr><th class="py-4 px-5">No</th><th class="py-4 px-5">NIS</th><th class="py-4 px-5">Nama Lengkap</th><th class="py-4 px-5">Kelas</th><th class="py-4 px-5">Nilai</th><th class="py-4 px-5">Status Akhir</th><th class="py-4 px-5 text-center">Aksi</th></tr>
+            <tr><th class="py-4 px-5">No</th><th class="py-4 px-5">NIS</th><th class="py-4 px-5">Nama Lengkap</th><th class="py-4 px-5">Kelas</th><th class="py-4 px-5">Nilai Terakhir</th><th class="py-4 px-5">KKM Mapel</th><th class="py-4 px-5">Status Akhir</th><th class="py-4 px-5 text-center">Aksi</th></tr>
            </thead>
            <tbody id="students-table-body" class="divide-y divide-white/5"></tbody>
           </table>
@@ -249,10 +231,19 @@
        </div>
 
        <div id="tab-upload-soal" class="hidden fade-in">
-        <h3 class="text-2xl font-800 mb-6">Manajemen Bank Soal</h3>
+        <h3 class="text-2xl font-800 mb-6">Manajemen Bank Soal & Tugas</h3>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div class="card-glass rounded-2xl p-6 lg:p-8 h-fit border border-indigo-500/20 shadow-xl">
-             <h4 class="font-700 text-lg mb-6 flex items-center gap-2 text-indigo-300"><i data-lucide="upload-cloud" class="w-5 h-5"></i> Form Upload Soal Khusus</h4>
+             <h4 class="font-700 text-lg mb-6 flex items-center gap-2 text-indigo-300"><i data-lucide="upload-cloud" class="w-5 h-5"></i> Form Distribusi Soal</h4>
+             
+             <div class="mb-4">
+               <label class="block text-xs font-600 text-slate-400 mb-1 uppercase tracking-wider">Kategori Soal:</label>
+               <select id="upload-jenis-soal" class="w-full px-3 py-2.5 bg-slate-900 border border-blue-500/50 text-blue-300 font-700 rounded-xl text-sm focus:border-indigo-500 outline-none transition cursor-pointer">
+                 <option value="ulangan">Ulangan Harian (Muncul ke semua siswa kelas)</option>
+                 <option value="remedial">Remedial (Hanya untuk yang nilai di bawah KKM)</option>
+               </select>
+             </div>
+
              <div class="grid grid-cols-2 gap-3 mb-4">
                <div>
                  <label class="block text-xs font-600 text-slate-400 mb-1 uppercase tracking-wider">Pilih Kelas:</label>
@@ -270,7 +261,7 @@
               <p class="text-slate-300 font-500">Klik area ini untuk mencari file PDF/Word</p>
               <p id="soal-file-name" class="text-emerald-400 font-700 text-sm mt-3 hidden bg-emerald-500/10 py-1 px-3 rounded-lg inline-block"></p>
              </div><input type="file" id="soal-file-input" class="hidden" onchange="handleSoalFileSelect(this)"> 
-             <button onclick="uploadSoal(event)" class="mt-6 px-6 py-4 btn-primary rounded-xl font-700 w-full flex items-center justify-center gap-2"><i data-lucide="upload" class="w-5 h-5"></i> Simpan & Upload Soal</button>
+             <button onclick="uploadSoal(event)" class="mt-6 px-6 py-4 btn-primary rounded-xl font-700 w-full flex items-center justify-center gap-2"><i data-lucide="upload" class="w-5 h-5"></i> Simpan & Distribusikan</button>
             </div>
             <div>
              <h4 class="font-700 text-lg mb-4 flex items-center gap-2"><i data-lucide="archive" class="w-5 h-5 text-indigo-400"></i> Daftar Soal Tersedia</h4>
@@ -281,16 +272,21 @@
        </div>
 
        <div id="tab-jawaban" class="hidden fade-in">
-        <h3 class="text-2xl font-800 mb-6">Kotak Masuk Jawaban</h3>
+        <h3 class="text-2xl font-800 mb-6">Kotak Masuk Jawaban (Ulangan & Remedial)</h3>
         <div id="jawaban-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
        </div>
 
        <div id="tab-settings" class="hidden fade-in">
-        <h3 class="text-2xl font-800 mb-6">Pengaturan Sistem</h3>
+        <h3 class="text-2xl font-800 mb-6">Pengaturan KKM & Kelas</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
          <div class="card-glass rounded-2xl p-6 border border-white/5">
-          <h4 class="font-700 text-lg mb-4 text-indigo-300">Mata Pelajaran</h4>
-          <div class="flex gap-2 mb-6"><input type="text" id="new-mapel-input" class="flex-1 px-4 py-2.5 bg-slate-900/50 rounded-xl border border-white/10 focus:border-indigo-400 outline-none" placeholder="Ketik mapel baru..."> <button onclick="addMapel()" class="px-5 py-2.5 btn-primary rounded-xl font-600">Tambah</button></div>
+          <h4 class="font-700 text-lg mb-2 text-indigo-300">Mata Pelajaran & KKM</h4>
+          <p class="text-xs text-slate-400 mb-4">Penting: Penentuan lulus/remedial otomatis berdasarkan KKM ini.</p>
+          <div class="flex gap-2 mb-6">
+            <input type="text" id="new-mapel-input" class="flex-1 px-4 py-2.5 bg-slate-900/50 rounded-xl border border-white/10 focus:border-indigo-400 outline-none text-sm" placeholder="Nama Mapel..."> 
+            <input type="number" id="new-kkm-input" class="w-24 px-4 py-2.5 bg-slate-900/50 rounded-xl border border-white/10 focus:border-indigo-400 outline-none text-sm" placeholder="KKM"> 
+            <button onclick="addMapel()" class="px-5 py-2.5 btn-primary rounded-xl font-600 text-sm">Tambah</button>
+          </div>
           <div id="mapel-list-settings" class="space-y-2 max-h-[300px] overflow-y-auto custom-scrollbar pr-2"></div>
          </div>
          <div class="card-glass rounded-2xl p-6 border border-white/5">
@@ -325,9 +321,10 @@
 
    <div id="modal-nilai" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4">
     <div class="card-glass rounded-3xl p-8 max-w-md w-full fade-in shadow-2xl border border-indigo-500/30">
-     <div class="flex justify-between items-center mb-6"><h3 class="text-xl font-800 text-indigo-300" id="nilai-student-info">Input Nilai Remedial</h3><button onclick="closePopup('modal-nilai')"><i data-lucide="x" class="w-6 h-6 text-slate-400"></i></button></div>
+     <div class="flex justify-between items-center mb-6"><h3 class="text-xl font-800 text-indigo-300" id="nilai-student-info">Input Nilai Guru</h3><button onclick="closePopup('modal-nilai')"><i data-lucide="x" class="w-6 h-6 text-slate-400"></i></button></div>
+     <p class="text-xs text-slate-400 mb-4 border-b border-white/10 pb-2">Nilai di bawah KKM otomatis menjatuhkan siswa ke Daftar Wajib Remedial.</p>
      <div id="nilai-inputs" class="space-y-3 max-h-[50vh] overflow-y-auto pr-2 custom-scrollbar"></div>
-     <button onclick="saveNilai()" id="btn-save-nilai" class="w-full mt-8 py-3.5 btn-primary rounded-xl font-700">Simpan Seluruh Nilai</button>
+     <button onclick="saveNilai()" id="btn-save-nilai" class="w-full mt-8 py-3.5 btn-primary rounded-xl font-700">Simpan & Filter Status</button>
     </div>
    </div>
   </div>
@@ -352,6 +349,7 @@
     window.allData = [];
     window.currentStudent = null;
     window.currentMapel = null;
+    window.currentTaskType = null;
     window.currentStatusFilter = 'all';
     window.currentTeacherTab = 'students';
     window.editingStudentId = null;
@@ -359,17 +357,18 @@
     window.selectedAnswerFile = null;
     window.pasteDetected = false;
 
+    // Tambah property KKM default 75 agar data lama tetap aman
     window.mapelList = [
-      {key:'matematika', name:'Matematika'},
-      {key:'bahasa_indonesia', name:'Bahasa Indonesia'},
-      {key:'bahasa_inggris', name:'Bahasa Inggris'},
-      {key:'pai', name:'Pend Agama Islam'},
-      {key:'sejarah', name:'Sejarah'},
-      {key:'pkn', name:'Pendidikan Pancasila'},
-      {key:'informatika', name:'Informatika'},
-      {key:'penjas', name:'PJOK'},
-      {key:'ipas', name:'Projek IPAS'},
-      {key:'produktif', name:'Kejuruan'}
+      {key:'matematika', name:'Matematika', kkm: 75},
+      {key:'bahasa_indonesia', name:'Bahasa Indonesia', kkm: 75},
+      {key:'bahasa_inggris', name:'Bahasa Inggris', kkm: 75},
+      {key:'pai', name:'Pend Agama Islam', kkm: 75},
+      {key:'sejarah', name:'Sejarah', kkm: 75},
+      {key:'pkn', name:'Pendidikan Pancasila', kkm: 75},
+      {key:'informatika', name:'Informatika', kkm: 75},
+      {key:'penjas', name:'PJOK', kkm: 75},
+      {key:'ipas', name:'Projek IPAS', kkm: 75},
+      {key:'produktif', name:'Kejuruan', kkm: 75}
     ];
 
     window.kelasList = {
@@ -384,9 +383,7 @@
         window.allData = [];
         if (snapshot.exists()) {
           const data = snapshot.val();
-          Object.keys(data).forEach(key => {
-            window.allData.push({ id_firestore: key, ...data[key] });
-          });
+          Object.keys(data).forEach(key => { window.allData.push({ id_firestore: key, ...data[key] }); });
         }
         window.refreshDataLocal();
       });
@@ -424,10 +421,9 @@
       e.preventDefault(); const nis = document.getElementById('nis-input').value.trim();
       const student = window.allData.find(d => d.type === 'student' && d.nis === nis);
       if (!student) { showToast('NIS belum terdaftar guru!', 'error'); return; }
-      window.currentStudent = student; const parsed = parseNilai(student.data_nilai);
-      const hasRemedial = Object.values(parsed).some(m => m.status === 'wajib_remidi');
-      if (!hasRemedial) { document.getElementById('popup-lulus').classList.remove('hidden'); lucide.createIcons(); return; }
-      window.showPage('page-student-dashboard'); renderStudentDashboard();
+      window.currentStudent = student; 
+      window.showPage('page-student-dashboard'); 
+      renderStudentDashboard();
     }
 
     window.logoutStudent = function() { window.currentStudent = null; document.getElementById('nis-input').value = ''; window.showPage('page-landing'); }
@@ -436,42 +432,68 @@
       if(!window.currentStudent) return;
       document.getElementById('student-name-display').textContent = window.currentStudent.nama;
       document.getElementById('student-info-display').textContent = `${window.currentStudent.nis} | Kelas ${window.currentStudent.tingkat} ${window.currentStudent.jurusan_kelas}`;
-      const list = document.getElementById('student-mapel-list'); list.innerHTML = ''; const parsed = parseNilai(window.currentStudent.data_nilai); let c = 0;
+      
+      const listUlangan = document.getElementById('student-ulangan-list'); listUlangan.innerHTML = '';
+      const listRemedial = document.getElementById('student-remedial-list'); listRemedial.innerHTML = '';
+      
+      const parsed = parseNilai(window.currentStudent.data_nilai); 
+      let cRem = 0; let cUl = 0;
+
+      // 1. RENDER REMEDIAL
       window.mapelList.forEach(m => {
         if (parsed[m.key]?.status === 'wajib_remidi') {
-          c++; const div = document.createElement('div'); div.className = 'card-glass rounded-2xl p-5 cursor-pointer hover:bg-white/10 hover:border-indigo-500/50 transition-all group border border-white/5'; div.onclick = () => selectRemedialMapel(m);
-          div.innerHTML = `<div class="flex items-start gap-4"><div class="w-12 h-12 rounded-xl bg-red-500/10 flex justify-center items-center border border-red-500/20"><i data-lucide="book-open" class="text-red-400"></i></div><div><p class="font-800 text-lg group-hover:text-indigo-300 transition-colors">${m.name}</p><span class="text-xs font-600 text-red-400 bg-red-500/10 px-2 py-1 rounded inline-flex mt-1 items-center gap-1"><i data-lucide="alert-circle" class="w-3 h-3"></i> Wajib Remedial</span></div></div>`;
-          list.appendChild(div);
+          cRem++; const div = document.createElement('div'); div.className = 'card-glass rounded-2xl p-5 cursor-pointer hover:bg-white/10 hover:border-red-500/50 transition-all group border border-white/5'; 
+          div.onclick = () => selectTask(m, 'remedial');
+          div.innerHTML = `<div class="flex items-start gap-4"><div class="w-12 h-12 rounded-xl bg-red-500/10 flex justify-center items-center border border-red-500/20"><i data-lucide="book-open" class="text-red-400"></i></div><div><p class="font-800 text-lg group-hover:text-red-300 transition-colors">${m.name}</p><span class="text-xs font-600 text-red-400 bg-red-500/10 px-2 py-1 rounded inline-flex mt-1 items-center gap-1"><i data-lucide="alert-circle" class="w-3 h-3"></i> Wajib Remedial (KKM: ${m.kkm})</span></div></div>`;
+          listRemedial.appendChild(div);
         }
       });
-      if(c===0) list.innerHTML = '<p class="col-span-full text-center p-8 text-emerald-400 font-700">Tuntas Semua!</p>'; lucide.createIcons();
+      if(cRem===0) listRemedial.innerHTML = '<p class="col-span-full p-6 text-center text-emerald-400 font-700 bg-white/5 rounded-2xl border border-white/10">🎉 Yeay! Kamu tuntas di semua mapel, tidak ada remedial!</p>';
+
+      // 2. RENDER ULANGAN HARIAN
+      const soalUlanganList = window.allData.filter(d => d.type === 'soal' && d.jenis_soal === 'ulangan' && (!d.tingkat || d.tingkat === 'Semua Tingkat' || d.tingkat === window.currentStudent.tingkat) && (!d.jurusan_kelas || d.jurusan_kelas === 'Semua Jurusan' || d.jurusan_kelas === window.currentStudent.jurusan_kelas));
+      const mapelUlanganKeys = [...new Set(soalUlanganList.map(s => s.soal_mapel))];
+
+      mapelUlanganKeys.forEach(mKey => {
+        const m = window.mapelList.find(x => x.key === mKey) || {key: mKey, name: mKey};
+        cUl++; const div = document.createElement('div'); div.className = 'card-glass rounded-2xl p-5 cursor-pointer hover:bg-white/10 hover:border-blue-500/50 transition-all group border border-white/5'; 
+        div.onclick = () => selectTask(m, 'ulangan');
+        div.innerHTML = `<div class="flex items-start gap-4"><div class="w-12 h-12 rounded-xl bg-blue-500/10 flex justify-center items-center border border-blue-500/20"><i data-lucide="file-signature" class="text-blue-400"></i></div><div><p class="font-800 text-lg group-hover:text-blue-300 transition-colors">${m.name}</p><span class="text-xs font-600 text-blue-400 bg-blue-500/10 px-2 py-1 rounded inline-flex mt-1 items-center gap-1"><i data-lucide="bell" class="w-3 h-3"></i> Ulangan Aktif</span></div></div>`;
+        listUlangan.appendChild(div);
+      });
+      if(cUl===0) listUlangan.innerHTML = '<p class="col-span-full p-6 text-center text-slate-400 font-500 bg-white/5 rounded-2xl border border-white/10">Belum ada jadwal ulangan harian dari guru untuk kelas ini.</p>';
+
+      lucide.createIcons();
     }
 
-    window.selectRemedialMapel = function(mapel) {
-      window.currentMapel = mapel; document.getElementById('student-mapel-list').style.display = 'none'; document.getElementById('student-remedial-area').classList.remove('hidden'); document.getElementById('remedial-mapel-title').textContent = mapel.name;
-      const soalList = window.allData.filter(d => d.type === 'soal' && d.soal_mapel === mapel.key);
+    window.selectTask = function(mapel, jenis) {
+      window.currentMapel = mapel;
+      window.currentTaskType = jenis;
+      document.getElementById('dashboard-lists-area').classList.add('hidden');
+      document.getElementById('student-pengerjaan-area').classList.remove('hidden');
+      
+      const titleBadge = jenis === 'ulangan' ? '<span class="text-xs ml-3 px-2 py-1 bg-blue-500/20 text-blue-400 rounded uppercase tracking-widest font-700">Ulangan Harian</span>' : '<span class="text-xs ml-3 px-2 py-1 bg-red-500/20 text-red-400 rounded uppercase tracking-widest font-700">Wajib Remedial</span>';
+      document.getElementById('pengerjaan-mapel-title').innerHTML = `${mapel.name} ${titleBadge}`;
+      
+      const soalList = window.allData.filter(d => d.type === 'soal' && d.soal_mapel === mapel.key && d.jenis_soal === jenis);
       const soal = soalList.find(d => (!d.tingkat || d.tingkat === 'Semua Tingkat' || d.tingkat === window.currentStudent.tingkat) && (!d.jurusan_kelas || d.jurusan_kelas === 'Semua Jurusan' || d.jurusan_kelas === window.currentStudent.jurusan_kelas));
+      
       document.getElementById('soal-download-area').querySelector('button').classList.toggle('hidden', !(soal && soal.soal_file));
       document.getElementById('no-soal-msg').classList.toggle('hidden', !!(soal && soal.soal_file));
       document.getElementById('answer-text-area').classList.add('hidden'); document.getElementById('answer-upload-area').classList.add('hidden');
     }
 
-    window.backToMapelList = function() { document.getElementById('student-mapel-list').style.display = ''; document.getElementById('student-remedial-area').classList.add('hidden'); window.currentMapel = null; }
+    window.backToDashboard = function() { document.getElementById('dashboard-lists-area').classList.remove('hidden'); document.getElementById('student-pengerjaan-area').classList.add('hidden'); window.currentMapel = null; window.currentTaskType = null; }
 
     window.downloadSoal = function() {
-      const soalList = window.allData.filter(d => d.type === 'soal' && d.soal_mapel === window.currentMapel.key);
+      const soalList = window.allData.filter(d => d.type === 'soal' && d.soal_mapel === window.currentMapel.key && d.jenis_soal === window.currentTaskType);
       const soal = soalList.find(d => (!d.tingkat || d.tingkat === 'Semua Tingkat' || d.tingkat === window.currentStudent.tingkat) && (!d.jurusan_kelas || d.jurusan_kelas === 'Semua Jurusan' || d.jurusan_kelas === window.currentStudent.jurusan_kelas));
-      if (soal && soal.soal_file) { const a = document.createElement('a'); a.href = soal.soal_file; a.download = soal.soal_file_name || `soal_${window.currentMapel.name}.pdf`; a.click(); }
+      if (soal && soal.soal_file) { const a = document.createElement('a'); a.href = soal.soal_file; a.download = soal.soal_file_name || `soal_${window.currentTaskType}_${window.currentMapel.name}.pdf`; a.click(); }
     }
 
     window.selectMethod = function(method) { document.getElementById('answer-text-area').classList.toggle('hidden', method !== 'text'); document.getElementById('answer-upload-area').classList.toggle('hidden', method !== 'upload'); }
 
-    document.addEventListener('paste', function(e) {
-      if (document.activeElement === document.getElementById('text-answer')) {
-        e.preventDefault(); window.pasteDetected = true; document.getElementById('ai-warning').classList.remove('hidden');
-        setTimeout(() => { document.getElementById('ai-warning').classList.add('hidden'); window.pasteDetected = false; }, 4000);
-      }
-    });
+    document.addEventListener('paste', function(e) { if (document.activeElement === document.getElementById('text-answer')) { e.preventDefault(); window.pasteDetected = true; document.getElementById('ai-warning').classList.remove('hidden'); setTimeout(() => { document.getElementById('ai-warning').classList.add('hidden'); window.pasteDetected = false; }, 4000); } });
 
     window.submitTextAnswer = async function() {
       if (window.pasteDetected) return showToast('Jawaban ditolak! Terdeteksi copy-paste.', 'error');
@@ -479,8 +501,9 @@
       const btn = document.getElementById('btn-submit-text'); const oldTxt = btn.innerHTML; btn.disabled = true; btn.innerHTML = "Mengirim...";
       try {
         const newRef = push(ref(db, 'data_sekolah'));
-        await set(newRef, { type: 'jawaban', jawaban_nis: window.currentStudent.nis, jawaban_mapel: window.currentMapel.key, jawaban_text: txt, created_at: new Date().toISOString() });
-        document.getElementById('text-answer').value = ''; window.backToMapelList(); showToast('Jawaban Terkirim!');
+        // Menambahkan jenis_tugas agar guru tau ini jawaban ulangan atau remidi
+        await set(newRef, { type: 'jawaban', jawaban_nis: window.currentStudent.nis, jawaban_mapel: window.currentMapel.key, jenis_tugas: window.currentTaskType, jawaban_text: txt, created_at: new Date().toISOString() });
+        document.getElementById('text-answer').value = ''; window.backToDashboard(); showToast(`Jawaban ${window.currentTaskType} Terkirim!`);
       } catch(e) { showToast('Gagal mengirim jawaban!', 'error'); } finally { btn.disabled = false; btn.innerHTML = oldTxt; }
     }
 
@@ -489,12 +512,11 @@
     window.submitUploadAnswer = async function() {
       if (!window.selectedAnswerFile) return showToast('Pilih foto terlebih dahulu!', 'error');
       const btn = document.getElementById('btn-submit-upload'); const oldTxt = btn.innerHTML; btn.disabled = true; btn.innerHTML = "Mengupload...";
-      const r = new FileReader();
-      r.onload = async (e) => {
+      const r = new FileReader(); r.onload = async (e) => {
         try {
           const newRef = push(ref(db, 'data_sekolah'));
-          await set(newRef, { type: 'jawaban', jawaban_nis: window.currentStudent.nis, jawaban_mapel: window.currentMapel.key, jawaban_file_name: window.selectedAnswerFile.name, jawaban_file_data: e.target.result, created_at: new Date().toISOString() });
-          window.selectedAnswerFile = null; document.getElementById('file-name-display').classList.add('hidden'); window.backToMapelList(); showToast('Foto Jawaban Berhasil Dikirim!');
+          await set(newRef, { type: 'jawaban', jawaban_nis: window.currentStudent.nis, jawaban_mapel: window.currentMapel.key, jenis_tugas: window.currentTaskType, jawaban_file_name: window.selectedAnswerFile.name, jawaban_file_data: e.target.result, created_at: new Date().toISOString() });
+          window.selectedAnswerFile = null; document.getElementById('file-name-display').classList.add('hidden'); window.backToDashboard(); showToast(`Foto ${window.currentTaskType} Berhasil Dikirim!`);
         } catch(err) { showToast('Gagal upload gambar!', 'error'); } finally { btn.disabled = false; btn.innerHTML = oldTxt; }
       }; r.readAsDataURL(window.selectedAnswerFile);
     }
@@ -503,40 +525,19 @@
     window.handleTeacherLogin = function(e) { e.preventDefault(); if (btoa(document.getElementById('token-input').value) === 'Z3VydTEyMw==') { window.showPage('page-teacher-dashboard'); renderTeacherView(); } else showToast('Token salah!', 'error'); }
     window.logoutTeacher = function() { document.getElementById('token-input').value = ''; window.showPage('page-landing'); }
     
-    // PERBAIKAN LOGIKA SIDEBAR MUTLAK (Menggunakan manipulasi Class Tailwind murni)
     window.toggleSidebar = function() { 
-      const sb = document.getElementById('teacher-sidebar'); 
-      const ov = document.getElementById('sidebar-overlay'); 
-      if(sb.classList.contains('-translate-x-full')) {
-        sb.classList.remove('-translate-x-full');
-        sb.classList.add('translate-x-0');
-        ov.classList.remove('hidden');
-      } else {
-        sb.classList.remove('translate-x-0');
-        sb.classList.add('-translate-x-full');
-        ov.classList.add('hidden');
-      }
+      const sb = document.getElementById('teacher-sidebar'); const ov = document.getElementById('sidebar-overlay'); 
+      if(sb.classList.contains('-translate-x-full')) { sb.classList.remove('-translate-x-full'); sb.classList.add('translate-x-0'); ov.classList.remove('hidden'); } else { sb.classList.remove('translate-x-0'); sb.classList.add('-translate-x-full'); ov.classList.add('hidden'); }
     }
 
-    window.filterStatus = function(e, stat) { 
-      window.currentStatusFilter = stat; 
-      renderStudentsTable(); 
-      if(window.innerWidth < 1024) window.toggleSidebar(); 
-    }
-    
-    window.showTeacherTab = function(t) { 
-      window.currentTeacherTab = t; 
-      document.querySelectorAll('[id^="tab-"]').forEach(x => x.classList.add('hidden')); 
-      document.getElementById('tab-'+t).classList.remove('hidden'); 
-      renderTeacherView(); 
-      if(window.innerWidth < 1024) window.toggleSidebar();
-    }
+    window.filterStatus = function(e, stat) { window.currentStatusFilter = stat; renderStudentsTable(); if(window.innerWidth < 1024) window.toggleSidebar(); }
+    window.showTeacherTab = function(t) { window.currentTeacherTab = t; document.querySelectorAll('[id^="tab-"]').forEach(x => x.classList.add('hidden')); document.getElementById('tab-'+t).classList.remove('hidden'); renderTeacherView(); if(window.innerWidth < 1024) window.toggleSidebar(); }
 
     window.renderTeacherView = function() {
       const jSel = document.getElementById('filter-jurusan'); const mSel = document.getElementById('filter-mapel'); if(!jSel || !mSel) return;
       const t = document.getElementById('filter-tingkat').value; const currJ = jSel.value; const currM = mSel.value;
       jSel.innerHTML = '<option value="all">Semua Jurusan</option>'; (t==='all'?Object.values(window.kelasList).flat():(window.kelasList[t]||[])).forEach(j => jSel.innerHTML += `<option value="${j}">${j}</option>`); jSel.value = currJ;
-      mSel.innerHTML = '<option value="all">Semua Mapel</option>'; window.mapelList.forEach(m => mSel.innerHTML += `<option value="${m.key}">${m.name}</option>`); mSel.value = currM;
+      mSel.innerHTML = '<option value="all">Semua Mapel</option>'; window.mapelList.forEach(m => mSel.innerHTML += `<option value="${m.key}">${m.name} (KKM ${m.kkm})</option>`); mSel.value = currM;
       if(window.currentTeacherTab === 'students') renderStudentsTable();
       if(window.currentTeacherTab === 'upload-soal') renderUploadSoal();
       if(window.currentTeacherTab === 'jawaban') renderJawaban();
@@ -552,62 +553,61 @@
       if(t !== 'all') sts = sts.filter(s => s.tingkat === t); if(j !== 'all') sts = sts.filter(s => s.jurusan_kelas === j); if(srh) sts = sts.filter(s => s.nama.toLowerCase().includes(srh));
       if (window.currentStatusFilter !== 'all') { sts = sts.filter(s => { const p = parseNilai(s.data_nilai); if(m !== 'all') return p[m]?.status === window.currentStatusFilter; return Object.values(p).some(x => x.status === window.currentStatusFilter); }); }
       
-      const tb = document.getElementById('students-table-body');
-      if(!tb) return;
+      const tb = document.getElementById('students-table-body'); if(!tb) return;
       if(!sts.length) { tb.innerHTML = ''; document.getElementById('no-students-msg').classList.remove('hidden'); return; }
       document.getElementById('no-students-msg').classList.add('hidden');
+      
       tb.innerHTML = sts.map((s,i) => {
-        const p = parseNilai(s.data_nilai); const nilai = m !== 'all' ? (p[m]?.nilai||'-') : '-';
-        let ovStatus = '-';
-        if(m !== 'all') ovStatus = p[m]?.status || '-'; else { const allStats = Object.values(p).map(x=>x.status).filter(Boolean); if(allStats.includes('wajib_remidi')) ovStatus = 'wajib_remidi'; else if(allStats.includes('tuntas_remidi')) ovStatus = 'tuntas_remidi'; else if(allStats.length>0) ovStatus = 'lulus'; }
-        let badge = ovStatus==='lulus'?'<span class="text-emerald-400 bg-emerald-500/20 px-2 py-1 rounded text-xs font-600 border border-emerald-500/30">Lulus</span>':(ovStatus==='wajib_remidi'?'<span class="text-red-400 bg-red-500/20 px-2 py-1 rounded text-xs font-600 border border-red-500/30">Wajib Remidi</span>':(ovStatus==='tuntas_remidi'?'<span class="text-blue-400 bg-blue-500/20 px-2 py-1 rounded text-xs font-600 border border-blue-500/30">Tuntas Remidi</span>':'-'));
-        return `<tr class="border-b border-white/5 hover:bg-white/5 transition-colors"><td class="p-4">${i+1}</td><td class="p-4 font-mono text-slate-400">${s.nis}</td><td class="p-4 font-700 text-white">${s.nama}</td><td class="p-4 text-slate-300"><span class="bg-white/10 px-2 py-1 rounded text-xs">${s.tingkat} ${s.jurusan_kelas}</span></td><td class="p-4 font-800 ${parseInt(nilai)>=75?'text-emerald-400':'text-red-400'}">${nilai}</td><td class="p-4">${badge}</td><td class="p-4 text-center flex gap-2 justify-center"><button onclick="editNilai('${s.nis}')" class="p-2 bg-indigo-500/10 hover:bg-indigo-500/30 text-indigo-400 rounded-lg transition"><i data-lucide="file-edit" class="w-4 h-4"></i></button><button onclick="editStudent('${s.nis}')" class="p-2 bg-yellow-500/10 hover:bg-yellow-500/30 text-yellow-400 rounded-lg transition"><i data-lucide="user-cog" class="w-4 h-4"></i></button><button onclick="confirmDelete(event, '${s.id_firestore}')" class="p-2 bg-red-500/10 hover:bg-red-500/30 text-red-400 rounded-lg transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td></tr>`;
+        const p = parseNilai(s.data_nilai); 
+        let nilai = '-'; let st = '-'; let theKkm = '-';
+        if(m !== 'all') { 
+            nilai = p[m]?.nilai||'-'; st = p[m]?.status || '-'; 
+            theKkm = window.mapelList.find(x=>x.key===m)?.kkm || 75;
+        } else { 
+            const allStats = Object.values(p).map(x=>x.status).filter(Boolean); 
+            if(allStats.includes('wajib_remidi')) st = 'wajib_remidi'; else if(allStats.length>0) st = 'lulus'; 
+            theKkm = 'Cek Detail';
+        }
+        
+        let badge = st==='lulus'?'<span class="text-emerald-400 bg-emerald-500/20 px-2 py-1 rounded text-xs font-600 border border-emerald-500/30">Lulus</span>':(st==='wajib_remidi'?'<span class="text-red-400 bg-red-500/20 px-2 py-1 rounded text-xs font-600 border border-red-500/30">Wajib Remidi</span>':'-');
+        let cNilai = (st === 'lulus' ? 'text-emerald-400' : (st==='wajib_remidi'?'text-red-400':'text-white'));
+
+        return `<tr class="border-b border-white/5 hover:bg-white/5 transition-colors"><td class="p-4">${i+1}</td><td class="p-4 font-mono text-slate-400">${s.nis}</td><td class="p-4 font-700 text-white">${s.nama}</td><td class="p-4 text-slate-300"><span class="bg-white/10 px-2 py-1 rounded text-xs">${s.tingkat} ${s.jurusan_kelas}</span></td><td class="p-4 font-800 ${cNilai}">${nilai}</td><td class="p-4 text-slate-400 text-xs">${theKkm}</td><td class="p-4">${badge}</td><td class="p-4 text-center flex gap-2 justify-center"><button onclick="editNilai('${s.nis}')" class="p-2 bg-indigo-500/10 hover:bg-indigo-500/30 text-indigo-400 rounded-lg transition"><i data-lucide="file-edit" class="w-4 h-4"></i></button><button onclick="editStudent('${s.nis}')" class="p-2 bg-yellow-500/10 hover:bg-yellow-500/30 text-yellow-400 rounded-lg transition"><i data-lucide="user-cog" class="w-4 h-4"></i></button><button onclick="confirmDelete(event, '${s.id_firestore}')" class="p-2 bg-red-500/10 hover:bg-red-500/30 text-red-400 rounded-lg transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td></tr>`;
       }).join(''); lucide.createIcons();
     }
 
     window.showAddStudentModal = function() { window.editingStudentId = null; document.getElementById('modal-student-title').textContent = 'Tambah Siswa Baru'; document.getElementById('input-nis').value = ''; document.getElementById('input-nama').value = ''; document.getElementById('input-tingkat').value = 'X'; popJurusan('X'); document.getElementById('modal-student').classList.remove('hidden'); }
     window.editStudent = function(nis) { const s = window.allData.find(d => d.type === 'student' && d.nis === nis); if(!s) return; window.editingStudentId = s.id_firestore; document.getElementById('modal-student-title').textContent = 'Edit Data Siswa'; document.getElementById('input-nis').value = s.nis; document.getElementById('input-nama').value = s.nama; document.getElementById('input-tingkat').value = s.tingkat; popJurusan(s.tingkat); document.getElementById('input-jurusan').value = s.jurusan_kelas; document.getElementById('modal-student').classList.remove('hidden'); }
     function popJurusan(t) { const j=document.getElementById('input-jurusan'); if(j) { j.innerHTML=''; (window.kelasList[t]||[]).forEach(x=> j.innerHTML+=`<option value="${x}">${x}</option>`); } }
-    
-    setTimeout(() => {
-      const inpTingkat = document.getElementById('input-tingkat');
-      if(inpTingkat) inpTingkat.addEventListener('change', e => popJurusan(e.target.value));
-    }, 500);
+    setTimeout(() => { const inpTingkat = document.getElementById('input-tingkat'); if(inpTingkat) inpTingkat.addEventListener('change', e => popJurusan(e.target.value)); }, 500);
 
     window.saveStudent = async function(e) {
       e.preventDefault(); const btn = document.getElementById('btn-save-student'); const oldTxt = btn.innerHTML; btn.disabled = true; btn.innerHTML = 'Menyimpan...';
       const dt = { type: 'student', nis: document.getElementById('input-nis').value.trim(), nama: document.getElementById('input-nama').value.trim(), tingkat: document.getElementById('input-tingkat').value, jurusan_kelas: document.getElementById('input-jurusan').value, data_nilai: '{}', created_at: new Date().toISOString() };
-      try {
-        if(window.editingStudentId) { 
-          await update(ref(db, 'data_sekolah/' + window.editingStudentId), dt); 
-        } else { 
-          const newRef = push(ref(db, 'data_sekolah'));
-          await set(newRef, dt); 
-        }
-        window.closePopup('modal-student'); showToast('Data Siswa Sinkron!');
-      } catch (err) { showToast('Gagal menyimpan!', 'error'); } finally { btn.disabled = false; btn.innerHTML = oldTxt; }
+      try { if(window.editingStudentId) { await update(ref(db, 'data_sekolah/' + window.editingStudentId), dt); } else { const newRef = push(ref(db, 'data_sekolah')); await set(newRef, dt); } window.closePopup('modal-student'); showToast('Data Siswa Sinkron!'); } catch (err) { showToast('Gagal menyimpan!', 'error'); } finally { btn.disabled = false; btn.innerHTML = oldTxt; }
     }
-
     window.confirmDelete = function(e, docId) { e.currentTarget.parentElement.innerHTML = `<button onclick="doDelete('${docId}')" class="px-2 py-1 bg-red-600 rounded text-xs text-white font-bold">Yakin</button><button onclick="window.refreshDataLocal()" class="px-2 py-1 bg-slate-600 rounded text-xs text-white">Batal</button>`; }
-    window.doDelete = async function(docId) { 
-      try { await remove(ref(db, 'data_sekolah/' + docId)); showToast('Terhapus permanen!'); } catch(e) { showToast('Gagal menghapus!', 'error'); }
-    }
+    window.doDelete = async function(docId) { try { await remove(ref(db, 'data_sekolah/' + docId)); showToast('Terhapus permanen!'); } catch(e) { showToast('Gagal!', 'error'); } }
 
     window.editNilai = function(nis) {
       const s = window.allData.find(d => d.type === 'student' && d.nis === nis); if(!s) return; window.editingStudentId = s.id_firestore;
       document.getElementById('nilai-student-info').textContent = s.nama; const p = parseNilai(s.data_nilai); const c = document.getElementById('nilai-inputs'); c.innerHTML = '';
-      window.mapelList.forEach(m => { c.innerHTML += `<div class="flex justify-between items-center bg-slate-900/50 border border-white/5 p-3 rounded-xl"><label class="text-sm font-600 w-1/2 text-slate-300">${m.name}</label><input type="number" id="nl-${m.key}" value="${p[m.key]?.nilai||''}" class="w-20 p-2 bg-slate-800 border border-white/20 rounded-lg text-center text-white font-800 focus:border-indigo-400 outline-none" placeholder="-"></div>`; });
+      window.mapelList.forEach(m => { c.innerHTML += `<div class="flex justify-between items-center bg-slate-900/50 border border-white/5 p-3 rounded-xl"><label class="text-sm font-600 flex-1 text-slate-300">${m.name} <span class="text-[10px] bg-indigo-500/20 text-indigo-400 px-1 rounded ml-1">KKM: ${m.kkm}</span></label><input type="number" id="nl-${m.key}" value="${p[m.key]?.nilai||''}" class="w-20 p-2 bg-slate-800 border border-white/20 rounded-lg text-center text-white font-800 focus:border-indigo-400 outline-none" placeholder="-"></div>`; });
       document.getElementById('modal-nilai').classList.remove('hidden');
     }
 
+    // LOGIKA PENILAIAN DINAMIS KKM
     window.saveNilai = async function() {
       const s = window.allData.find(d => d.id_firestore === window.editingStudentId); if(!s) return;
       const btn = document.getElementById('btn-save-nilai'); const oldTxt = btn.innerHTML; btn.disabled = true; btn.innerHTML = 'Menyimpan...';
       try {
         const p = parseNilai(s.data_nilai);
-        window.mapelList.forEach(m => { const v = document.getElementById('nl-'+m.key).value; if(v !== '') p[m.key] = { nilai: v, status: parseInt(v)>=75 ? (p[m.key]?.status==='wajib_remidi'?'tuntas_remidi':'lulus') : 'wajib_remidi' }; else delete p[m.key]; });
+        window.mapelList.forEach(m => { 
+            const v = document.getElementById('nl-'+m.key).value; 
+            if(v !== '') { p[m.key] = { nilai: v, status: parseInt(v) >= m.kkm ? 'lulus' : 'wajib_remidi' }; } else { delete p[m.key]; } 
+        });
         await update(ref(db, 'data_sekolah/' + window.editingStudentId), { data_nilai: JSON.stringify(p) });
-        window.closePopup('modal-nilai'); showToast('Nilai Terupdate!');
+        window.closePopup('modal-nilai'); showToast('Nilai Tersimpan! Status Updated.');
       } catch(e) { showToast('Gagal simpan nilai!', 'error'); } finally { btn.disabled = false; btn.innerHTML = oldTxt; }
     }
 
@@ -631,9 +631,10 @@
 
       c.innerHTML = lst.length ? lst.map(s => {
         const mName = window.mapelList.find(m=>m.key===s.soal_mapel)?.name || s.soal_mapel;
+        const jBadge = s.jenis_soal === 'ulangan' ? '<span class="text-[10px] bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded font-700 uppercase">Ulangan</span>' : '<span class="text-[10px] bg-red-500/20 text-red-400 px-2 py-0.5 rounded font-700 uppercase">Remedial</span>';
         return `<div class="bg-slate-900/80 p-4 rounded-xl relative group border border-white/10 hover:border-indigo-500/50 transition-colors shadow-lg">
           <button onclick="window.doDelete('${s.id_firestore}')" class="absolute top-4 right-4 p-2 bg-red-500/10 text-red-400 rounded-lg opacity-0 group-hover:opacity-100 transition-all hover:bg-red-500/30 hover:scale-110"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-          <div class="mb-2 pr-8"><p class="text-sm text-indigo-300 font-800 tracking-wide">${mName}</p><div class="flex items-center gap-3 text-xs text-slate-400 font-600 mt-1"><span class="flex items-center gap-1"><i data-lucide="users" class="w-3 h-3"></i> ${s.tingkat} ${s.jurusan_kelas !== 'Semua Jurusan' ? s.jurusan_kelas : ''}</span></div></div>
+          <div class="mb-2 pr-8"><p class="text-sm text-indigo-300 font-800 tracking-wide">${mName} ${jBadge}</p><div class="flex items-center gap-3 text-xs text-slate-400 font-600 mt-1"><span class="flex items-center gap-1"><i data-lucide="users" class="w-3 h-3"></i> ${s.tingkat} ${s.jurusan_kelas !== 'Semua Jurusan' ? s.jurusan_kelas : ''}</span></div></div>
           <p class="text-xs text-slate-500 truncate mt-3 bg-black/30 p-2 rounded-lg inline-block max-w-full"><i data-lucide="file-text" class="w-3 h-3 inline mr-1 text-emerald-400"></i> ${s.soal_file_name}</p>
         </div>`;
       }).join('') : '<div class="py-10 text-center bg-white/5 rounded-2xl"><p class="text-slate-400 text-sm">Belum ada bank soal.</p></div>';
@@ -648,8 +649,8 @@
       const r = new FileReader(); r.onload = async (e) => { 
         try {
           const newRef = push(ref(db, 'data_sekolah'));
-          await set(newRef, { type:'soal', tingkat: document.getElementById('upload-soal-tingkat').value, jurusan_kelas: document.getElementById('upload-soal-jurusan').value, soal_mapel: document.getElementById('soal-mapel-select').value, soal_file_name: window.selectedSoalFile.name, soal_file: e.target.result, created_at: new Date().toISOString() });
-          window.selectedSoalFile=null; document.getElementById('soal-file-name').classList.add('hidden'); showToast('Soal Tersimpan!');
+          await set(newRef, { type:'soal', jenis_soal: document.getElementById('upload-jenis-soal').value, tingkat: document.getElementById('upload-soal-tingkat').value, jurusan_kelas: document.getElementById('upload-soal-jurusan').value, soal_mapel: document.getElementById('soal-mapel-select').value, soal_file_name: window.selectedSoalFile.name, soal_file: e.target.result, created_at: new Date().toISOString() });
+          window.selectedSoalFile=null; document.getElementById('soal-file-name').classList.add('hidden'); showToast('Soal Berhasil Didistribusikan!');
         } catch(err) { showToast('Gagal upload file soal!', 'error'); } finally { btn.disabled = false; btn.innerHTML = oldTxt; }
       }; r.readAsDataURL(window.selectedSoalFile);
     }
@@ -661,13 +662,15 @@
       let jwb = window.allData.filter(d => d.type === 'jawaban').map(jawaban => { const student = window.allData.find(s => s.type === 'student' && s.nis === jawaban.jawaban_nis); return { ...jawaban, student: student || {} }; });
       if(t !== 'all') jwb = jwb.filter(x => x.student.tingkat === t); if(j !== 'all') jwb = jwb.filter(x => x.student.jurusan_kelas === j); if(m !== 'all') jwb = jwb.filter(x => x.jawaban_mapel === m);
 
-      if (!jwb.length) { c.innerHTML = '<div class="col-span-full py-12 text-center bg-white/5 rounded-3xl"><p class="text-slate-400 font-600">Belum ada jawaban murid.</p></div>'; lucide.createIcons(); return; }
+      if (!jwb.length) { c.innerHTML = '<div class="col-span-full py-12 text-center bg-white/5 rounded-3xl"><p class="text-slate-400 font-600">Belum ada jawaban masuk.</p></div>'; lucide.createIcons(); return; }
       c.innerHTML = jwb.map(jData => {
         const mapelName = window.mapelList.find(ml => ml.key === jData.jawaban_mapel)?.name || jData.jawaban_mapel;
         const stuName = jData.student.nama || `Siswa NIS ${jData.jawaban_nis}`;
+        const tBadge = jData.jenis_tugas === 'ulangan' ? '<span class="text-[10px] bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded font-700 uppercase">Tugas Ulangan</span>' : '<span class="text-[10px] bg-red-500/20 text-red-400 px-2 py-0.5 rounded font-700 uppercase">Tugas Remedial</span>';
+        
         return `<div class="bg-slate-900/80 p-5 rounded-2xl relative group border border-white/10 hover:border-indigo-500/50 transition-colors shadow-lg">
           <button onclick="window.doDelete('${jData.id_firestore}')" class="absolute top-4 right-4 p-2 bg-red-500/10 text-red-400 rounded-lg opacity-0 group-hover:opacity-100 transition-all hover:bg-red-500/30 hover:scale-110"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-          <div class="mb-4 pr-8"><p class="text-sm text-indigo-300 font-800 tracking-wide">${stuName}</p><div class="flex items-center gap-3 text-xs text-slate-400 font-600 mt-1"><span class="flex items-center gap-1 bg-white/5 px-2 py-1 rounded"><i data-lucide="book" class="w-3 h-3 text-indigo-400"></i> ${mapelName}</span></div></div>
+          <div class="mb-4 pr-8"><p class="text-sm text-indigo-300 font-800 tracking-wide">${stuName} ${tBadge}</p><div class="flex items-center gap-3 text-xs text-slate-400 font-600 mt-1"><span class="flex items-center gap-1 bg-white/5 px-2 py-1 rounded"><i data-lucide="book" class="w-3 h-3 text-indigo-400"></i> ${mapelName}</span></div></div>
           ${jData.jawaban_text ? `<div class="text-sm font-mono bg-black/40 p-4 rounded-xl text-slate-300 max-h-40 overflow-y-auto custom-scrollbar">${jData.jawaban_text}</div>` : `<a href="${jData.jawaban_file_data}" target="_blank" class="block rounded-xl overflow-hidden"><img src="${jData.jawaban_file_data}" class="w-full h-36 object-cover"></a>`}
         </div>`;
       }).join(''); lucide.createIcons();
@@ -676,11 +679,11 @@
     // --- PENGATURAN ---
     window.renderSettings = function() {
       const mc = document.getElementById('mapel-list-settings'); const kc = document.getElementById('kelas-list-settings'); if(!mc||!kc) return;
-      mc.innerHTML = window.mapelList.map(m => `<div class="flex justify-between items-center bg-slate-900/50 p-3 rounded-xl mb-2"><span class="text-sm font-600 text-slate-300">${m.name}</span><button onclick="window.rmMapel('${m.key}')" class="text-red-400"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`).join('');
+      mc.innerHTML = window.mapelList.map(m => `<div class="flex justify-between items-center bg-slate-900/50 p-3 rounded-xl mb-2"><div class="flex flex-col"><span class="text-sm font-600 text-slate-300">${m.name}</span><span class="text-xs text-indigo-400">Target KKM: ${m.kkm}</span></div><button onclick="window.rmMapel('${m.key}')" class="text-red-400 p-2 hover:bg-white/5 rounded-lg transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`).join('');
       kc.innerHTML = Object.entries(window.kelasList).map(([t, cs]) => `<div class="mb-4 bg-slate-900/30 p-4 rounded-xl"><p class="text-xs text-purple-400 font-800 mb-3 tracking-widest uppercase">Tingkat ${t}</p><div class="flex flex-wrap gap-2">${cs.map(c => `<span class="bg-purple-500/10 border border-purple-500/20 px-3 py-1.5 text-xs font-600 text-purple-200 rounded-lg flex gap-2 items-center">${c} <button onclick="window.rmKelas('${t}','${c}')"><i data-lucide="x" class="w-3 h-3"></i></button></span>`).join('')}</div></div>`).join('');
       lucide.createIcons();
     }
-    window.addMapel = function() { const i=document.getElementById('new-mapel-input'); const v=i.value; if(!v) return; window.mapelList.push({key:v.toLowerCase().replace(/ /g,'_'), name:v}); i.value=''; renderSettings(); }
+    window.addMapel = function() { const i=document.getElementById('new-mapel-input'); const k = document.getElementById('new-kkm-input'); const v=i.value.trim(); const kVal = parseInt(k.value); if(!v || !kVal) return showToast('Isi mapel dan KKM!', 'error'); window.mapelList.push({key:v.toLowerCase().replace(/ /g,'_'), name:v, kkm: kVal}); i.value=''; k.value=''; renderSettings(); }
     window.rmMapel = function(k) { window.mapelList = window.mapelList.filter(m=>m.key!==k); renderSettings(); }
     window.addKelas = function() { const i=document.getElementById('new-kelas-input'); const t=document.getElementById('new-kelas-tingkat').value; if(!i.value) return; (window.kelasList[t]=window.kelasList[t]||[]).push(i.value.toUpperCase()); i.value=''; renderSettings(); }
     window.rmKelas = function(t,c) { window.kelasList[t] = window.kelasList[t].filter(x=>x!==c); renderSettings(); }
