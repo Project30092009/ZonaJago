@@ -21,8 +21,8 @@
     @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
     .fade-in { animation: fadeIn 0.4s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    .sidebar-open { transform: translateX(0); }
-    .sidebar-closed { transform: translateX(-100%); }
+    .sidebar-open { transform: translateX(0) !important; }
+    .sidebar-closed { transform: translateX(-100%) !important; }
     .ai-warning { background: linear-gradient(135deg, #dc2626, #b91c1c); }
   </style>
   <script>
@@ -148,7 +148,7 @@
       </div>
       <button onclick="logoutTeacher()" class="text-slate-400 hover:text-red-400 flex items-center gap-2 text-sm font-600 bg-white/5 px-4 py-2 rounded-lg transition-colors"><i data-lucide="log-out" class="w-4 h-4"></i> Keluar</button>
      </header>
-     <div class="flex-1 flex overflow-hidden">
+     <div class="flex-1 flex overflow-hidden relative">
       <aside id="teacher-sidebar" class="fixed lg:relative inset-y-0 left-0 w-72 bg-slate-900 lg:bg-transparent border-r border-white/10 z-50 transform sidebar-closed lg:transform-none lg:translate-x-0 transition-transform p-5 overflow-y-auto mt-[73px] lg:mt-0 shadow-2xl lg:shadow-none">
        <div class="lg:hidden flex justify-end mb-4 border-b border-white/10 pb-4"><button onclick="toggleSidebar()" class="text-slate-400 bg-white/5 p-2 rounded-lg"><i data-lucide="x" class="w-5 h-5"></i></button></div>
        <nav class="space-y-1">
@@ -248,6 +248,7 @@
         </div>
        </div>
       </main>
+      <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-40 hidden lg:hidden" onclick="toggleSidebar()"></div>
      </div>
     </div>
    </div>
@@ -275,14 +276,12 @@
      <button onclick="saveNilai()" id="btn-save-nilai" class="w-full mt-8 py-3.5 btn-primary rounded-xl font-700">Simpan Seluruh Nilai</button>
     </div>
    </div>
-   <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-40 hidden lg:hidden" onclick="toggleSidebar()"></div>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getDatabase, ref, set, push, get, child, remove, update, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    import { getDatabase, ref, set, push, ref as dbRef, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-    // Konfigurasi otomatis terhubung ke Realtime Database ZonaJago gratisan kamu
     const firebaseConfig = {
       apiKey: "AIzaSyDTEIcErwM8rfuiaY28GHHlmQvbv8tHD_0",
       authDomain: "zonajago.firebaseapp.com",
@@ -296,7 +295,6 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // Variabel State Aplikasi Global
     window.allData = [];
     window.currentStudent = null;
     window.currentMapel = null;
@@ -326,10 +324,9 @@
       'XII': ['PPLG','MP A','MP B','MP C','TKJ A','TKJ B','TKJ D','TKJ E','TKJ F','TKJ G','TSM A','TSM B','TSM C','TSM D','TSM E','TSM F','TSM G','AK','DKV']
     };
 
-    // SINKRONISASI REALTIME 2 ARAH (Sangat responsif)
     function listenToDatabase() {
-      const dbRef = ref(db, 'data_sekolah');
-      onValue(dbRef, (snapshot) => {
+      const starCountRef = ref(db, 'data_sekolah');
+      onValue(starCountRef, (snapshot) => {
         window.allData = [];
         if (snapshot.exists()) {
           const data = snapshot.val();
@@ -354,13 +351,27 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      // Pastikan di HP sidebar bersembunyi di awal load
+      const sb = document.getElementById('teacher-sidebar');
+      if(sb && window.innerWidth < 1024) { sb.classList.add('sidebar-closed'); }
       lucide.createIcons();
-      showToast("Terkoneksi ke Firebase Realtime Database!", "success");
+      showToast("Terkoneksi ke Firebase Cloud!", "success");
       listenToDatabase();
     });
 
-    // NAVIGATION SYSTEM
-    window.showPage = function(pageId) { document.querySelectorAll('[id^="page-"]').forEach(p => p.classList.add('hidden')); document.getElementById(pageId).classList.remove('hidden'); lucide.createIcons(); }
+    window.showPage = function(pageId) { 
+      document.querySelectorAll('[id^="page-"]').forEach(p => p.classList.add('hidden')); 
+      document.getElementById(pageId).classList.remove('hidden'); 
+      // Reset sidebar state pas masuk dashboard guru
+      if(pageId === 'page-teacher-dashboard') {
+        const sb = document.getElementById('teacher-sidebar');
+        if(sb) {
+          if(window.innerWidth < 1024) sb.classList.add('sidebar-closed');
+          else sb.classList.remove('sidebar-closed');
+        }
+      }
+      lucide.createIcons(); 
+    }
     window.closePopup = function(id) { document.getElementById(id).classList.add('hidden'); }
     window.showToast = function(msg, type='success') { const c = document.getElementById('toast-container'); const t = document.createElement('div'); t.className = `toast px-5 py-3 rounded-xl text-sm font-600 flex items-center gap-2 shadow-xl border ${type==='error'?'bg-red-900 border-red-500':'bg-emerald-900 border-emerald-500'} text-white pointer-events-auto`; t.innerHTML = `<i data-lucide="${type==='error'?'alert-circle':'check-circle'}" class="w-5 h-5"></i> ${msg}`; c.appendChild(t); lucide.createIcons(); setTimeout(() => t.remove(), 4000); }
     function parseNilai(jsonStr) { try { return JSON.parse(jsonStr || '{}'); } catch(e) { return {}; } }
@@ -402,7 +413,7 @@
       document.getElementById('answer-text-area').classList.add('hidden'); document.getElementById('answer-upload-area').classList.add('hidden');
     }
 
-    window.parent.backToMapelList = window.backToMapelList = function() { document.getElementById('student-mapel-list').style.display = ''; document.getElementById('student-remedial-area').classList.add('hidden'); window.currentMapel = null; }
+    window.backToMapelList = function() { document.getElementById('student-mapel-list').style.display = ''; document.getElementById('student-remedial-area').classList.add('hidden'); window.currentMapel = null; }
 
     window.downloadSoal = function() {
       const soalList = window.allData.filter(d => d.type === 'soal' && d.soal_mapel === window.currentMapel.key);
@@ -448,9 +459,35 @@
     // --- ALUR GURU ---
     window.handleTeacherLogin = function(e) { e.preventDefault(); if (btoa(document.getElementById('token-input').value) === 'Z3VydTEyMw==') { window.showPage('page-teacher-dashboard'); renderTeacherView(); } else showToast('Token salah!', 'error'); }
     window.logoutTeacher = function() { document.getElementById('token-input').value = ''; window.showPage('page-landing'); }
-    window.toggleSidebar = function() { const sb = document.getElementById('teacher-sidebar'); const ov = document.getElementById('sidebar-overlay'); sb.classList.toggle('sidebar-closed'); ov.classList.toggle('hidden'); }
-    window.filterStatus = function(e, stat) { window.currentStatusFilter = stat; renderStudentsTable(); window.toggleSidebar(); }
-    window.showTeacherTab = function(t) { window.currentTeacherTab = t; document.querySelectorAll('[id^="tab-"]').forEach(x => x.classList.add('hidden')); document.getElementById('tab-'+t).classList.remove('hidden'); renderTeacherView(); }
+    
+    // FIX SIDEBAR LOGIC UNTUK LAYAR HANDPHONE
+    window.toggleSidebar = function() { 
+      const sb = document.getElementById('teacher-sidebar'); 
+      const ov = document.getElementById('sidebar-overlay'); 
+      if(sb.classList.contains('sidebar-closed') || !sb.classList.contains('sidebar-open')) {
+        sb.classList.remove('sidebar-closed');
+        sb.classList.add('sidebar-open');
+        ov.classList.remove('hidden');
+      } else {
+        sb.classList.remove('sidebar-open');
+        sb.classList.add('sidebar-closed');
+        ov.classList.add('hidden');
+      }
+    }
+
+    window.filterStatus = function(e, stat) { 
+      window.currentStatusFilter = stat; 
+      renderStudentsTable(); 
+      if(window.innerWidth < 1024) window.toggleSidebar(); 
+    }
+    
+    window.showTeacherTab = function(t) { 
+      window.currentTeacherTab = t; 
+      document.querySelectorAll('[id^="tab-"]').forEach(x => x.classList.add('hidden')); 
+      document.getElementById('tab-'+t).classList.remove('hidden'); 
+      renderTeacherView(); 
+      if(window.innerWidth < 1024) window.toggleSidebar();
+    }
 
     window.renderTeacherView = function() {
       const jSel = document.getElementById('filter-jurusan'); const mSel = document.getElementById('filter-mapel'); if(!jSel || !mSel) return;
@@ -488,7 +525,6 @@
     window.editStudent = function(nis) { const s = window.allData.find(d => d.type === 'student' && d.nis === nis); if(!s) return; window.editingStudentId = s.id_firestore; document.getElementById('modal-student-title').textContent = 'Edit Data Siswa'; document.getElementById('input-nis').value = s.nis; document.getElementById('input-nama').value = s.nama; document.getElementById('input-tingkat').value = s.tingkat; popJurusan(s.tingkat); document.getElementById('input-jurusan').value = s.jurusan_kelas; document.getElementById('modal-student').classList.remove('hidden'); }
     function popJurusan(t) { const j=document.getElementById('input-jurusan'); if(j) { j.innerHTML=''; (window.kelasList[t]||[]).forEach(x=> j.innerHTML+=`<option value="${x}">${x}</option>`); } }
     
-    // Safety check listener assignment
     setTimeout(() => {
       const inpTingkat = document.getElementById('input-tingkat');
       if(inpTingkat) inpTingkat.addEventListener('change', e => popJurusan(e.target.value));
@@ -564,7 +600,7 @@
 
     window.uploadSoal = async function(e) {
       if(!window.selectedSoalFile) return showToast('Pilih file dulu!', 'error');
-      const btn = e.currentTarget; const oldTxt = btn.innerHTML; btn.disabled = true; btn.innerHTML = "Mengupload Soal...";
+      const btn = e.currentTarget; const oldTxt = btn.innerHTML; btn.disabled = true; btn.innerHTML = "Mengupload...";
       const r = new FileReader(); r.onload = async (e) => { 
         try {
           const newRef = push(ref(db, 'data_sekolah'));
