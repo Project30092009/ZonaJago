@@ -11,6 +11,8 @@
   <title>Laju Akademik - SMK ALHUDA SARIWANGI | 2026-2027</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
   <style>
     * { font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -303,20 +305,28 @@
        </nav>
       </aside>
       <main class="flex-1 overflow-y-auto p-4 sm:p-8">
-       <div class="mb-8 flex flex-wrap gap-3 items-center bg-white/5 p-3 rounded-2xl border border-white/10">
+          
+       <div id="global-filter-bar" class="mb-8 flex flex-wrap gap-3 items-center bg-white/5 p-3 rounded-2xl border border-white/10">
         <select id="filter-tingkat" onchange="applyFilters()" class="px-4 py-2.5 bg-white/10 border border-transparent rounded-xl text-sm font-500 text-white cursor-pointer hover:bg-white/20 transition"> <option value="all">Semua Tingkat</option> <option value="X">Kelas X</option> <option value="XI">Kelas XI</option> <option value="XII">Kelas XII</option> </select> 
         <select id="filter-jurusan" onchange="applyFilters()" class="px-4 py-2.5 bg-white/10 border border-transparent rounded-xl text-sm font-500 text-white cursor-pointer hover:bg-white/20 transition"> <option value="all">Semua Jurusan</option> </select> 
         <select id="filter-mapel" onchange="applyFilters()" class="px-4 py-2.5 bg-white/10 border border-transparent rounded-xl text-sm font-500 text-white cursor-pointer hover:bg-white/20 transition"> <option value="all">Semua Mapel</option> </select>
         <div class="flex-1 min-w-[200px] relative">
          <i data-lucide="search" class="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-         <input type="text" id="search-siswa" placeholder="Ketik nama siswa..." oninput="applyFilters()" class="w-full pl-10 pr-4 py-2.5 bg-slate-900/50 border border-white/10 rounded-xl text-sm text-white focus:border-indigo-500 outline-none transition">
+         <input type="text" id="search-siswa" placeholder="Ketik nama / NIS siswa..." oninput="applyFilters()" class="w-full pl-10 pr-4 py-2.5 bg-slate-900/50 border border-white/10 rounded-xl text-sm text-white focus:border-indigo-500 outline-none transition">
         </div>
        </div>
 
        <div id="tab-students" class="fade-in">
         <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
          <div><h3 class="text-2xl font-800">Database & Input Nilai</h3><p class="text-sm text-slate-400">Input nilai, sistem otomatis memisahkan lulus/remedial via KKM.</p></div>
-         <button onclick="showAddStudentModal()" class="px-5 py-2.5 btn-primary rounded-xl text-sm font-600 flex items-center gap-2"> <i data-lucide="user-plus" class="w-4 h-4"></i> Tambah Siswa Baru </button>
+         <div class="flex gap-2 flex-wrap">
+             <button onclick="exportToExcel()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-sm font-600 flex items-center gap-2 shadow-lg shadow-emerald-500/20 transition-all">
+                <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Export Excel
+             </button>
+             <button onclick="showAddStudentModal()" class="px-5 py-2.5 btn-primary rounded-xl text-sm font-600 flex items-center gap-2"> 
+                <i data-lucide="user-plus" class="w-4 h-4"></i> Tambah Siswa
+             </button>
+         </div>
         </div>
         <div class="card-glass rounded-2xl overflow-hidden">
          <div class="overflow-x-auto">
@@ -516,7 +526,6 @@
       listenToSettings(); 
       listenToDatabase(); 
 
-      // --- SISTEM KUNJUNGAN REALTIME ---
       const visitsRef = ref(db, 'web_stats/visits');
       if (!sessionStorage.getItem('has_visited')) {
           runTransaction(visitsRef, (current) => {
@@ -526,7 +535,6 @@
       }
       onValue(visitsRef, (snapshot) => {
           const el = document.getElementById('visit-counter');
-          // Base 24.500 + Pengunjung asli real-time dari Firebase
           if(el) el.innerText = (24500 + (snapshot.val() || 0)).toLocaleString('id-ID');
       });
     });
@@ -608,7 +616,6 @@
     window.downloadSoal = function() { if (window.currentSoalData && window.currentSoalData.soal_file) { const a = document.createElement('a'); a.href = window.currentSoalData.soal_file; a.download = window.currentSoalData.soal_file_name || `soal.pdf`; a.click(); } }
     window.selectMethod = function(method) { document.getElementById('answer-text-area').classList.toggle('hidden', method !== 'text'); document.getElementById('answer-upload-area').classList.toggle('hidden', method !== 'upload'); }
     
-    // --- FORM ESAI DINAMIS ---
     window.addEssayInput = function() {
         const c = document.getElementById('dynamic-essay-container');
         const n = c.children.length + 1;
@@ -634,7 +641,6 @@
       } catch(e) { showToast('Gagal mengirim jawaban!', 'error'); } finally { btn.disabled = false; btn.innerHTML = oldTxt; }
     }
 
-    // --- SISWA MENGERJAKAN PG ---
     window.renderPGStudent = function(soal) {
         const c = document.getElementById('pg-student-list'); c.innerHTML = '';
         const qs = JSON.parse(soal.pg_questions || '[]');
@@ -714,9 +720,25 @@
     }
 
     window.logoutTeacher = function() { window.currentUserRole = null; window.currentUserName = ""; window.showPage('page-landing'); }
+    
+    // --- SHOW TAB LOGIC DENGAN SMART FILTER HIDE/SHOW ---
+    window.showTeacherTab = function(t) { 
+      window.currentTeacherTab = t; 
+      document.querySelectorAll('[id^="tab-"]').forEach(x => x.classList.add('hidden')); 
+      document.getElementById('tab-'+t).classList.remove('hidden'); 
+      
+      const filterBar = document.getElementById('global-filter-bar');
+      if (filterBar) {
+         if (t === 'students' || t === 'jawaban') filterBar.classList.remove('hidden');
+         else filterBar.classList.add('hidden');
+      }
+
+      renderTeacherView(); 
+      if(window.innerWidth < 1024) window.toggleSidebar(); 
+    }
+
     window.toggleSidebar = function() { const sb = document.getElementById('teacher-sidebar'); const ov = document.getElementById('sidebar-overlay'); if(sb.classList.contains('-translate-x-full')) { sb.classList.remove('-translate-x-full'); sb.classList.add('translate-x-0'); ov.classList.remove('hidden'); } else { sb.classList.remove('translate-x-0'); sb.classList.add('-translate-x-full'); ov.classList.add('hidden'); } }
     window.filterStatus = function(e, stat) { window.currentStatusFilter = stat; renderStudentsTable(); if(window.innerWidth < 1024) window.toggleSidebar(); }
-    window.showTeacherTab = function(t) { window.currentTeacherTab = t; document.querySelectorAll('[id^="tab-"]').forEach(x => x.classList.add('hidden')); document.getElementById('tab-'+t).classList.remove('hidden'); renderTeacherView(); if(window.innerWidth < 1024) window.toggleSidebar(); }
 
     window.renderTeacherView = function() {
       document.getElementById('dashboard-main-title').textContent = window.currentUserRole === 'superadmin' ? 'Superadmin Pusat' : `Guru: ${window.currentUserName}`;
@@ -745,7 +767,7 @@
       const t = document.getElementById('filter-tingkat').value; const j = document.getElementById('filter-jurusan').value; const m = document.getElementById('filter-mapel').value; const srh = document.getElementById('search-siswa').value.toLowerCase();
       let sts = window.allData.filter(d => d.type === 'student').filter(s => (window.kelasList[s.tingkat] || []).includes(s.jurusan_kelas));
       if (window.currentUserRole !== 'superadmin') sts = sts.filter(s => window.guruKelas.includes(`${s.tingkat}|${s.jurusan_kelas}`));
-      if(t !== 'all') sts = sts.filter(s => s.tingkat === t); if(j !== 'all') sts = sts.filter(s => s.jurusan_kelas === j); if(srh) sts = sts.filter(s => s.nama.toLowerCase().includes(srh));
+      if(t !== 'all') sts = sts.filter(s => s.tingkat === t); if(j !== 'all') sts = sts.filter(s => s.jurusan_kelas === j); if(srh) sts = sts.filter(s => s.nama.toLowerCase().includes(srh) || s.nis.includes(srh));
       if (window.currentStatusFilter !== 'all') { sts = sts.filter(s => { const p = parseNilai(s.data_nilai); if(m !== 'all') return p[m]?.status === window.currentStatusFilter; return Object.values(p).some(x => x.status === window.currentStatusFilter); }); }
        
       const tb = document.getElementById('students-table-body'); if(!tb) return;
@@ -758,6 +780,56 @@
         let badge = st==='lulus'?'<span class="text-emerald-400 bg-emerald-500/20 px-2 py-1 rounded text-xs font-600">Lulus</span>':(st==='wajib_remidi'?'<span class="text-red-400 bg-red-500/20 px-2 py-1 rounded text-xs font-600">Remedial</span>':'-');
         return `<tr class="border-b border-white/5 hover:bg-white/5 transition-colors"><td class="p-4">${i+1}</td><td class="p-4 font-mono text-slate-400">${s.nis}</td><td class="p-4 font-700 text-white">${s.nama}</td><td class="p-4 text-slate-300"><span class="bg-white/10 px-2 py-1 rounded text-xs">${s.tingkat} ${s.jurusan_kelas}</span></td><td class="p-4 font-800 ${st==='lulus'?'text-emerald-400':(st==='wajib_remidi'?'text-red-400':'text-white')}">${nilai}</td><td class="p-4 text-slate-400 text-xs">${theKkm}</td><td class="p-4">${badge}</td><td class="p-4 text-center flex gap-2 justify-center"><button onclick="editNilai('${s.nis}')" class="p-2 bg-indigo-500/10 hover:bg-indigo-500/30 text-indigo-400 rounded-lg"><i data-lucide="file-edit" class="w-4 h-4"></i></button><button onclick="editStudent('${s.nis}')" class="p-2 bg-yellow-500/10 hover:bg-yellow-500/30 text-yellow-400 rounded-lg"><i data-lucide="user-cog" class="w-4 h-4"></i></button><button onclick="confirmDelete(event, '${s.id_firestore}')" class="p-2 bg-red-500/10 hover:bg-red-500/30 text-red-400 rounded-lg"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td></tr>`;
       }).join(''); lucide.createIcons();
+    }
+
+    // --- FUNGSI EXPORT KE EXCEL ---
+    window.exportToExcel = function() {
+        const t = document.getElementById('filter-tingkat').value; 
+        const j = document.getElementById('filter-jurusan').value; 
+        const m = document.getElementById('filter-mapel').value; 
+        const srh = document.getElementById('search-siswa').value.toLowerCase();
+        
+        let sts = window.allData.filter(d => d.type === 'student').filter(s => (window.kelasList[s.tingkat] || []).includes(s.jurusan_kelas));
+        if (window.currentUserRole !== 'superadmin') sts = sts.filter(s => window.guruKelas.includes(`${s.tingkat}|${s.jurusan_kelas}`));
+        if(t !== 'all') sts = sts.filter(s => s.tingkat === t); 
+        if(j !== 'all') sts = sts.filter(s => s.jurusan_kelas === j); 
+        if(srh) sts = sts.filter(s => s.nama.toLowerCase().includes(srh) || s.nis.includes(srh));
+        if (window.currentStatusFilter !== 'all') { sts = sts.filter(s => { const p = parseNilai(s.data_nilai); if(m !== 'all') return p[m]?.status === window.currentStatusFilter; return Object.values(p).some(x => x.status === window.currentStatusFilter); }); }
+        
+        if(sts.length === 0) return showToast('Tidak ada data siswa untuk diekspor!', 'error');
+
+        const dataToExport = sts.map((s, i) => {
+            const p = parseNilai(s.data_nilai);
+            let row = {
+                'No': i + 1,
+                'NIS': s.nis,
+                'Nama Lengkap': s.nama,
+                'Kelas': `${s.tingkat} ${s.jurusan_kelas}`
+            };
+
+            if(m !== 'all') {
+                const mData = window.mapelList.find(x => x.key === m);
+                row['Mata Pelajaran'] = mData ? mData.name : m;
+                row['Nilai'] = p[m]?.nilai || '-';
+                row['KKM'] = mData ? (mData['kkm_' + s.tingkat] || mData.kkm || 75) : 75;
+                let st = p[m]?.status || '-';
+                row['Status'] = st === 'lulus' ? 'Lulus' : (st === 'wajib_remidi' ? 'Remedial' : '-');
+            } else {
+                let mapelsToShow = window.currentUserRole === 'superadmin' ? window.mapelList : window.mapelList.filter(mapel => window.guruMapel.includes(mapel.key));
+                mapelsToShow.forEach(mapel => { row[`Nilai ${mapel.name}`] = p[mapel.key]?.nilai || '-'; });
+                const allStats = Object.values(p).map(x => x.status).filter(Boolean);
+                row['Status Akhir'] = allStats.includes('wajib_remidi') ? 'Wajib Remedial' : (allStats.length > 0 ? 'Lulus' : '-');
+            }
+            return row;
+        });
+
+        const ws = XLSX.utils.json_to_sheet(dataToExport);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Rekap Nilai Siswa");
+        
+        let filename = `Rekap_Siswa_${t !== 'all' ? t : 'SemuaKelas'}_${j !== 'all' ? j : 'SemuaJurusan'}.xlsx`;
+        XLSX.writeFile(wb, filename);
+        showToast('File Excel Berhasil Didownload!', 'success');
     }
 
     window.showAddStudentModal = function() { window.editingStudentId = null; document.getElementById('input-nis').value = ''; document.getElementById('input-nama').value = ''; document.getElementById('input-tingkat').value = 'X'; popJurusan('X'); document.getElementById('modal-student').classList.remove('hidden'); }
@@ -800,10 +872,12 @@
     }
 
     window.popUploadJurusan = function() { const t = document.getElementById('upload-soal-tingkat').value; const j = document.getElementById('upload-soal-jurusan'); if(j) { j.innerHTML = '<option value="Semua Jurusan">Semua Jurusan</option>'; if(t !== 'Semua Tingkat') { let allowed = window.kelasList[t] || []; if (window.currentUserRole !== 'superadmin') allowed = allowed.filter(c => window.guruKelas.includes(`${t}|${c}`)); allowed.forEach(x => j.innerHTML += `<option value="${x}">${x}</option>`); } } }
+    
     window.renderUploadSoal = function() {
       const tSel = document.getElementById('upload-soal-tingkat'); if(!tSel.options.length) { tSel.innerHTML = '<option value="Semua Tingkat">Semua Tingkat</option><option value="X">Kelas X</option><option value="XI">Kelas XI</option><option value="XII">Kelas XII</option>'; window.popUploadJurusan(); }
       const sel = document.getElementById('soal-mapel-select'); if(sel) { sel.innerHTML = ''; let mapels = window.currentUserRole === 'superadmin' ? window.mapelList : window.mapelList.filter(m => window.guruMapel.includes(m.key)); mapels.forEach(m => sel.innerHTML+=`<option value="${m.key}">${m.name}</option>`); }
       const c = document.getElementById('uploaded-soal-list'); if(!c) return;
+      
       let lst = window.allData.filter(d=>d.type==='soal');
       if(window.currentUserRole !== 'superadmin') { lst = lst.filter(s => window.guruMapel.includes(s.soal_mapel) && (s.tingkat === 'Semua Tingkat' || window.guruKelas.includes(`${s.tingkat}|${s.jurusan_kelas}`))); }
       c.innerHTML = lst.length ? lst.map(s => {
@@ -855,7 +929,7 @@
       } catch(err) { showToast(err.message || 'Gagal menyimpan soal!', 'error'); btn.disabled = false; btn.innerHTML = oldTxt; }
     }
 
-    // --- MANAJEMEN GURU: JAWABAN MASUK (FITUR DOWNLOAD) ---
+    // --- MANAJEMEN GURU: JAWABAN MASUK (FITUR DOWNLOAD & SMART FILTER) ---
     window.downloadJawaban = function(idFirestore) {
         const j = window.allData.find(d => d.id_firestore === idFirestore);
         if(!j) return;
@@ -870,15 +944,30 @@
 
     window.renderJawaban = function() {
       const c = document.getElementById('jawaban-list'); if(!c) return;
+      
+      const tFilt = document.getElementById('filter-tingkat').value;
+      const jFilt = document.getElementById('filter-jurusan').value;
+      const mFilt = document.getElementById('filter-mapel').value;
+      const sFilt = document.getElementById('search-siswa').value.toLowerCase();
+
       let jwb = window.allData.filter(d => d.type === 'jawaban').map(jawaban => { const student = window.allData.find(s => s.type === 'student' && s.nis === jawaban.jawaban_nis); return { ...jawaban, student: student || {} }; });
       if(window.currentUserRole !== 'superadmin') jwb = jwb.filter(x => window.guruMapel.includes(x.jawaban_mapel) && window.guruKelas.includes(`${x.student.tingkat}|${x.student.jurusan_kelas}`));
-      if (!jwb.length) { c.innerHTML = '<p class="col-span-full py-10 text-center text-slate-400">Belum ada jawaban masuk.</p>'; return; }
+      
+      if(tFilt !== 'all') jwb = jwb.filter(x => x.student.tingkat === tFilt);
+      if(jFilt !== 'all') jwb = jwb.filter(x => x.student.jurusan_kelas === jFilt);
+      if(mFilt !== 'all') jwb = jwb.filter(x => x.jawaban_mapel === mFilt);
+      if(sFilt) jwb = jwb.filter(x => (x.student.nama || '').toLowerCase().includes(sFilt) || x.jawaban_nis.includes(sFilt));
+
+      if (!jwb.length) { c.innerHTML = '<div class="col-span-full py-10 text-center bg-white/5 border border-white/10 rounded-2xl"><p class="text-slate-400 font-500">Belum ada jawaban masuk untuk filter ini.</p></div>'; return; }
       
       c.innerHTML = jwb.map(jData => {
         const stuName = jData.student.nama || `NIS ${jData.jawaban_nis}`;
         return `<div class="bg-slate-900/80 p-5 rounded-2xl relative border border-white/10 group">
           <button onclick="window.doDelete('${jData.id_firestore}')" class="absolute top-3 right-3 text-red-400 p-1 opacity-0 group-hover:opacity-100 transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-          <div class="mb-4"><p class="text-sm text-indigo-300 font-800">${stuName}</p><span class="text-xs text-slate-400">${jData.jawaban_mapel} (${jData.jenis_tugas})</span></div>
+          <div class="mb-4">
+              <p class="text-sm text-indigo-300 font-800">${stuName}</p>
+              <p class="text-xs text-slate-400 mt-1"><i data-lucide="book" class="w-3 h-3 inline"></i> ${jData.jawaban_mapel} (${jData.jenis_tugas}) <br> <i data-lucide="users" class="w-3 h-3 inline"></i> Kelas: ${jData.student.tingkat} ${jData.student.jurusan_kelas}</p>
+          </div>
           ${jData.jawaban_text ? `<div class="text-xs font-mono bg-black/40 p-3 rounded-xl text-slate-300 max-h-32 overflow-y-auto mb-3 whitespace-pre-wrap">${jData.jawaban_text}</div>` : `<img src="${jData.jawaban_file_data}" class="w-full h-32 object-cover rounded-xl mb-3">`}
           <button onclick="downloadJawaban('${jData.id_firestore}')" class="w-full py-2 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-xs font-800 text-white transition-all flex items-center justify-center gap-2 mt-2"><i data-lucide="download-cloud" class="w-4 h-4"></i> Download Jawaban</button>
         </div>`;
@@ -934,8 +1023,26 @@
         const splash = document.getElementById('app-splash-screen'); 
         if (splash) { splash.classList.add('opacity-0'); setTimeout(() => splash.remove(), 500); } 
     }, 2000);
-    
-    window.addEventListener('load', () => { const counters = document.querySelectorAll('.stat-counter'); const speed = 50; const updateCount = () => { counters.forEach(counter => { const target = +counter.getAttribute('data-target'); const count = +counter.innerText.replace(/\./g, ''); const inc = target / speed; if (count < target) { counter.innerText = Math.ceil(count + inc); setTimeout(updateCount, 30); } else { counter.innerText = target.toLocaleString('id-ID'); } }); }; setTimeout(updateCount, 2500); });
+
+    // MESIN ANIMASI ANGKA SISWA & PTK ✨
+    setTimeout(() => {
+        const counters = document.querySelectorAll('.stat-counter');
+        const speed = 40;
+        counters.forEach(counter => {
+            const updateCount = () => {
+                const target = +counter.getAttribute('data-target');
+                const count = +counter.innerText.replace(/\./g, '');
+                const inc = target / speed;
+                if (count < target) {
+                    counter.innerText = Math.ceil(count + inc);
+                    setTimeout(updateCount, 30);
+                } else {
+                    counter.innerText = target.toLocaleString('id-ID');
+                }
+            };
+            updateCount();
+        });
+    }, 2500); // Mulai gerak setelah roket hilang
   </script>
  </body>
 </html>
