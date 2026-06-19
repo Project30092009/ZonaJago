@@ -831,11 +831,27 @@
         .then((userCredential) => {
           const userAccount = window.allData.find(d => d.type === 'user_account' && d.email === userCredential.user.email);
           if (userAccount) {
-            window.currentUserRole = userAccount.role; window.currentUserName = userAccount.nama; window.currentUserDocId = userAccount.id_firestore;
-            if (userAccount.role === 'superadmin') { window.guruMapel = []; window.guruKelas = []; window.showPage('page-teacher-dashboard'); window.showTeacherTab('manage-users'); } 
-            else if (userAccount.role === 'guru') { if (userAccount.is_setup) { window.guruMapel = JSON.parse(userAccount.guru_mapel || '[]'); window.guruKelas = JSON.parse(userAccount.guru_kelas || '[]'); window.showPage('page-teacher-dashboard'); window.renderTeacherView(); } else { window.showPage('page-guru-setup'); window.renderGuruSetup(); } }
+            window.currentUserRole = userAccount.role; 
+            window.currentUserName = userAccount.nama; 
+            window.currentUserDocId = userAccount.id_firestore;
+            
+            if (userAccount.role === 'superadmin') {
+                window.guruMapel = []; window.guruKelas = []; 
+                window.showPage('page-teacher-dashboard'); 
+                window.showTeacherTab('manage-users');
+            } else if (userAccount.role === 'guru') {
+                if (userAccount.is_setup) { 
+                    window.guruMapel = JSON.parse(userAccount.guru_mapel || '[]'); window.guruKelas = JSON.parse(userAccount.guru_kelas || '[]'); 
+                    window.showPage('page-teacher-dashboard'); 
+                    window.showTeacherTab('students'); // <--- PERBAIKAN: Memaksa buka tab Rapor
+                } else { 
+                    window.showPage('page-guru-setup'); window.renderGuruSetup(); 
+                }
+            }
             e.target.reset();
-          } else { signOut(auth); window.showToast('Akun tidak terdaftar di sistem.', 'error'); }
+          } else { 
+              signOut(auth); window.showToast('Akun tidak terdaftar di sistem.', 'error'); 
+          }
         }).catch((err) => window.showToast('Email/Password salah!', 'error')).finally(() => { btn.disabled = false; btn.innerHTML = oldTxt; }); 
     }
 
@@ -869,7 +885,14 @@
         }).join(''); lucide.createIcons();
     }
 
-    window.logoutTeacher = function() { signOut(auth).then(() => { window.currentUserRole = null; window.currentUserName = ""; window.showPage('page-landing'); }); }
+    window.logoutTeacher = function() { 
+        signOut(auth).then(() => { 
+            window.currentUserRole = null; 
+            window.currentUserName = ""; 
+            window.currentTeacherTab = 'students'; // <--- PERBAIKAN: Hapus jejak tab sebelumnya
+            window.showPage('page-landing'); 
+        }); 
+    }
 
     window.showTeacherTab = function(t) { 
       window.currentTeacherTab = t; document.querySelectorAll('[id^="tab-"]').forEach(x => x.classList.add('hidden')); document.getElementById('tab-'+t).classList.remove('hidden'); 
@@ -1347,7 +1370,18 @@
     window.rmKelas = function(t,c) { window.kelasList[t] = window.kelasList[t].filter(x=>x!==c); window.saveSettingsToFirebase(); window.renderTeacherView(); }
 
     window.renderGuruSetup = function() { document.getElementById('setup-mapel-list').innerHTML = window.mapelList.map(m => `<label class="flex items-center gap-2 bg-slate-900/50 p-3 rounded-xl border border-white/10 cursor-pointer"><input type="checkbox" value="${m.key}" class="cb-mapel accent-indigo-500 w-4 h-4 rounded"><span class="text-xs font-600 text-slate-200">${m.name}</span></label>`).join(''); document.getElementById('setup-kelas-list').innerHTML = Object.entries(window.kelasList).map(([t, cs]) => `<div class="bg-slate-900/40 p-4 rounded-xl border border-white/5"><p class="text-xs font-800 text-purple-400 mb-3 uppercase">Tingkat ${t}</p><div class="grid grid-cols-2 sm:grid-cols-4 gap-2">${(cs||[]).map(c => `<label class="flex items-center gap-2 bg-slate-800/50 p-2.5 rounded-lg cursor-pointer"><input type="checkbox" value="${t}|${c}" class="cb-kelas accent-purple-500 w-4 h-4 rounded"><span class="text-xs font-600 text-slate-300">${c}</span></label>`).join('')}</div></div>`).join(''); }
-    window.saveGuruSetup = async function() { const checkedMapel = Array.from(document.querySelectorAll('.cb-mapel:checked')).map(cb => cb.value); const checkedKelas = Array.from(document.querySelectorAll('.cb-kelas:checked')).map(cb => cb.value); if(checkedMapel.length === 0 || checkedKelas.length === 0) return window.showToast('Pilih Mapel & Kelas!', 'error'); const btn = document.getElementById('btn-save-setup'); btn.disabled = true; try { await update(ref(db, 'data_sekolah/' + window.currentUserDocId), { is_setup: true, guru_mapel: JSON.stringify(checkedMapel), guru_kelas: JSON.stringify(checkedKelas) }); window.guruMapel = checkedMapel; window.guruKelas = checkedKelas; window.showPage('page-teacher-dashboard'); window.renderTeacherView(); } catch(e) {} finally { btn.disabled = false; } }
+   window.saveGuruSetup = async function() { 
+        const checkedMapel = Array.from(document.querySelectorAll('.cb-mapel:checked')).map(cb => cb.value); 
+        const checkedKelas = Array.from(document.querySelectorAll('.cb-kelas:checked')).map(cb => cb.value); 
+        if(checkedMapel.length === 0 || checkedKelas.length === 0) return window.showToast('Pilih Mapel & Kelas!', 'error'); 
+        const btn = document.getElementById('btn-save-setup'); btn.disabled = true; 
+        try { 
+            await update(ref(db, 'data_sekolah/' + window.currentUserDocId), { is_setup: true, guru_mapel: JSON.stringify(checkedMapel), guru_kelas: JSON.stringify(checkedKelas) }); 
+            window.guruMapel = checkedMapel; window.guruKelas = checkedKelas; 
+            window.showPage('page-teacher-dashboard'); 
+            window.showTeacherTab('students'); // <--- PERBAIKAN: Masuk ke tab Rapor setelah setup
+        } catch(e) {} finally { btn.disabled = false; } 
+    }
 
     window.togglePasswordVisibility = function(id, ic) { const i = document.getElementById(id); const c = document.getElementById(ic); if (i.type === 'password') { i.type = 'text'; c.setAttribute('data-lucide', 'eye-off'); } else { i.type = 'password'; c.setAttribute('data-lucide', 'eye'); } lucide.createIcons(); }
     // --- SISTEM ANTI-CHEAT (PENCEGAH KECURANGAN) ---
