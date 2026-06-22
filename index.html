@@ -94,7 +94,16 @@
    </div>
 
    <div id="page-student-login" class="h-full flex items-center justify-center p-4 hidden">
-    <form onsubmit="window.handleStudentLogin(event)">
+    <div class="card-glass rounded-2xl p-8 max-w-md w-full fade-in">
+     <button onclick="window.showPage('page-landing')" class="text-slate-400 hover:text-white mb-6 flex items-center gap-2 transition-colors"> <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali </button>
+     
+     <div class="text-center mb-6">
+      <div class="w-16 h-16 mx-auto bg-indigo-500/20 rounded-full flex items-center justify-center mb-3"><i data-lucide="user-check" class="w-8 h-8 text-indigo-400"></i></div>
+      <h2 class="text-2xl font-700">Login Siswa</h2>
+      <p class="text-slate-400 mt-1 text-sm">Masukkan NIS & Sandi untuk masuk</p>
+     </div>
+     
+     <form onsubmit="window.handleStudentLogin(event)">
       <label class="block text-sm font-500 text-slate-300 mb-2">NIS (Nomor Induk Siswa)</label> 
       <input type="text" id="nis-input" placeholder="Contoh: 102938" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 transition-all mb-4" required> 
       
@@ -103,6 +112,7 @@
       
       <button type="submit" class="w-full py-3 btn-primary rounded-xl font-600 transition-all">Masuk Dashboard</button>
      </form>
+    </div>
    </div>
 
    <div id="page-pegawai-login" class="h-full flex items-center justify-center p-4 hidden">
@@ -134,7 +144,10 @@
     <div class="h-full flex flex-col">
      <header class="card-glass px-6 py-4 border-b border-white/10 flex items-center justify-between sticky top-0 z-10">
       <div><h2 class="text-lg font-700 text-indigo-300" id="student-name-display">Siswa</h2><p class="text-sm text-slate-400 font-500" id="student-info-display">NIS - Kelas</p></div>
-      <button onclick="window.logoutStudent()" class="text-slate-400 hover:text-red-400 transition-colors flex items-center gap-2 text-sm font-600 bg-white/5 px-4 py-2 rounded-lg"> <i data-lucide="log-out" class="w-4 h-4"></i> Keluar </button>
+      <div class="flex gap-2">
+          <button onclick="window.showStudentPasswordModal()" class="text-slate-400 hover:text-indigo-400 transition-colors flex items-center gap-2 text-sm font-600 bg-white/5 px-4 py-2 rounded-lg"> <i data-lucide="key" class="w-4 h-4"></i> Sandi </button>
+          <button onclick="window.logoutStudent()" class="text-slate-400 hover:text-red-400 transition-colors flex items-center gap-2 text-sm font-600 bg-white/5 px-4 py-2 rounded-lg"> <i data-lucide="log-out" class="w-4 h-4"></i> Keluar </button>
+      </div>
      </header>
      <div class="flex-1 overflow-y-auto p-6 max-w-6xl mx-auto w-full">
       <div id="dashboard-lists-area" class="fade-in space-y-10">
@@ -152,9 +165,11 @@
        <button onclick="window.backToDashboard()" class="text-slate-400 hover:text-white mb-4 flex items-center gap-2 bg-white/5 px-4 py-2 rounded-lg w-fit transition-colors"><i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali ke Dashboard</button>
        <div class="card-glass rounded-2xl p-6 md:p-8">
         <h3 class="text-2xl font-800 mb-2 text-indigo-300 flex items-center" id="pengerjaan-mapel-title">Nama Mapel</h3>
+        
         <div id="exam-timer-display" class="hidden mb-6 bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-xl font-800 text-lg flex items-center gap-3 w-fit">
             <i data-lucide="timer" class="w-5 h-5 animate-pulse"></i> Sisa Waktu: <span id="time-left">00:00</span>
         </div>
+        
         <div id="area-soal-campuran" class="hidden">
             <p class="text-slate-300 mb-6 border-b border-white/10 pb-4">Kerjakan soal Pilihan Ganda dan Esai di bawah ini secara berurutan.</p>
             <h4 class="text-lg font-800 text-emerald-400 mb-4 flex items-center gap-2"><i data-lucide="list-checks" class="w-5 h-5"></i> Bagian A: Pilihan Ganda</h4>
@@ -316,10 +331,13 @@
                <div><label class="block text-xs font-600 text-slate-400 mb-1 uppercase tracking-wider">Pilih Tingkat:</label><select id="upload-soal-tingkat" onchange="window.popUploadJurusan()" class="w-full px-3 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-sm outline-none cursor-pointer"></select></div>
                <div><label class="block text-xs font-600 text-slate-400 mb-1 uppercase tracking-wider">Pilih Jurusan:</label><select id="upload-soal-jurusan" class="w-full px-3 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-sm outline-none cursor-pointer"></select></div>
              </div>
+             
              <label class="block text-xs font-600 text-slate-400 mb-1 uppercase tracking-wider">Mata Pelajaran:</label> 
-             <select id="soal-mapel-select" class="w-full px-4 py-3 bg-slate-900 border border-white/10 rounded-xl mb-6 outline-none cursor-pointer"></select> 
+             <select id="soal-mapel-select" class="w-full px-4 py-3 bg-slate-900 border border-white/10 rounded-xl mb-4 outline-none cursor-pointer"></select> 
+             
              <label class="block text-xs font-600 text-slate-400 mb-1 uppercase tracking-wider">Durasi Ujian (Menit):</label> 
              <input type="number" id="upload-durasi" value="90" class="w-full px-4 py-3 bg-slate-900 border border-white/10 rounded-xl mb-6 outline-none focus:border-indigo-400" required>
+             
              <div id="format-file-input-area">
                  <div class="border-2 border-dashed border-slate-600 hover:border-indigo-400 bg-white/5 hover:bg-indigo-500/10 rounded-2xl p-8 text-center cursor-pointer transition-all" onclick="document.getElementById('soal-file-input').click()">
                   <i data-lucide="file-plus" class="w-10 h-10 mx-auto text-slate-400 mb-3"></i> <p class="text-slate-300 font-500">Klik untuk mencari file PDF/Word</p> <p id="soal-file-name" class="text-emerald-400 font-700 text-sm mt-3 hidden bg-emerald-500/10 py-1 px-3 rounded-lg inline-block"></p>
@@ -502,6 +520,20 @@
      <button onclick="window.saveNilai()" id="btn-save-nilai" class="w-full mt-8 py-3.5 btn-primary rounded-xl font-700 flex justify-center items-center gap-2"><i data-lucide="save" class="w-5 h-5"></i> Simpan Nilai e-Rapor</button>
     </div>
    </div>
+
+   <div id="modal-student-password" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4">
+    <div class="card-glass rounded-3xl p-6 md:p-8 max-w-md w-full fade-in shadow-2xl border border-indigo-500/30">
+     <div class="flex justify-between items-center mb-6"><h3 class="text-xl font-800 text-indigo-300 flex items-center gap-2"><i data-lucide="key" class="w-6 h-6"></i> Ganti Kata Sandi</h3><button onclick="window.closePopup('modal-student-password')"><i data-lucide="x" class="w-6 h-6 text-slate-400"></i></button></div>
+     <form onsubmit="window.changeStudentPassword(event)">
+      <div class="space-y-4">
+       <div><label class="block text-sm font-500 text-slate-300 mb-2">Kata Sandi Baru</label><input type="password" id="new-student-pass" required minlength="6" placeholder="Minimal 6 karakter" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white outline-none focus:border-indigo-400"></div>
+       <div><label class="block text-sm font-500 text-slate-300 mb-2">Ulangi Sandi Baru</label><input type="password" id="confirm-student-pass" required minlength="6" placeholder="Ketik ulang sandi" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white outline-none focus:border-indigo-400"></div>
+      </div>
+      <button type="submit" id="btn-save-student-pass" class="w-full mt-6 py-3 btn-primary rounded-xl font-700 transition-all">Simpan Sandi Baru</button>
+     </form>
+    </div>
+   </div>
+
   </div>
 
   <script type="module">
@@ -535,33 +567,18 @@
     window.tempBulkUpdates = []; window.currentUserRole = null; window.currentUserName = ""; 
     window.currentUserDocId = null; window.guruMapel = []; window.guruKelas = []; window.currentSoalData = null;
     window.isWaliKelas = false; window.kelasWali = "";
+    window.examTimerInterval = null;
 
     window.mapelList = []; window.kelasList = {};
 
-    // Helper parse JSON biar ga error blank
     window.safeParse = function(str) { try { return JSON.parse(str || '[]'); } catch(e) { return []; } };
 
     // --- SISTEM ANTI-CHEAT ---
     window.cheatWarnings = 0;
-    window.startAntiCheat = function() {
-        window.addEventListener('blur', window.handleBlur);
-        window.addEventListener('keydown', window.handleKeyDown);
-        document.addEventListener('contextmenu', window.preventAction); 
-        document.addEventListener('copy', window.preventAction); 
-    };
-
-    window.stopAntiCheat = function() {
-        window.removeEventListener('blur', window.handleBlur);
-        window.removeEventListener('keydown', window.handleKeyDown);
-        document.removeEventListener('contextmenu', window.preventAction);
-        document.removeEventListener('copy', window.preventAction);
-    };
-    window.examTimerInterval = null;
-
-    // Fullscreen Anti-Cheat
+    
     window.handleFullscreenChange = function() {
         if (!document.fullscreenElement && window.currentSoalData) {
-            window.handleBlur(); // Anggap keluar fullscreen = nyontek
+            window.handleBlur(); 
         }
     };
 
@@ -580,13 +597,27 @@
             if (time <= 0) {
                 clearInterval(window.examTimerInterval);
                 window.showToast('Waktu Habis! Jawaban dikirim otomatis.', 'error');
-                // Auto Submit
                 if(!document.getElementById('area-soal-pg').classList.contains('hidden')) window.submitPGAnswer();
                 else if(!document.getElementById('area-soal-campuran').classList.contains('hidden')) window.submitCampuranAnswer();
-                else window.submitTextAnswer(); // Default essay
+                else window.submitTextAnswer();
             }
         }, 1000);
     }
+
+    window.startAntiCheat = function() {
+        window.addEventListener('blur', window.handleBlur);
+        window.addEventListener('keydown', window.handleKeyDown);
+        document.addEventListener('contextmenu', window.preventAction); 
+        document.addEventListener('copy', window.preventAction); 
+    };
+
+    window.stopAntiCheat = function() {
+        window.removeEventListener('blur', window.handleBlur);
+        window.removeEventListener('keydown', window.handleKeyDown);
+        document.removeEventListener('contextmenu', window.preventAction);
+        document.removeEventListener('copy', window.preventAction);
+    };
+
     window.handleBlur = function() {
         if (!window.currentSoalData) return; 
         window.cheatWarnings++;
@@ -621,7 +652,6 @@
     };
     window.preventAction = function(e) { e.preventDefault(); window.showToast('Aksi dilarang di halaman ujian!', 'error'); };
 
-    // --- LOGIC PENILAIAN ---
     window.calculateAvg = function(pDataMapel) {
         if(!pDataMapel) return 0;
         let sum = 0; let count = 0;
@@ -671,7 +701,6 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => { 
-    // JURUS SPLASH SCREEN: Hilangkan animasi setelah 2 detik
     setTimeout(() => {
         const splash = document.getElementById('splash-screen');
         if(splash) {
@@ -687,7 +716,6 @@
       if (!sessionStorage.getItem('has_visited')) { runTransaction(visitsRef, (current) => { return (current || 0) + 1; }); sessionStorage.setItem('has_visited', 'true'); }
       onValue(visitsRef, (snapshot) => { const el = document.getElementById('visit-counter'); if(el) el.innerText = (24500 + (snapshot.val() || 0)).toLocaleString('id-ID'); });
       
-      // Animasi counter di Landing Page
       setTimeout(() => { const counters = document.querySelectorAll('.stat-counter'); const speed = 40; counters.forEach(counter => { const updateCount = () => { const target = +counter.getAttribute('data-target'); const count = +counter.innerText.replace(/\./g, ''); const inc = target / speed; if (count < target) { counter.innerText = Math.ceil(count + inc); setTimeout(updateCount, 30); } else { counter.innerText = target.toLocaleString('id-ID'); } }; updateCount(); }); }, 1500);
     });
 
@@ -696,8 +724,7 @@
     window.showToast = function(msg, type='success') { const c = document.getElementById('toast-container'); const t = document.createElement('div'); t.className = `toast px-5 py-3 rounded-xl text-sm font-600 flex items-center gap-2 shadow-xl border ${type==='error'?'bg-red-900 border-red-500':'bg-emerald-900 border-emerald-500'} text-white pointer-events-auto`; t.innerHTML = `<i data-lucide="${type==='error'?'alert-circle':'check-circle'}" class="w-5 h-5"></i> ${msg}`; c.appendChild(t); lucide.createIcons(); setTimeout(() => t.remove(), 4000); }
     window.parseNilai = function(jsonStr) { try { return JSON.parse(jsonStr || '{}'); } catch(e) { return {}; } }
 
-    // --- ALUR SISWA ---
-   window.handleStudentLogin = function(e) { 
+    window.handleStudentLogin = function(e) { 
         e.preventDefault(); 
         const nis = document.getElementById('nis-input').value.trim(); 
         const pass = document.getElementById('nis-password').value; 
@@ -705,7 +732,6 @@
         const student = window.allData.find(d => d.type === 'student' && d.nis === nis); 
         if (!student) return window.showToast('NIS belum terdaftar!', 'error'); 
         
-        // Cek Password (Default: 123456 jika belum diset di database)
         const truePass = student.password || "123456";
         if (pass !== truePass) return window.showToast('Kata sandi salah!', 'error');
 
@@ -717,16 +743,49 @@
     
     window.logoutStudent = function() { 
         window.stopAntiCheat(); 
+        clearInterval(window.examTimerInterval);
+        document.getElementById('exam-timer-display').classList.add('hidden');
+        document.removeEventListener('fullscreenchange', window.handleFullscreenChange);
+        if (document.fullscreenElement) document.exitFullscreen().catch(e => console.log(e));
+
         window.currentStudent = null; window.currentMapel = null; window.currentTaskType = null; window.currentSoalData = null; window.pasteDetected = false;
         document.getElementById('dashboard-lists-area').classList.remove('hidden'); 
         document.getElementById('student-pengerjaan-area').classList.add('hidden');
         ['dynamic-essay-container', 'pg-student-list', 'campuran-pg-list', 'campuran-esai-list'].forEach(id => { const el = document.getElementById(id); if(el) el.innerHTML = ''; });
         document.getElementById('nis-input').value = ''; 
         window.showPage('page-landing'); 
-        clearInterval(window.examTimerInterval);
-        document.getElementById('exam-timer-display').classList.add('hidden');
-        document.removeEventListener('fullscreenchange', window.handleFullscreenChange);
-        if (document.fullscreenElement) document.exitFullscreen().catch(e => console.log(e));
+    }
+
+    window.showStudentPasswordModal = function() {
+        document.getElementById('new-student-pass').value = '';
+        document.getElementById('confirm-student-pass').value = '';
+        document.getElementById('modal-student-password').classList.remove('hidden');
+    }
+
+    window.changeStudentPassword = async function(e) {
+        e.preventDefault();
+        if(!window.currentStudent) return;
+        const p1 = document.getElementById('new-student-pass').value;
+        const p2 = document.getElementById('confirm-student-pass').value;
+        
+        if(p1 !== p2) return window.showToast('Kata sandi tidak cocok!', 'error');
+        
+        const btn = document.getElementById('btn-save-student-pass'); 
+        const oldTxt = btn.innerHTML; 
+        btn.disabled = true; btn.innerHTML = "Menyimpan...";
+        
+        try {
+            await update(ref(db, 'data_sekolah/' + window.currentStudent.id_firestore), {
+                password: p1
+            });
+            window.currentStudent.password = p1;
+            window.closePopup('modal-student-password');
+            window.showToast('Sandi berhasil diperbarui!', 'success');
+        } catch(err) {
+            window.showToast('Gagal mengubah sandi!', 'error');
+        } finally {
+            btn.disabled = false; btn.innerHTML = oldTxt;
+        }
     }
 
     window.renderStudentDashboard = function() {
@@ -757,13 +816,10 @@
 
     window.selectTask = function(mapel, jenis) { 
         window.startAntiCheat(); 
-        // Minta Fullscreen (Safe Exam Browser Mode)
+        
         document.documentElement.requestFullscreen().catch(e => console.log("Fullscreen ditolak browser"));
         document.addEventListener('fullscreenchange', window.handleFullscreenChange);
 
-        // Jalankan Timer
-        const durasiUjian = soal.durasi || 90; // Default 90 menit jika soal lama
-        window.startTimer(durasiUjian);
         window.currentMapel = mapel; window.currentTaskType = jenis; 
         document.getElementById('dashboard-lists-area').classList.add('hidden'); 
         document.getElementById('student-pengerjaan-area').classList.remove('hidden'); 
@@ -772,6 +828,9 @@
         const soalList = window.allData.filter(d => d.type === 'soal' && d.soal_mapel === mapel.key && d.jenis_soal === jenis); 
         const soal = soalList.slice().reverse().find(d => (!d.tingkat || d.tingkat === 'Semua Tingkat' || d.tingkat === window.currentStudent.tingkat) && (!d.jurusan_kelas || d.jurusan_kelas === 'Semua Jurusan' || d.jurusan_kelas === window.currentStudent.jurusan_kelas)); 
         window.currentSoalData = soal; 
+
+        const durasiUjian = soal && soal.durasi ? soal.durasi : 90;
+        window.startTimer(durasiUjian);
         
         document.getElementById('area-soal-pg').classList.add('hidden'); 
         document.getElementById('area-soal-esai').classList.add('hidden'); 
@@ -834,10 +893,18 @@
         });
     }
 
-    window.backToDashboard = function() { window.stopAntiCheat(); document.getElementById('dashboard-lists-area').classList.remove('hidden'); document.getElementById('student-pengerjaan-area').classList.add('hidden'); window.currentSoalData = null;clearInterval(window.examTimerInterval);
+    window.backToDashboard = function() { 
+        window.stopAntiCheat(); 
+        clearInterval(window.examTimerInterval);
         document.getElementById('exam-timer-display').classList.add('hidden');
         document.removeEventListener('fullscreenchange', window.handleFullscreenChange);
-        if (document.fullscreenElement) document.exitFullscreen().catch(e => console.log(e)); }
+        if (document.fullscreenElement) document.exitFullscreen().catch(e => console.log(e));
+
+        document.getElementById('dashboard-lists-area').classList.remove('hidden'); 
+        document.getElementById('student-pengerjaan-area').classList.add('hidden'); 
+        window.currentSoalData = null; 
+    }
+    
     window.downloadSoal = function() { if (window.currentSoalData && window.currentSoalData.soal_file) { const a = document.createElement('a'); a.href = window.currentSoalData.soal_file; a.download = window.currentSoalData.soal_file_name || `soal.pdf`; a.click(); } }
     window.selectMethod = function(method) { document.getElementById('answer-text-area').classList.toggle('hidden', method !== 'text'); document.getElementById('answer-upload-area').classList.toggle('hidden', method !== 'upload'); }
     window.addEssayInput = function() { const c = document.getElementById('dynamic-essay-container'); const n = c.children.length + 1; const div = document.createElement('div'); div.className = "flex items-start gap-3 fade-in"; div.innerHTML = `<span class="bg-indigo-500/20 text-indigo-300 font-800 px-3 py-2 rounded-lg mt-1">${n}.</span> <textarea class="inp-essay flex-1 px-4 py-3 bg-slate-900/50 border border-white/20 rounded-xl text-white placeholder-slate-500 focus:border-indigo-400 outline-none resize-y text-sm" rows="2" placeholder="Ketik jawaban untuk nomor ${n}..."></textarea>`; c.appendChild(div); }
@@ -939,7 +1006,6 @@
     window.handleFileSelect = function(inp) { if (inp.files.length) { window.selectedAnswerFile = inp.files[0]; document.getElementById('file-name-display').innerHTML = `<i data-lucide="check" class="w-4 h-4 inline"></i> File Siap: ${window.selectedAnswerFile.name}`; document.getElementById('file-name-display').classList.remove('hidden'); lucide.createIcons(); } }
     window.submitUploadAnswer = async function() { if (!window.selectedAnswerFile) return window.showToast('Pilih foto!', 'error'); const btn = document.getElementById('btn-submit-upload'); const oldTxt = btn.innerHTML; btn.disabled = true; btn.innerHTML = "Mengupload..."; const r = new FileReader(); r.onload = async (e) => { try { await set(push(ref(db, 'data_sekolah')), { type: 'jawaban', format_soal_jawaban: 'file', jawaban_nis: window.currentStudent.nis, student_id_firestore: window.currentStudent.id_firestore, jawaban_mapel: window.currentMapel.key, jenis_tugas: window.currentTaskType, kategori_remedial: window.currentSoalData?.kategori_remedial || null, jawaban_file_name: window.selectedAnswerFile.name, jawaban_file_data: e.target.result, created_at: new Date().toISOString() }); window.selectedAnswerFile = null; document.getElementById('file-name-display').classList.add('hidden'); window.backToDashboard(); window.showToast(`Foto Terkirim!`); } catch(err) { window.showToast('Gagal upload!', 'error'); } finally { btn.disabled = false; btn.innerHTML = oldTxt; } }; r.readAsDataURL(window.selectedAnswerFile); }
 
-    // --- ALUR GURU ---
     window.handlePegawaiLogin = function(e) { 
       e.preventDefault(); 
       const kode = document.getElementById('pegawai-kode').value.trim(); 
@@ -1026,7 +1092,6 @@
     
     window.applyFilters = function() { window.refreshDataLocal(); }
 
-    // --- TABEL SISWA (KHUSUS GURU) ---
     window.renderStudentsTable = function() {
       const t = document.getElementById('filter-tingkat').value; const j = document.getElementById('filter-jurusan').value; const m = document.getElementById('filter-mapel').value; const srh = document.getElementById('search-siswa').value.toLowerCase();
       let sts = window.allData.filter(d => d.type === 'student').filter(s => (window.kelasList[s.tingkat] || []).includes(s.jurusan_kelas));
@@ -1257,7 +1322,6 @@
         document.getElementById('format-esai-input-area').classList.toggle('hidden', val !== 'esai' && val !== 'pg_esai');
     }
 
-// --- FUNGSI AI VISION: GENERATE SOAL DARI FOTO ---
     window.generateSoalFromImage = async function(inputElem, jenis, btnId) {
         if(!inputElem.files.length) return;
         const file = inputElem.files[0];
@@ -1276,11 +1340,9 @@
         reader.onloadend = async () => {
             try {
                 const base64Data = reader.result.split(',')[1];
-                
                 const apiKeyBersih = window.GEMINI_API_KEY.trim();
                 
-                // FIXED BUGS: Model diubah menjadi versi yang valid yaitu 1.5-flash
-                const url = "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=" + apiKeyBersih;
+                const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + apiKeyBersih;
                 
                 let prompt = "";
                 if (jenis === 'pg') {
@@ -1343,7 +1405,7 @@
         };
         reader.readAsDataURL(file);
     }
-    
+
     window.addPGQuestion = function(aiData = null) {
         const c = document.getElementById('pg-builder-list'); const i = c.children.length + 1;
         const div = document.createElement('div'); div.className = "pg-q-item p-4 bg-slate-900/50 rounded-xl border border-white/10 relative";
