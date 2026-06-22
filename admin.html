@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="id" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Admin TU - Laju Akademik</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Plus Jakarta Sans', sans-serif; }
+    html, body { height: 100%; margin: 0; background: #0f172a; color: white; }
+    .card-glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; }
+    .btn-admin { background: linear-gradient(135deg, #ef4444, #b91c1c); }
+    .btn-admin:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); }
+    .toast { animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s; }
+    @keyframes slideIn { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+    .fade-in { animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+  </style>
+</head>
+<body class="h-full flex flex-col">
+  <div id="toast-container" class="fixed top-4 right-4 z-[9999] flex flex-col gap-2"></div>
+
+  <div id="page-admin-login" class="h-full flex flex-col items-center justify-center p-4 fade-in">
+    <div class="mb-8 text-center">
+        <div class="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-500/50"><i data-lucide="shield-alert" class="w-8 h-8 text-red-400"></i></div>
+        <h1 class="text-3xl font-800 text-white">Portal Superadmin TU</h1>
+        <p class="text-slate-400 mt-2 text-sm">Akses khusus Staf Tata Usaha</p>
+    </div>
+    <div class="card-glass p-8 max-w-md w-full">
+        <form onsubmit="window.handleAdminLogin(event)" class="space-y-4">
+            <div><label class="block text-sm font-600 text-slate-300 mb-2">Email TU</label><input type="email" id="admin-email" placeholder="admin@sekolah.com" class="w-full px-4 py-3 bg-slate-900 border border-white/10 rounded-xl outline-none focus:border-red-400" required></div>
+            <div>
+                <label class="block text-sm font-600 text-slate-300 mb-2">Kata Sandi</label>
+                <div class="relative">
+                    <input type="password" id="admin-pass" placeholder="••••••••" class="w-full px-4 py-3 bg-slate-900 border border-white/10 rounded-xl outline-none focus:border-red-400 pr-10" required>
+                    <button type="button" onclick="window.togglePasswordVisibility('admin-pass', 'admin-eye')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-red-400"><i data-lucide="eye" id="admin-eye" class="w-5 h-5"></i></button>
+                </div>
+            </div>
+            <button type="submit" id="btn-login" class="w-full py-3 mt-2 btn-admin rounded-xl font-700 transition-all">Masuk Sistem</button>
+            <button type="button" id="btn-setup-awal" onclick="window.showPage('page-setup-tu')" class="hidden w-full py-3 mt-4 bg-red-600/80 hover:bg-red-500 text-white rounded-xl font-700 text-sm transition-all border border-red-400/50 shadow-lg shadow-red-500/20"><i data-lucide="alert-triangle" class="w-4 h-4 inline mr-2"></i>Setup Akun Master TU (Awal)</button>
+        </form>
+    </div>
+  </div>
+
+  <div id="page-setup-tu" class="h-full flex items-center justify-center p-4 hidden fade-in">
+       <div class="card-glass p-8 max-w-md w-full border border-red-500/50 relative overflow-hidden">
+           <button onclick="window.showPage('page-admin-login')" class="absolute top-4 left-4 text-slate-400 hover:text-white transition-colors z-20"><i data-lucide="arrow-left" class="w-5 h-5"></i></button>
+           <div class="text-center mb-6 relative z-10 mt-2">
+               <div class="w-16 h-16 mx-auto bg-red-500/20 rounded-full flex items-center justify-center mb-3"><i data-lucide="crown" class="w-8 h-8 text-red-400"></i></div>
+               <h2 class="text-2xl font-800 text-red-400">Setup Master Sistem</h2>
+               <p class="text-xs text-slate-300 mt-2 leading-relaxed">Pendaftaran ini hanya muncul 1x seumur hidup untuk mendaftarkan akun Staf TU (Superadmin).</p>
+           </div>
+           <form onsubmit="window.handleFirstSetupTU(event)" class="space-y-4 text-left relative z-10">
+               <div> <label class="block text-xs font-600 text-slate-300 mb-1.5">Nama Admin TU</label> <input type="text" id="tu-name" required placeholder="Contoh: Bpk. Tata Usaha" class="w-full px-4 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-sm text-white focus:outline-none focus:border-red-400"> </div>
+               <div> <label class="block text-xs font-600 text-slate-300 mb-1.5">Email Akses Master</label> <input type="email" id="tu-email" required placeholder="admin@sekolah.com" class="w-full px-4 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-sm text-white focus:outline-none focus:border-red-400"> </div>
+               <div> <label class="block text-xs font-600 text-slate-300 mb-1.5">Kata Sandi (Min 6 Karakter)</label>
+                 <div class="relative"><input type="password" id="tu-password" required placeholder="••••••••" class="w-full px-4 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-sm text-white focus:outline-none focus:border-red-400 pr-10"><button type="button" onclick="window.togglePasswordVisibility('tu-password', 'tu-eye')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-red-400"><i data-lucide="eye" id="tu-eye" class="w-4 h-4"></i></button></div>
+               </div>
+               <button type="submit" id="btn-setup-tu" class="w-full mt-4 py-3 bg-red-600 hover:bg-red-500 text-white font-800 text-sm rounded-xl shadow-lg shadow-red-500/20 transition-all">Daftarkan Master Akun</button>
+           </form>
+       </div>
+   </div>
+
+  <div id="page-admin-dashboard" class="h-full hidden flex-col">
+      <header class="card-glass mx-6 mt-4 p-4 flex justify-between items-center bg-slate-900/80 z-10 shrink-0">
+          <div class="flex items-center gap-4">
+              <div><h2 class="text-xl font-800 text-red-400">Dashboard TU</h2><p class="text-xs text-slate-400" id="admin-name-display">Memuat...</p></div>
+          </div>
+          <button onclick="window.logoutAdmin()" class="px-4 py-2 bg-white/10 hover:bg-red-500/20 text-white rounded-lg text-sm font-600 transition-colors flex items-center gap-2"><i data-lucide="log-out" class="w-4 h-4"></i> Keluar</button>
+      </header>
+
+      <div class="flex-1 flex overflow-hidden p-6 gap-6">
+          <aside class="w-64 card-glass p-4 shrink-0 flex flex-col gap-2 h-fit">
+              <button onclick="window.showTab('tab-guru')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-sm font-600 text-white transition-colors flex items-center gap-3"><i data-lucide="users-cog" class="w-5 h-5 text-emerald-400"></i> Manajemen Guru</button>
+              <button onclick="window.showTab('tab-siswa')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-sm font-600 text-white transition-colors flex items-center gap-3"><i data-lucide="graduation-cap" class="w-5 h-5 text-blue-400"></i> Database Siswa</button>
+              <button onclick="window.showTab('tab-master')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-sm font-600 text-white transition-colors flex items-center gap-3"><i data-lucide="database" class="w-5 h-5 text-purple-400"></i> Master Kelas/Mapel</button>
+          </aside>
+
+          <main class="flex-1 overflow-y-auto custom-scrollbar">
+              
+              <div id="tab-guru" class="fade-in space-y-6">
+                  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                      <div class="card-glass p-6 lg:col-span-1 h-fit">
+                          <h3 class="text-lg font-800 text-white mb-4 border-b border-white/10 pb-2"><i data-lucide="user-plus" class="w-5 h-5 inline mr-2 text-emerald-400"></i>Buat / Edit Akses Guru</h3>
+                          <form onsubmit="window.createGuru(event)" class="space-y-4">
+                              <div><label class="block text-xs font-600 text-slate-400 mb-1">Kode Guru (Login ID)</label><input type="text" id="guru-kode" placeholder="Ketik angka urut, misal: 2601" class="w-full px-4 py-2 bg-slate-900 border border-white/10 rounded-lg text-sm text-white focus:border-emerald-400 outline-none" required></div>
+                              <div><label class="block text-xs font-600 text-slate-400 mb-1">Nama Lengkap Guru</label><input type="text" id="guru-nama" placeholder="Contoh: Bpk. Ahmad" class="w-full px-4 py-2 bg-slate-900 border border-white/10 rounded-lg text-sm text-white focus:border-emerald-400 outline-none" required></div>
+                              <div><label class="block text-xs font-600 text-slate-400 mb-1">Password Default</label><input type="text" id="guru-pass" value="alhuda2026" class="w-full px-4 py-2 bg-slate-900 border border-white/10 rounded-lg text-sm text-slate-300 focus:border-emerald-400 outline-none" required></div>
+                              
+                              <div class="border-t border-white/10 pt-4 mt-4">
+                                  <label class="block text-xs font-800 text-emerald-400 mb-2 uppercase">Setup Mengajar Mapel (Bisa dikosongi):</label>
+                                  <div id="tu-setup-mapel" class="grid grid-cols-2 gap-2 mb-4 max-h-32 overflow-y-auto custom-scrollbar"></div>
+                                  
+                                  <label class="block text-xs font-800 text-blue-400 mb-2 uppercase">Setup Kelas Binaan (Bisa dikosongi):</label>
+                                  <div id="tu-setup-kelas" class="space-y-2 max-h-40 overflow-y-auto custom-scrollbar"></div>
+                              </div>
+                              <button type="submit" id="btn-create" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 rounded-lg font-700 text-sm mt-2 transition-all shadow-lg">Simpan & Daftarkan Guru</button>
+                          </form>
+                      </div>
+
+                      <div class="card-glass p-6 lg:col-span-2 h-fit">
+                          <div class="flex justify-between items-center mb-4 border-b border-white/10 pb-2">
+                              <h3 class="text-lg font-800 text-white"><i data-lucide="users" class="w-5 h-5 inline mr-2 text-emerald-400"></i>Daftar Guru</h3>
+                          </div>
+                          <div class="overflow-x-auto max-h-[60vh] custom-scrollbar">
+                              <table class="w-full text-sm text-left"><thead class="text-slate-400 border-b border-white/10 sticky top-0 bg-slate-900"><tr><th class="py-3 px-2">Kode</th><th class="py-3 px-2">Nama Guru</th><th class="py-3 px-2">Akses Mengajar</th><th class="py-3 px-2 text-center">Aksi</th></tr></thead>
+                                  <tbody id="guru-list" class="divide-y divide-white/5"></tbody>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div id="tab-siswa" class="hidden fade-in space-y-6">
+                  <div class="flex justify-between items-center card-glass p-4">
+                      <div><h3 class="text-xl font-800 text-white"><i data-lucide="graduation-cap" class="w-6 h-6 inline mr-2 text-blue-400"></i>Database Siswa</h3></div>
+                      <button onclick="window.showAddStudentModal()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-600 flex items-center gap-2"><i data-lucide="user-plus" class="w-4 h-4"></i> Tambah Siswa Baru</button>
+                  </div>
+                  
+                  <div class="card-glass overflow-hidden">
+                      <div class="p-4 bg-white/5 flex gap-4 border-b border-white/10">
+                          <select id="filter-tingkat" onchange="window.renderSiswa()" class="px-3 py-2 bg-slate-900 border border-white/10 rounded-lg text-sm outline-none text-white"><option value="all">Semua Tingkat</option><option value="X">Kelas X</option><option value="XI">Kelas XI</option><option value="XII">Kelas XII</option></select>
+                          <input type="text" id="search-siswa" placeholder="Cari NIS / Nama..." oninput="window.renderSiswa()" class="flex-1 px-3 py-2 bg-slate-900 border border-white/10 rounded-lg text-sm outline-none text-white">
+                      </div>
+                      <div class="overflow-x-auto max-h-[60vh] custom-scrollbar">
+                          <table class="w-full text-sm text-left">
+                              <thead class="bg-slate-900/80 text-slate-300 font-600 uppercase text-xs sticky top-0"><tr><th class="py-4 px-5">NIS</th><th class="py-4 px-5">Nama Lengkap</th><th class="py-4 px-5">Tingkat</th><th class="py-4 px-5">Jurusan</th><th class="py-4 px-5 text-center">Aksi Manajemen</th></tr></thead>
+                              <tbody id="siswa-list" class="divide-y divide-white/5"></tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+
+              <div id="tab-master" class="hidden fade-in space-y-6">
+                  <div class="card-glass p-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
+                      <div>
+                          <h3 class="text-lg font-800 text-white mb-4 border-b border-white/10 pb-2"><i data-lucide="book" class="w-5 h-5 inline mr-2 text-indigo-400"></i>Master Mapel & KKM</h3>
+                          <div class="flex gap-2 mb-4">
+                              <input type="text" id="new-mapel" placeholder="Nama Mapel..." class="flex-1 px-3 py-2 bg-slate-900 border border-white/10 rounded-lg text-sm outline-none focus:border-indigo-400">
+                              <input type="number" id="kkm-x" placeholder="X" class="w-12 px-1 bg-slate-900 border border-white/10 rounded-lg text-sm text-center">
+                              <input type="number" id="kkm-xi" placeholder="XI" class="w-12 px-1 bg-slate-900 border border-white/10 rounded-lg text-sm text-center">
+                              <input type="number" id="kkm-xii" placeholder="XII" class="w-12 px-1 bg-slate-900 border border-white/10 rounded-lg text-sm text-center">
+                              <button onclick="window.addMapel()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-700">Tambah</button>
+                          </div>
+                          <div id="mapel-list" class="space-y-2 max-h-64 overflow-y-auto pr-2 custom-scrollbar"></div>
+                      </div>
+                      <div>
+                          <h3 class="text-lg font-800 text-white mb-4 border-b border-white/10 pb-2"><i data-lucide="layers" class="w-5 h-5 inline mr-2 text-purple-400"></i>Master Kelas Sekolah</h3>
+                          <div class="flex gap-2 mb-4">
+                              <select id="new-tingkat" class="w-20 px-2 py-2 bg-slate-900 border border-white/10 rounded-lg text-sm outline-none focus:border-purple-400"><option value="X">X</option><option value="XI">XI</option><option value="XII">XII</option></select>
+                              <input type="text" id="new-jurusan" placeholder="Jurusan (Misal: PPLG)" class="flex-1 px-3 py-2 bg-slate-900 border border-white/10 rounded-lg text-sm outline-none focus:border-purple-400">
+                              <button onclick="window.addKelas()" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 rounded-lg text-sm font-700">Tambah</button>
+                          </div>
+                          <div id="kelas-list" class="space-y-3 max-h-64 overflow-y-auto pr-2 custom-scrollbar"></div>
+                      </div>
+                  </div>
+              </div>
+
+          </main>
+      </div>
+  </div>
+
+  <div id="modal-student" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4">
+    <div class="card-glass rounded-3xl p-8 max-w-md w-full fade-in shadow-2xl border border-blue-500/30">
+     <div class="flex justify-between items-center mb-6"><h3 class="text-xl font-800 text-blue-300" id="modal-student-title">Tambah Siswa</h3><button onclick="document.getElementById('modal-student').classList.add('hidden')"><i data-lucide="x" class="w-6 h-6 text-slate-400"></i></button></div>
+     <form onsubmit="window.saveStudent(event)">
+      <div class="space-y-4">
+       <div><label class="text-xs font-600 text-slate-400">NIS Siswa</label><input type="text" id="input-nis" required class="w-full px-4 py-3 bg-slate-900/80 border border-white/10 rounded-xl text-white mt-1 outline-none"></div>
+       <div><label class="text-xs font-600 text-slate-400">Nama Lengkap</label><input type="text" id="input-nama" required class="w-full px-4 py-3 bg-slate-900/80 border border-white/10 rounded-xl text-white mt-1 outline-none"></div>
+       <div class="grid grid-cols-2 gap-4">
+           <div><label class="text-xs font-600 text-slate-400">Tingkat</label><select id="input-tingkat" onchange="window.popJurusanModal(this.value)" class="w-full px-4 py-3 bg-slate-900/80 border border-white/10 rounded-xl text-white mt-1 outline-none"><option value="X">Kelas X</option><option value="XI">Kelas XI</option><option value="XII">Kelas XII</option></select></div>
+           <div><label class="text-xs font-600 text-slate-400">Jurusan</label><select id="input-jurusan" class="w-full px-4 py-3 bg-slate-900/80 border border-white/10 rounded-xl text-white mt-1 outline-none"></select></div>
+       </div>
+      </div><button type="submit" id="btn-save-student" class="w-full mt-8 py-3.5 bg-blue-600 hover:bg-blue-500 rounded-xl font-700 shadow-lg">Simpan Data Siswa</button>
+     </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, set, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    
+    // ⚠️ GANTI API KEY-NYA DENGAN MILIKMU
+   const firebaseConfig = {
+  apiKey: "AIzaSyDTEIcErwM8rfuiaY28GHhLmQvbv8tHD_0",
+  authDomain: "zonajago.firebaseapp.com",
+  databaseURL: "https://zonajago-default-rtdb.firebaseio.com",
+  projectId: "zonajago",
+  storageBucket: "zonajago.firebasestorage.app",
+  messagingSenderId: "659235624779",
+  appId: "1:659235624779:web:176d516efa566fd7ad7ace"
+};
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
+    const app2 = initializeApp(firebaseConfig, "AppTU");
+    const auth2 = getAuth(app2);
+
+    let allUsers = []; window.allData = [];
+    window.mapelList = []; window.kelasList = {}; window.editingStudentId = null;
+
+    window.showToast = function(msg, type='success') { 
+        const c = document.getElementById('toast-container'); const t = document.createElement('div'); 
+        t.className = `toast px-5 py-3 rounded-xl text-sm font-600 flex items-center gap-2 shadow-xl border ${type==='error'?'bg-red-900 border-red-500':'bg-emerald-900 border-emerald-500'} text-white`; 
+        t.innerHTML = `<i data-lucide="${type==='error'?'alert-circle':'check-circle'}" class="w-5 h-5"></i> ${msg}`; 
+        c.appendChild(t); lucide.createIcons(); setTimeout(() => t.remove(), 4000); 
+    }
+
+    window.showPage = function(id) { document.querySelectorAll('#page-admin-login, #page-setup-tu, #page-admin-dashboard').forEach(el => el.classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); lucide.createIcons(); }
+    window.showTab = function(id) { document.querySelectorAll('#tab-guru, #tab-siswa, #tab-master').forEach(el => el.classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); }
+
+    document.addEventListener('DOMContentLoaded', () => { 
+        lucide.createIcons();
+        onValue(ref(db, 'data_sekolah'), (snapshot) => {
+            allUsers = []; window.allData = [];
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                Object.keys(data).forEach(k => { 
+                    window.allData.push({ id_firestore: k, ...data[k] });
+                    if(data[k].type === 'user_account') allUsers.push({ id_firestore: k, ...data[k] }); 
+                });
+            }
+            const hasSuperadmin = allUsers.some(u => u.role === 'superadmin');
+            const btnSetup = document.getElementById('btn-setup-awal');
+            if(btnSetup) { if(!hasSuperadmin) btnSetup.classList.remove('hidden'); else btnSetup.classList.add('hidden'); }
+            window.renderGuru(); window.renderSiswa();
+        });
+
+        onValue(ref(db, 'pengaturan_sekolah'), (snapshot) => {
+            if(snapshot.exists()) {
+                const data = snapshot.val(); window.mapelList = data.mapel || []; window.kelasList = data.kelas || {};
+            } else {
+                window.mapelList = [ {key:'matematika', name:'Matematika', kkm_X: 70, kkm_XI: 75, kkm_XII: 76} ]; window.kelasList = { 'X': ['PPLG'], 'XI': ['PPLG'], 'XII': ['PPLG'] };
+            }
+            window.renderSettingsUI(); window.renderSetupCheckboxes();
+        });
+    });
+
+    window.handleAdminLogin = function(e) {
+        e.preventDefault();
+        const em = document.getElementById('admin-email').value.trim(); const pass = document.getElementById('admin-pass').value;
+        const btn = document.getElementById('btn-login'); btn.disabled = true; btn.innerHTML = "Memeriksa...";
+        signInWithEmailAndPassword(auth, em, pass).then((cred) => {
+            const acc = allUsers.find(u => u.email === cred.user.email && u.role === 'superadmin');
+            if(acc) {
+                window.showPage('page-admin-dashboard'); document.getElementById('admin-name-display').innerText = acc.nama; e.target.reset(); window.showTab('tab-guru');
+            } else { signOut(auth); window.showToast('Bukan akun TU!', 'error'); }
+        }).catch(err => window.showToast('Akses ditolak!', 'error')).finally(() => { btn.disabled = false; btn.innerHTML = "Masuk Sistem"; });
+    }
+
+    window.logoutAdmin = function() { signOut(auth).then(() => { window.showPage('page-admin-login'); }); }
+    
+    window.handleFirstSetupTU = async function(e) {
+        e.preventDefault();
+        const n = document.getElementById('tu-name').value.trim(); const em = document.getElementById('tu-email').value.trim(); const p = document.getElementById('tu-password').value;
+        const btn = document.getElementById('btn-setup-tu'); const oldTxt = btn.innerHTML; btn.disabled = true; btn.innerHTML = "Memproses...";
+        try {
+            const res = await createUserWithEmailAndPassword(auth, em, p);
+            await set(push(ref(db, 'data_sekolah')), { type: 'user_account', uid: res.user.uid, nama: n, email: em, role: 'superadmin', created_at: new Date().toISOString() });
+            window.showToast('Akun Master Selesai! Silakan Login.', 'success');
+            await signOut(auth); e.target.reset(); window.showPage('page-admin-login');
+        } catch (err) { window.showToast('Gagal: Email terpakai / sandi lemah.', 'error'); } finally { btn.disabled = false; btn.innerHTML = oldTxt; }
+    }
+
+    // --- SETUP GURU OLEH TU ---
+    window.renderSetupCheckboxes = function() {
+        document.getElementById('tu-setup-mapel').innerHTML = window.mapelList.map(m => `<label class="flex items-center gap-2 bg-slate-800/50 p-2 rounded-lg cursor-pointer"><input type="checkbox" value="${m.key}" class="cb-mapel accent-emerald-500 w-4 h-4 rounded"><span class="text-xs font-600 text-slate-200">${m.name}</span></label>`).join(''); 
+        document.getElementById('tu-setup-kelas').innerHTML = Object.entries(window.kelasList).map(([t, cs]) => `<div class="bg-slate-800/40 p-2 rounded-lg"><p class="text-[10px] font-800 text-blue-400 mb-1">Tingkat ${t}</p><div class="flex flex-wrap gap-2">${(cs||[]).map(c => `<label class="flex items-center gap-1.5"><input type="checkbox" value="${t}|${c}" class="cb-kelas accent-blue-500 w-3 h-3 rounded"><span class="text-[10px] font-600 text-slate-300">${c}</span></label>`).join('')}</div></div>`).join('');
+    }
+
+    window.createGuru = async function(e) {
+        e.preventDefault();
+        const kode = document.getElementById('guru-kode').value.trim(); const nama = document.getElementById('guru-nama').value.trim(); const pass = document.getElementById('guru-pass').value;
+        const checkedMapel = Array.from(document.querySelectorAll('.cb-mapel:checked')).map(cb => cb.value); 
+        const checkedKelas = Array.from(document.querySelectorAll('.cb-kelas:checked')).map(cb => cb.value);
+        
+        const btn = document.getElementById('btn-create'); btn.disabled = true; btn.innerHTML = "Menyimpan...";
+        
+        const existingGuru = allUsers.find(u => u.kode_guru === kode);
+
+        try {
+            if(existingGuru) {
+                // UPDATE GURU JIKA SUDAH ADA
+                await update(ref(db, 'data_sekolah/' + existingGuru.id_firestore), {
+                    nama: nama, guru_mapel: JSON.stringify(checkedMapel), guru_kelas: JSON.stringify(checkedKelas)
+                });
+                window.showToast('Data & Akses Guru Diperbarui!');
+            } else {
+                // BUAT GURU BARU
+                const pseudoEmail = `${kode}@alhuda.edu`;
+                const res = await createUserWithEmailAndPassword(auth2, pseudoEmail, pass);
+                await set(push(ref(db, 'data_sekolah')), { 
+                    type: 'user_account', uid: res.user.uid, kode_guru: kode, email: pseudoEmail, nama: nama, role: 'guru', 
+                    is_setup: true, guru_mapel: JSON.stringify(checkedMapel), guru_kelas: JSON.stringify(checkedKelas), created_at: new Date().toISOString() 
+                });
+                await signOut(auth2); window.showToast('Akun & Akses Guru berhasil dibuat!');
+            }
+            e.target.reset(); document.getElementById('guru-pass').value = "alhuda2026";
+            document.querySelectorAll('.cb-mapel, .cb-kelas').forEach(cb => cb.checked = false); // Bersihkan centangan
+        } catch(err) { window.showToast('Gagal! Kode mungkin sudah terpakai.', 'error'); } finally { btn.disabled = false; btn.innerHTML = "Simpan & Daftarkan Guru"; }
+    }
+
+    window.editGuru = function(id) {
+        const g = allUsers.find(u => u.id_firestore === id); if(!g) return;
+        document.getElementById('guru-kode').value = g.kode_guru;
+        document.getElementById('guru-nama').value = g.nama;
+        document.getElementById('guru-pass').value = "Sanditidakdiubah"; // Placeholder
+        
+        document.querySelectorAll('.cb-mapel, .cb-kelas').forEach(cb => cb.checked = false);
+        const mapels = JSON.parse(g.guru_mapel || '[]'); const kls = JSON.parse(g.guru_kelas || '[]');
+        document.querySelectorAll('.cb-mapel').forEach(cb => { if(mapels.includes(cb.value)) cb.checked = true; });
+        document.querySelectorAll('.cb-kelas').forEach(cb => { if(kls.includes(cb.value)) cb.checked = true; });
+        
+        window.scrollTo(0,0); window.showToast("Silakan edit akses di form atas", "success");
+    }
+
+   window.renderGuru = function() {
+        const tbody = document.getElementById('guru-list'); if(!tbody) return;
+        const gurus = allUsers.filter(u => u.role === 'guru');
+        if(!gurus.length) { tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-400 text-xs">Belum ada data guru.</td></tr>'; return; }
+        
+        tbody.innerHTML = gurus.map(g => {
+            let aksesInfo = '<span class="text-xs text-slate-500">Akses Belum Disetup</span>';
+            if(g.is_setup) {
+                const mapels = JSON.parse(g.guru_mapel||'[]'); const kls = JSON.parse(g.guru_kelas||'[]');
+                if(mapels.length === 0 && kls.length === 0) {
+                     aksesInfo = '<span class="bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded text-[10px]">Mapel & Kelas Kosong</span>';
+                } else {
+                     aksesInfo = `<div class="text-[10px]"><p class="text-emerald-400 font-bold mb-1">${mapels.length} Mapel | ${kls.length} Kelas</p><p class="text-slate-400 leading-tight break-words max-w-[200px]">${mapels.join(', ')}</p></div>`;
+                }
+            }
+            
+            // PERBAIKAN: Tombol dibungkus <div> dengan padding yang lebih lega dan rapi
+            return `
+            <tr class="hover:bg-white/5 border-b border-white/5 transition-colors">
+                <td class="p-4 font-mono text-emerald-400">${g.kode_guru || '-'}</td>
+                <td class="p-4 font-700 text-white">${g.nama}</td>
+                <td class="p-4">${aksesInfo}</td>
+                <td class="p-4">
+                    <div class="flex items-center justify-center gap-2">
+                        <button onclick="window.editGuru('${g.id_firestore}')" class="p-2 bg-blue-500/10 hover:bg-blue-500/30 text-blue-400 rounded-lg transition-all" title="Edit Akses">
+                            <i data-lucide="user-cog" class="w-4 h-4"></i>
+                        </button>
+                        <button onclick="window.hapusData('${g.id_firestore}')" class="p-2 bg-red-500/10 hover:bg-red-500/30 text-red-400 rounded-lg transition-all" title="Hapus Guru">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>`;
+        }).join(''); 
+        
+        lucide.createIcons();
+    }
+
+    // --- MANAJEMEN SISWA OLEH TU ---
+    window.renderSiswa = function() {
+        const tFilt = document.getElementById('filter-tingkat').value; const sFilt = document.getElementById('search-siswa').value.toLowerCase();
+        let sts = window.allData.filter(d => d.type === 'student');
+        if(tFilt !== 'all') sts = sts.filter(s => s.tingkat === tFilt); 
+        if(sFilt) sts = sts.filter(s => s.nama.toLowerCase().includes(sFilt) || s.nis.includes(sFilt));
+
+        const tb = document.getElementById('siswa-list'); if(!tb) return;
+        if(!sts.length) { tb.innerHTML = '<tr><td colspan="5" class="py-12 text-center text-slate-400">Tidak ada data siswa ditemukan.</td></tr>'; return; }
+        tb.innerHTML = sts.map(s => `<tr class="border-b border-white/5 hover:bg-white/5 transition-colors"><td class="p-4 font-mono text-slate-400">${s.nis}</td><td class="p-4 font-700 text-white">${s.nama}</td><td class="p-4 text-white">${s.tingkat}</td><td class="p-4 text-slate-300">${s.jurusan_kelas}</td><td class="p-4 text-center flex gap-2 justify-center"><button onclick="window.editStudent('${s.nis}')" class="p-2 bg-yellow-500/10 hover:bg-yellow-500/30 text-yellow-400 rounded-lg"><i data-lucide="user-cog" class="w-4 h-4"></i></button><button onclick="window.hapusData('${s.id_firestore}')" class="p-2 bg-red-500/10 hover:bg-red-500/30 text-red-400 rounded-lg"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td></tr>`).join(''); lucide.createIcons();
+    }
+
+    window.showAddStudentModal = function() { window.editingStudentId = null; document.getElementById('input-nis').value = ''; document.getElementById('input-nama').value = ''; document.getElementById('input-tingkat').value = 'X'; window.popJurusanModal('X'); document.getElementById('modal-student-title').innerText = "Tambah Siswa Baru"; document.getElementById('modal-student').classList.remove('hidden'); }
+    window.editStudent = function(nis) { const s = window.allData.find(d => d.type === 'student' && d.nis === nis); if(!s) return; window.editingStudentId = s.id_firestore; document.getElementById('input-nis').value = s.nis; document.getElementById('input-nama').value = s.nama; document.getElementById('input-tingkat').value = s.tingkat; window.popJurusanModal(s.tingkat); document.getElementById('input-jurusan').value = s.jurusan_kelas; document.getElementById('modal-student-title').innerText = "Edit Data Siswa"; document.getElementById('modal-student').classList.remove('hidden'); }
+    window.popJurusanModal = function(t) { const j=document.getElementById('input-jurusan'); if(j) { j.innerHTML=''; const allowed = window.kelasList[t] || []; allowed.forEach(x=> j.innerHTML+=`<option value="${x}">${x}</option>`); } }
+    
+    window.saveStudent = async function(e) { 
+        e.preventDefault(); 
+        const nisToCheck = document.getElementById('input-nis').value.trim();
+        
+        // VALIDASI NIS GANDA
+        const isDuplicate = window.allData.some(d => d.type === 'student' && d.nis === nisToCheck && d.id_firestore !== window.editingStudentId);
+        if (isDuplicate) {
+            window.showToast('GAGAL: NIS ' + nisToCheck + ' sudah dipakai siswa lain!', 'error');
+            return;
+        }
+
+        const btn = document.getElementById('btn-save-student'); btn.disabled = true; btn.innerHTML = 'Menyimpan...'; 
+        const dt = { type: 'student', nis: nisToCheck, nama: document.getElementById('input-nama').value.trim(), tingkat: document.getElementById('input-tingkat').value, jurusan_kelas: document.getElementById('input-jurusan').value, created_at: new Date().toISOString() }; 
+        if(!window.editingStudentId) dt.data_nilai = '{}'; 
+        try { 
+            if(window.editingStudentId) await update(ref(db, 'data_sekolah/' + window.editingStudentId), dt); else await set(push(ref(db, 'data_sekolah')), dt); 
+            document.getElementById('modal-student').classList.add('hidden'); window.showToast('Data Siswa Tersimpan!'); 
+        } catch (err) { window.showToast('Gagal', 'error'); } finally { btn.disabled = false; btn.innerHTML = 'Simpan Data Siswa'; } 
+    }
+
+    // --- GLOBAL FUNGSI ---
+    window.hapusData = async function(id) { if(confirm("Data yang dihapus tidak bisa dikembalikan. Lanjutkan?")) { await remove(ref(db, 'data_sekolah/' + id)); window.showToast('Data berhasil dihapus!'); } }
+    
+    window.saveGlobalSettings = function() { set(ref(db, 'pengaturan_sekolah'), { mapel: window.mapelList, kelas: window.kelasList }).then(()=>window.showToast('Tersimpan!')).catch(e => console.error(e)); }
+    window.renderSettingsUI = function() {
+        const mc = document.getElementById('mapel-list'); const kc = document.getElementById('kelas-list'); if(!mc||!kc) return;
+        mc.innerHTML = window.mapelList.map(m => `<div class="flex justify-between items-center bg-slate-900/50 p-3 rounded-xl mb-2"><div class="flex flex-col"><span class="text-sm font-600 text-slate-300">${m.name}</span><span class="text-xs text-indigo-400 mt-1">KKM: X(${m.kkm_X||75}) | XI(${m.kkm_XI||75}) | XII(${m.kkm_XII||75})</span></div><button onclick="window.rmMapel('${m.key}')" class="text-red-400"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`).join('');
+        kc.innerHTML = Object.entries(window.kelasList).map(([t, cs]) => `<div class="mb-4 bg-slate-900/30 p-4 rounded-xl"><p class="text-xs text-purple-400 font-800 mb-3 tracking-widest uppercase">Tingkat ${t}</p><div class="flex flex-wrap gap-2">${(cs||[]).map(c => `<span class="bg-purple-500/10 px-3 py-1.5 text-xs font-600 text-purple-200 rounded-lg flex gap-2 items-center">${c} <button onclick="window.rmKelas('${t}','${c}')"><i data-lucide="x" class="w-3 h-3"></i></button></span>`).join('')}</div></div>`).join('');
+        lucide.createIcons();
+    }
+
+    window.addMapel = function() {
+        const v=document.getElementById('new-mapel').value.trim(); const vx=parseFloat(document.getElementById('kkm-x').value)||75; const vxi=parseFloat(document.getElementById('kkm-xi').value)||75; const vxii=parseFloat(document.getElementById('kkm-xii').value)||75;
+        if(!v) return; const nk=v.toLowerCase().replace(/ /g,'_'); const idx=window.mapelList.findIndex(m=>m.key===nk);
+        if(idx>=0){ window.mapelList[idx].kkm_X=vx; window.mapelList[idx].kkm_XI=vxi; window.mapelList[idx].kkm_XII=vxii;} else{ window.mapelList.push({key:nk,name:v,kkm_X:vx,kkm_XI:vxi,kkm_XII:vxii});}
+        document.getElementById('new-mapel').value=''; document.getElementById('kkm-x').value=''; document.getElementById('kkm-xi').value=''; document.getElementById('kkm-xii').value='';
+        window.saveGlobalSettings();
+    }
+    window.rmMapel = function(k) { window.mapelList = window.mapelList.filter(m=>m.key!==k); window.saveGlobalSettings(); }
+    
+    window.addKelas = function() {
+        const t=document.getElementById('new-tingkat').value; const v=document.getElementById('new-jurusan').value.trim().toUpperCase();
+        if(!v) return; window.kelasList[t]=window.kelasList[t]||[]; if(!window.kelasList[t].includes(v)){ window.kelasList[t].push(v); window.saveGlobalSettings(); document.getElementById('new-jurusan').value='';}
+    }
+    window.rmKelas = function(t,c) { window.kelasList[t] = window.kelasList[t].filter(x=>x!==c); window.saveGlobalSettings(); }
+    
+    window.togglePasswordVisibility = function(id, ic) { const i = document.getElementById(id); const c = document.getElementById(ic); if (i.type === 'password') { i.type = 'text'; c.setAttribute('data-lucide', 'eye-off'); } else { i.type = 'password'; c.setAttribute('data-lucide', 'eye'); } lucide.createIcons(); }
+  </script>
+</body>
+</html>
