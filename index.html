@@ -63,7 +63,7 @@
       </div>
       <h1 id="landing-title" class="text-5xl md:text-6xl font-900 mb-2 bg-gradient-to-r from-amber-300 via-indigo-400 to-purple-400 bg-clip-text text-transparent drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)] tracking-tight">Laju<span class="text-white">Akademik</span></h1>
       <p id="landing-school" class="text-slate-300 text-lg font-600 tracking-wide mt-2">SMK ALHUDA SARIWANGI</p>
-      <p class="text-indigo-400 font-700 text-sm mt-1 tracking-wide">Tahun Ajaran 2026-2027</p>
+      <p class="text-indigo-400 font-700 text-sm mt-1 tracking-wide" id="landing-tahun-ajaran">Tahun Ajaran Aktif</p>
       <div class="w-16 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mx-auto mt-3 rounded-full"></div>
       <p class="text-slate-400 mt-4 text-xs uppercase tracking-widest font-700">Platform Ulangan Harian & e-Rapor Digital</p>
      </div>
@@ -254,9 +254,9 @@
         <button onclick="window.showTeacherTab('upload-soal')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-sm font-500 flex items-center gap-3 text-slate-300 transition-colors"><i data-lucide="file-up" class="w-5 h-5"></i> Manajemen Soal</button> 
         <button onclick="window.showTeacherTab('jawaban')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-sm font-500 flex items-center gap-3 text-slate-300 transition-colors"><i data-lucide="inbox" class="w-5 h-5"></i> Jawaban Masuk</button> 
         <button onclick="window.showTeacherTab('settings')" class="w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-sm font-500 flex items-center gap-3 text-slate-300 transition-colors"><i data-lucide="settings" class="w-5 h-5"></i> Pengaturan & Sandi</button>
-        <button id="btn-tab-wali" onclick="window.showTeacherTab('wali-kelas')" class="hidden w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-sm font-500 flex items-center gap-3 text-slate-300 transition-colors">
-            <div class="p-1.5 bg-purple-500/20 rounded-md"><i data-lucide="shield-check" class="w-4 h-4 text-purple-400"></i></div> Menu Wali Kelas
-        </button>
+        <a href="walikelas.html" id="btn-tab-wali" class="hidden w-full text-left px-4 py-3 rounded-xl hover:bg-white/10 text-sm font-500 flex items-center gap-3 text-slate-300 transition-colors cursor-pointer">
+            <div class="p-1.5 bg-purple-500/20 rounded-md"><i data-lucide="shield-check" class="w-4 h-4 text-purple-400"></i></div> Ruang Wali Kelas
+        </a>
        </nav>
       </aside>
       <main class="flex-1 overflow-y-auto p-4 sm:p-8">
@@ -408,39 +408,6 @@
 
         </div>
        </div>
-       
-       <div id="tab-wali-kelas" class="hidden fade-in">
-        <div class="mb-6">
-            <h3 class="text-2xl font-800 text-purple-300">Kontrol Wali Kelas: <span id="label-kelas-wali" class="text-white"></span></h3>
-            <p class="text-sm text-slate-400">Rekapitulasi nilai leger semua mapel dan sistem mutasi siswa mandiri.</p>
-        </div>
-        
-        <div class="space-y-8">
-            <div class="card-glass rounded-2xl p-6 border border-purple-500/20 shadow-xl">
-                <h4 class="font-700 text-lg mb-4 flex items-center gap-2 text-indigo-300"><i data-lucide="table"></i> Leger Nilai & Rekapitulasi Kelas</h4>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-xs text-left">
-                        <thead id="leger-table-head" class="bg-slate-900 text-slate-300 uppercase font-bold border-b border-white/10"></thead>
-                        <tbody id="leger-table-body" class="divide-y divide-white/5"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="card-glass rounded-2xl p-6 border border-white/10">
-                <h4 class="font-700 text-lg mb-4 flex items-center gap-2 text-amber-400"><i data-lucide="shuffle"></i> Hub Pindahan & Mutasi Siswa Mandiri</h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-slate-900/50 p-4 rounded-xl border border-white/5">
-                        <p class="text-xs font-bold text-purple-400 uppercase mb-3 tracking-wider">Permintaan Siswa Masuk:</p>
-                        <div id="mutasi-masuk-list" class="space-y-3 text-sm text-slate-300">Belum ada permintaan masuk.</div>
-                    </div>
-                    <div class="bg-slate-900/50 p-4 rounded-xl border border-white/5">
-                        <p class="text-xs font-bold text-amber-400 uppercase mb-3 tracking-wider">Mutasikan Siswa Keluar Kelas:</p>
-                        <div id="mutasi-keluar-list" class="space-y-2 max-h-64 overflow-y-auto custom-scrollbar"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-       </div>
 
       </main>
       <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-40 hidden lg:hidden" onclick="window.toggleSidebar()"></div>
@@ -539,11 +506,13 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getDatabase, ref, set, push, onValue, remove, update, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-    import { getAuth, signInWithEmailAndPassword, updatePassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, updatePassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     
-    // ⚠️ MASUKAN API KEY FIREBASE KAMU
+    const fbKeySatu = "AIzaSyDTEIcErwM8r";
+    const fbKeyDua = "fuiaY28GHhLmQvbv8tHD_0";
+    
     const firebaseConfig = {
-      apiKey: "AIzaSyDTEIcErwM8rfuiaY28GHhLmQvbv8tHD_0",
+      apiKey: fbKeySatu + fbKeyDua,
       authDomain: "zonajago.firebaseapp.com",
       databaseURL: "https://zonajago-default-rtdb.firebaseio.com",
       projectId: "zonajago",
@@ -552,7 +521,6 @@
       appId: "1:659235624779:web:176d516efa566fd7ad7ace"
     };
     
-    // 🤖 ⚠️ MASUKAN API KEY GEMINI KAMU DI SINI UNTUK FITUR SCAN FOTO ⚠️
     const kunciSatu = "AQ.Ab8RN6L_34e_"; 
     const kunciDua = "UJ2vlW_5RRLTxnhEWItmG1o1o9YSvU43sTZsxw"; 
     window.GEMINI_API_KEY = kunciSatu + kunciDua;
@@ -561,7 +529,13 @@
     const db = getDatabase(app);
     const auth = getAuth(app);
 
-    window.allData = []; window.currentStudent = null; window.currentMapel = null; window.currentTaskType = null;
+    window.allUsers = [];
+    window.allStudents = [];
+    window.allSoals = [];
+    window.allJawabans = [];
+    window.tahunAjaranAktif = "Belum Disetup";
+
+    window.currentStudent = null; window.currentMapel = null; window.currentTaskType = null;
     window.currentStatusFilter = 'all'; window.currentTeacherTab = 'students'; window.editingStudentId = null; 
     window.selectedSoalFile = null; window.selectedAnswerFile = null; window.pasteDetected = false; 
     window.tempBulkUpdates = []; window.currentUserRole = null; window.currentUserName = ""; 
@@ -573,7 +547,6 @@
 
     window.safeParse = function(str) { try { return JSON.parse(str || '[]'); } catch(e) { return []; } };
 
-    // --- SISTEM ANTI-CHEAT ---
     window.cheatWarnings = 0;
     
     window.handleFullscreenChange = function() {
@@ -666,20 +639,50 @@
         onValue(ref(db, 'pengaturan_sekolah'), (snapshot) => { 
             if (snapshot.exists()) { 
                 const data = snapshot.val(); 
-                if(data.mapel && data.mapel.length > 0) window.mapelList = data.mapel; 
-                if(data.kelas && Object.keys(data.kelas).length > 0) window.kelasList = data.kelas; 
+                if(data.mapel) window.mapelList = data.mapel; 
+                if(data.kelas) window.kelasList = data.kelas; 
+                window.tahunAjaranAktif = data.tahun_ajaran || "Belum Disetup";
+                const tl = document.getElementById('landing-tahun-ajaran');
+                if(tl) tl.innerText = `Tahun Ajaran: ${window.tahunAjaranAktif}`;
             } 
             window.refreshDataLocal(); 
         }); 
     }
 
     function listenToDatabase() {
-      onValue(ref(db, 'data_sekolah'), (snapshot) => {
-        window.allData = [];
-        if (snapshot.exists()) { const data = snapshot.val(); Object.keys(data).forEach(key => { window.allData.push({ id_firestore: key, ...data[key] }); }); }
+        onValue(ref(db, 'users'), snap => {
+            window.allUsers = [];
+            if(snap.exists()) { const d = snap.val(); Object.keys(d).forEach(k => window.allUsers.push({id_firestore: k, ...d[k]})); }
+            checkGuruSetup();
+        });
         
+        onValue(ref(db, 'students'), snap => {
+            window.allStudents = [];
+            if(snap.exists()) { const d = snap.val(); Object.keys(d).forEach(k => window.allStudents.push({id_firestore: k, ...d[k]})); }
+            if(window.currentStudent) {
+                const up = window.allStudents.find(s => s.nis === window.currentStudent.nis);
+                if(up) window.currentStudent = up;
+                if(!document.getElementById('page-student-dashboard').classList.contains('hidden')) window.renderStudentDashboard();
+            }
+            window.refreshDataLocal();
+        });
+        
+        onValue(ref(db, 'soals'), snap => {
+            window.allSoals = [];
+            if(snap.exists()) { const d = snap.val(); Object.keys(d).forEach(k => window.allSoals.push({id_firestore: k, ...d[k]})); }
+            window.refreshDataLocal();
+        });
+        
+        onValue(ref(db, 'jawabans'), snap => {
+            window.allJawabans = [];
+            if(snap.exists()) { const d = snap.val(); Object.keys(d).forEach(k => window.allJawabans.push({id_firestore: k, ...d[k]})); }
+            window.refreshDataLocal();
+        });
+    }
+
+    function checkGuruSetup() {
         if(window.currentUserRole === 'guru' && window.currentUserDocId) { 
-            const acc = window.allData.find(d => d.id_firestore === window.currentUserDocId); 
+            const acc = window.allUsers.find(d => d.id_firestore === window.currentUserDocId); 
             if(acc && acc.is_setup) { 
                 window.guruMapel = window.safeParse(acc.guru_mapel); 
                 window.guruKelas = window.safeParse(acc.guru_kelas); 
@@ -688,7 +691,6 @@
             } 
         }
         window.refreshDataLocal();
-      });
     }
 
     window.refreshDataLocal = function() {
@@ -696,27 +698,51 @@
       if (window.currentTeacherTab === 'upload-soal') window.renderUploadSoal();
       if (window.currentTeacherTab === 'jawaban') window.renderJawaban(); 
       if (window.currentTeacherTab === 'settings') window.renderSettings();
-      if (window.currentTeacherTab === 'wali-kelas') window.renderWaliKelasView();
-      if (window.currentStudent) { const updated = window.allData.find(d => d.type === 'student' && d.nis === window.currentStudent.nis); if(updated) window.currentStudent = updated; if (!document.getElementById('page-student-dashboard').classList.contains('hidden')) window.renderStudentDashboard(); }
     }
 
     document.addEventListener('DOMContentLoaded', () => { 
-    setTimeout(() => {
-        const splash = document.getElementById('splash-screen');
-        if(splash) {
-            splash.classList.add('opacity-0', 'pointer-events-none');
-            setTimeout(() => splash.classList.add('hidden'), 700);
-        }
-    }, 2000);
+        setTimeout(() => {
+            const splash = document.getElementById('splash-screen');
+            if(splash) {
+                splash.classList.add('opacity-0', 'pointer-events-none');
+                setTimeout(() => splash.classList.add('hidden'), 700);
+            }
+        }, 2000);
 
-    window.showPage('page-landing');
-      
-      lucide.createIcons(); listenToSettings(); listenToDatabase(); 
-      const visitsRef = ref(db, 'web_stats/visits');
-      if (!sessionStorage.getItem('has_visited')) { runTransaction(visitsRef, (current) => { return (current || 0) + 1; }); sessionStorage.setItem('has_visited', 'true'); }
-      onValue(visitsRef, (snapshot) => { const el = document.getElementById('visit-counter'); if(el) el.innerText = (24500 + (snapshot.val() || 0)).toLocaleString('id-ID'); });
-      
-      setTimeout(() => { const counters = document.querySelectorAll('.stat-counter'); const speed = 40; counters.forEach(counter => { const updateCount = () => { const target = +counter.getAttribute('data-target'); const count = +counter.innerText.replace(/\./g, ''); const inc = target / speed; if (count < target) { counter.innerText = Math.ceil(count + inc); setTimeout(updateCount, 30); } else { counter.innerText = target.toLocaleString('id-ID'); } }; updateCount(); }); }, 1500);
+        window.showPage('page-landing');
+
+        // DETEKSI OTOMATIS JIKA GURU KEMBALI DARI HALAMAN WALI KELAS
+        if(sessionStorage.getItem('is_logged_in_guru') === 'true') {
+            onAuthStateChanged(auth, (user) => {
+                if(user) {
+                    setTimeout(() => {
+                        const userAccount = window.allUsers.find(d => d.uid === user.uid);
+                        if(userAccount) {
+                            window.currentUserRole = userAccount.role; 
+                            window.currentUserName = userAccount.nama; 
+                            window.currentUserDocId = userAccount.id_firestore;
+                            window.guruMapel = window.safeParse(userAccount.guru_mapel); 
+                            window.guruKelas = window.safeParse(userAccount.guru_kelas);
+                            window.isWaliKelas = userAccount.is_wali_kelas || false; 
+                            window.kelasWali = userAccount.kelas_wali || "";
+                            
+                            const btnWali = document.getElementById('btn-tab-wali');
+                            if(btnWali && window.isWaliKelas) btnWali.classList.remove('hidden');
+                            
+                            window.showPage('page-teacher-dashboard'); 
+                            window.showTeacherTab('students');
+                        }
+                    }, 1000); // Jeda 1 detik biar Firebase selesai load
+                }
+            });
+        }
+          
+        lucide.createIcons(); listenToSettings(); listenToDatabase(); 
+        const visitsRef = ref(db, 'web_stats/visits');
+        if (!sessionStorage.getItem('has_visited')) { runTransaction(visitsRef, (current) => { return (current || 0) + 1; }); sessionStorage.setItem('has_visited', 'true'); }
+        onValue(visitsRef, (snapshot) => { const el = document.getElementById('visit-counter'); if(el) el.innerText = (24500 + (snapshot.val() || 0)).toLocaleString('id-ID'); });
+        
+        setTimeout(() => { const counters = document.querySelectorAll('.stat-counter'); const speed = 40; counters.forEach(counter => { const updateCount = () => { const target = +counter.getAttribute('data-target'); const count = +counter.innerText.replace(/\./g, ''); const inc = target / speed; if (count < target) { counter.innerText = Math.ceil(count + inc); setTimeout(updateCount, 30); } else { counter.innerText = target.toLocaleString('id-ID'); } }; updateCount(); }); }, 1500);
     });
 
     window.showPage = function(pageId) { document.querySelectorAll('[id^="page-"]').forEach(p => p.classList.add('hidden')); document.getElementById(pageId).classList.remove('hidden'); lucide.createIcons(); }
@@ -729,7 +755,7 @@
         const nis = document.getElementById('nis-input').value.trim(); 
         const pass = document.getElementById('nis-password').value; 
         
-        const student = window.allData.find(d => d.type === 'student' && d.nis === nis); 
+        const student = window.allStudents.find(d => d.nis === nis); 
         if (!student) return window.showToast('NIS belum terdaftar!', 'error'); 
         
         const truePass = student.password || "123456";
@@ -775,7 +801,7 @@
         btn.disabled = true; btn.innerHTML = "Menyimpan...";
         
         try {
-            await update(ref(db, 'data_sekolah/' + window.currentStudent.id_firestore), {
+            await update(ref(db, 'students/' + window.currentStudent.id_firestore), {
                 password: p1
             });
             window.currentStudent.password = p1;
@@ -804,7 +830,7 @@
       });
       if(cRem===0) listRemedial.innerHTML = '<p class="col-span-full p-6 text-center text-emerald-400 font-700 bg-white/5 rounded-2xl border border-white/10">🎉 Nilai Rata-Rata Aman!</p>';
 
-      const soalUlanganList = window.allData.filter(d => d.type === 'soal' && d.jenis_soal === 'ulangan' && (!d.tingkat || d.tingkat === 'Semua Tingkat' || d.tingkat === window.currentStudent.tingkat) && (!d.jurusan_kelas || d.jurusan_kelas === 'Semua Jurusan' || d.jurusan_kelas === window.currentStudent.jurusan_kelas));
+      const soalUlanganList = window.allSoals.filter(d => d.jenis_soal === 'ulangan' && (!d.tingkat || d.tingkat === 'Semua Tingkat' || d.tingkat === window.currentStudent.tingkat) && (!d.jurusan_kelas || d.jurusan_kelas === 'Semua Jurusan' || d.jurusan_kelas === window.currentStudent.jurusan_kelas));
       const mapelUlanganKeys = [...new Set(soalUlanganList.map(s => s.soal_mapel))];
       mapelUlanganKeys.forEach(mKey => {
         const m = window.mapelList.find(x => x.key === mKey) || {key: mKey, name: mKey}; cUl++; const div = document.createElement('div'); div.className = 'card-glass rounded-2xl p-5 cursor-pointer hover:bg-white/10 hover:border-blue-500/50 transition-all group border border-white/5'; div.onclick = () => window.selectTask(m, 'ulangan');
@@ -825,7 +851,7 @@
         document.getElementById('student-pengerjaan-area').classList.remove('hidden'); 
         document.getElementById('pengerjaan-mapel-title').innerHTML = `${mapel.name} <span class="text-xs ml-3 px-2 py-1 bg-blue-500/20 text-blue-400 rounded uppercase font-700">${jenis}</span>`; 
         
-        const soalList = window.allData.filter(d => d.type === 'soal' && d.soal_mapel === mapel.key && d.jenis_soal === jenis); 
+        const soalList = window.allSoals.filter(d => d.soal_mapel === mapel.key && d.jenis_soal === jenis); 
         const soal = soalList.slice().reverse().find(d => (!d.tingkat || d.tingkat === 'Semua Tingkat' || d.tingkat === window.currentStudent.tingkat) && (!d.jurusan_kelas || d.jurusan_kelas === 'Semua Jurusan' || d.jurusan_kelas === window.currentStudent.jurusan_kelas)); 
         window.currentSoalData = soal; 
 
@@ -934,7 +960,7 @@
         
         const btn = document.getElementById('btn-submit-text'); const oldTxt = btn.innerHTML; btn.disabled = true; btn.innerHTML = "Mengirim..."; 
         try { 
-            await set(push(ref(db, 'data_sekolah')), { type: 'jawaban', jawaban_nis: window.currentStudent.nis, student_id_firestore: window.currentStudent.id_firestore, jawaban_mapel: window.currentMapel.key, jenis_tugas: window.currentTaskType, kategori_remedial: window.currentSoalData?.kategori_remedial || null, format_soal_jawaban: window.currentSoalData.format_soal || 'file', jawaban_essay: JSON.stringify(essayArr), created_at: new Date().toISOString() }); 
+            await set(push(ref(db, 'jawabans')), { tahun_ajaran: window.tahunAjaranAktif, jawaban_nis: window.currentStudent.nis, student_id_firestore: window.currentStudent.id_firestore, jawaban_mapel: window.currentMapel.key, jenis_tugas: window.currentTaskType, kategori_remedial: window.currentSoalData?.kategori_remedial || null, format_soal_jawaban: window.currentSoalData.format_soal || 'file', jawaban_essay: JSON.stringify(essayArr), created_at: new Date().toISOString() }); 
             window.backToDashboard(); window.showToast(`Jawaban berhasil dikirim!`); 
         } catch(e) { window.showToast('Gagal mengirim jawaban!', 'error'); } finally { btn.disabled = false; btn.innerHTML = oldTxt; } 
     }
@@ -957,15 +983,15 @@
         const finalScore = Math.round((correctCount / qs.length) * 100) || 0; detailText = `NILAI AKHIR: ${finalScore} / 100\n\n` + detailText; 
         const btn = document.getElementById('btn-submit-pg'); const oldTxt = btn.innerHTML; btn.disabled = true; btn.innerHTML = "Mengirim..."; 
         try { 
-            await set(push(ref(db, 'data_sekolah')), { type: 'jawaban', format_soal_jawaban: 'pg', jawaban_nis: window.currentStudent.nis, student_id_firestore: window.currentStudent.id_firestore, jawaban_mapel: window.currentMapel.key, jenis_tugas: window.currentTaskType, kategori_remedial: window.currentSoalData?.kategori_remedial || null, jawaban_text: detailText, created_at: new Date().toISOString() }); 
+            await set(push(ref(db, 'jawabans')), { tahun_ajaran: window.tahunAjaranAktif, format_soal_jawaban: 'pg', jawaban_nis: window.currentStudent.nis, student_id_firestore: window.currentStudent.id_firestore, jawaban_mapel: window.currentMapel.key, jenis_tugas: window.currentTaskType, kategori_remedial: window.currentSoalData?.kategori_remedial || null, jawaban_text: detailText, created_at: new Date().toISOString() }); 
             
             if (window.currentTaskType === 'remedial' && window.currentSoalData && window.currentSoalData.kategori_remedial) {
-                const stuUpdate = window.allData.find(d => d.id_firestore === window.currentStudent.id_firestore);
+                const stuUpdate = window.allStudents.find(d => d.id_firestore === window.currentStudent.id_firestore);
                 if(stuUpdate) {
                     const p = window.parseNilai(stuUpdate.data_nilai);
                     if (!p[window.currentMapel.key]) p[window.currentMapel.key] = {};
                     p[window.currentMapel.key][window.currentSoalData.kategori_remedial] = finalScore;
-                    await update(ref(db, 'data_sekolah/' + window.currentStudent.id_firestore), { data_nilai: JSON.stringify(p) });
+                    await update(ref(db, 'students/' + window.currentStudent.id_firestore), { data_nilai: JSON.stringify(p) });
                 }
             }
 
@@ -998,14 +1024,15 @@
         const btn = document.getElementById('btn-submit-campuran'); const oldTxt = btn.innerHTML; btn.disabled = true; btn.innerHTML = "Mengirim...";
 
         try {
-            await set(push(ref(db, 'data_sekolah')), { type: 'jawaban', jawaban_nis: window.currentStudent.nis, student_id_firestore: window.currentStudent.id_firestore, jawaban_mapel: window.currentMapel.key, jenis_tugas: window.currentTaskType, kategori_remedial: window.currentSoalData?.kategori_remedial || null, format_soal_jawaban: 'pg_esai', jawaban_pg_score: pgScore, jawaban_pg_detail: pgDetailText, jawaban_essay: JSON.stringify(essayArr), created_at: new Date().toISOString() });
+            await set(push(ref(db, 'jawabans')), { tahun_ajaran: window.tahunAjaranAktif, jawaban_nis: window.currentStudent.nis, student_id_firestore: window.currentStudent.id_firestore, jawaban_mapel: window.currentMapel.key, jenis_tugas: window.currentTaskType, kategori_remedial: window.currentSoalData?.kategori_remedial || null, format_soal_jawaban: 'pg_esai', jawaban_pg_score: pgScore, jawaban_pg_detail: pgDetailText, jawaban_essay: JSON.stringify(essayArr), created_at: new Date().toISOString() });
             window.backToDashboard(); window.showToast(`Jawaban berhasil dikirim!`);
         } catch(e) { window.showToast('Gagal mengirim!', 'error'); } finally { btn.disabled = false; btn.innerHTML = oldTxt; }
     }
 
     window.handleFileSelect = function(inp) { if (inp.files.length) { window.selectedAnswerFile = inp.files[0]; document.getElementById('file-name-display').innerHTML = `<i data-lucide="check" class="w-4 h-4 inline"></i> File Siap: ${window.selectedAnswerFile.name}`; document.getElementById('file-name-display').classList.remove('hidden'); lucide.createIcons(); } }
-    window.submitUploadAnswer = async function() { if (!window.selectedAnswerFile) return window.showToast('Pilih foto!', 'error'); const btn = document.getElementById('btn-submit-upload'); const oldTxt = btn.innerHTML; btn.disabled = true; btn.innerHTML = "Mengupload..."; const r = new FileReader(); r.onload = async (e) => { try { await set(push(ref(db, 'data_sekolah')), { type: 'jawaban', format_soal_jawaban: 'file', jawaban_nis: window.currentStudent.nis, student_id_firestore: window.currentStudent.id_firestore, jawaban_mapel: window.currentMapel.key, jenis_tugas: window.currentTaskType, kategori_remedial: window.currentSoalData?.kategori_remedial || null, jawaban_file_name: window.selectedAnswerFile.name, jawaban_file_data: e.target.result, created_at: new Date().toISOString() }); window.selectedAnswerFile = null; document.getElementById('file-name-display').classList.add('hidden'); window.backToDashboard(); window.showToast(`Foto Terkirim!`); } catch(err) { window.showToast('Gagal upload!', 'error'); } finally { btn.disabled = false; btn.innerHTML = oldTxt; } }; r.readAsDataURL(window.selectedAnswerFile); }
+    window.submitUploadAnswer = async function() { if (!window.selectedAnswerFile) return window.showToast('Pilih foto!', 'error'); const btn = document.getElementById('btn-submit-upload'); const oldTxt = btn.innerHTML; btn.disabled = true; btn.innerHTML = "Mengupload..."; const r = new FileReader(); r.onload = async (e) => { try { await set(push(ref(db, 'jawabans')), { tahun_ajaran: window.tahunAjaranAktif, format_soal_jawaban: 'file', jawaban_nis: window.currentStudent.nis, student_id_firestore: window.currentStudent.id_firestore, jawaban_mapel: window.currentMapel.key, jenis_tugas: window.currentTaskType, kategori_remedial: window.currentSoalData?.kategori_remedial || null, jawaban_file_name: window.selectedAnswerFile.name, jawaban_file_data: e.target.result, created_at: new Date().toISOString() }); window.selectedAnswerFile = null; document.getElementById('file-name-display').classList.add('hidden'); window.backToDashboard(); window.showToast(`Foto Terkirim!`); } catch(err) { window.showToast('Gagal upload!', 'error'); } finally { btn.disabled = false; btn.innerHTML = oldTxt; } }; r.readAsDataURL(window.selectedAnswerFile); }
 
+    // --- ALUR GURU ---
     window.handlePegawaiLogin = function(e) { 
       e.preventDefault(); 
       const kode = document.getElementById('pegawai-kode').value.trim(); 
@@ -1015,7 +1042,7 @@
       const btn = document.getElementById('btn-login-pegawai'); const oldTxt = btn.innerHTML; btn.disabled = true; btn.innerHTML = "Memeriksa...";
       signInWithEmailAndPassword(auth, pseudoEmail, password)
         .then((userCredential) => {
-          const userAccount = window.allData.find(d => d.type === 'user_account' && d.uid === userCredential.user.uid);
+          const userAccount = window.allUsers.find(d => d.uid === userCredential.user.uid);
           if (userAccount && userAccount.role === 'guru') {
             window.currentUserRole = userAccount.role; window.currentUserName = userAccount.nama; window.currentUserDocId = userAccount.id_firestore;
             
@@ -1023,6 +1050,10 @@
             window.guruKelas = window.safeParse(userAccount.guru_kelas); 
             window.isWaliKelas = userAccount.is_wali_kelas || false;
             window.kelasWali = userAccount.kelas_wali || "";
+
+            // SIMPAN DATA LOGIN SEMENTARA
+            sessionStorage.setItem('is_logged_in_guru', 'true');
+            sessionStorage.setItem('guru_uid', userCredential.user.uid);
 
             const btnWali = document.getElementById('btn-tab-wali');
             if(btnWali) {
@@ -1052,7 +1083,10 @@
         } finally { btn.disabled = false; btn.innerHTML = "Simpan Sandi Baru"; }
     }
 
-    window.logoutTeacher = function() { signOut(auth).then(() => { window.currentUserRole = null; window.currentUserName = ""; window.currentTeacherTab = 'students'; window.showPage('page-landing'); }); }
+    window.logoutTeacher = function() { 
+        sessionStorage.clear(); // Hapus memori login otomatis
+        signOut(auth).then(() => { window.currentUserRole = null; window.currentUserName = ""; window.currentTeacherTab = 'students'; window.showPage('page-landing'); }); 
+    }
 
     window.showTeacherTab = function(t) { 
       window.currentTeacherTab = t; 
@@ -1061,7 +1095,6 @@
       const filterBar = document.getElementById('global-filter-bar');
       if (filterBar) { if (t === 'students' || t === 'jawaban') filterBar.classList.remove('hidden'); else filterBar.classList.add('hidden'); }
       window.renderTeacherView(); 
-      if(t === 'wali-kelas') window.renderWaliKelasView();
       if(window.innerWidth < 1024) window.toggleSidebar(); 
     }
 
@@ -1094,7 +1127,7 @@
 
     window.renderStudentsTable = function() {
       const t = document.getElementById('filter-tingkat').value; const j = document.getElementById('filter-jurusan').value; const m = document.getElementById('filter-mapel').value; const srh = document.getElementById('search-siswa').value.toLowerCase();
-      let sts = window.allData.filter(d => d.type === 'student').filter(s => (window.kelasList[s.tingkat] || []).includes(s.jurusan_kelas));
+      let sts = window.allStudents.filter(s => (window.kelasList[s.tingkat] || []).includes(s.jurusan_kelas));
       sts = sts.filter(s => window.guruKelas.includes(`${s.tingkat}|${s.jurusan_kelas}`));
       if(t !== 'all') sts = sts.filter(s => s.tingkat === t); if(j !== 'all') sts = sts.filter(s => s.jurusan_kelas === j); if(srh) sts = sts.filter(s => s.nama.toLowerCase().includes(srh) || s.nis.includes(srh));
       
@@ -1145,7 +1178,7 @@
 
     window.exportToExcel = function() {
         const t = document.getElementById('filter-tingkat').value; const j = document.getElementById('filter-jurusan').value; const m = document.getElementById('filter-mapel').value; const srh = document.getElementById('search-siswa').value.toLowerCase();
-        let sts = window.allData.filter(d => d.type === 'student').filter(s => (window.kelasList[s.tingkat] || []).includes(s.jurusan_kelas));
+        let sts = window.allStudents.filter(s => (window.kelasList[s.tingkat] || []).includes(s.jurusan_kelas));
         sts = sts.filter(s => window.guruKelas.includes(`${s.tingkat}|${s.jurusan_kelas}`));
         if(t !== 'all') sts = sts.filter(s => s.tingkat === t); if(j !== 'all') sts = sts.filter(s => s.jurusan_kelas === j); if(srh) sts = sts.filter(s => s.nama.toLowerCase().includes(srh) || s.nis.includes(srh));
         
@@ -1225,8 +1258,8 @@
                 const nilaiNum = parseFloat(nilaiRaw.replace(/[^0-9.,]/g, '').replace(',', '.'));
                 if(isNaN(nilaiNum)) return; 
 
-                const student = window.allData.find(d => 
-                    d.type === 'student' && d.tingkat === tFilt && d.jurusan_kelas === jFilt &&
+                const student = window.allStudents.find(d => 
+                    d.tingkat === tFilt && d.jurusan_kelas === jFilt &&
                     (d.nis.toLowerCase() === identifier || d.nama.toLowerCase().includes(identifier))
                 );
 
@@ -1255,7 +1288,7 @@
                 const s = data.student; const p = window.parseNilai(s.data_nilai);
                 if(!p[data.mapel]) p[data.mapel] = {};
                 p[data.mapel][data.kategori] = data.nilai;
-                updates[`data_sekolah/${s.id_firestore}/data_nilai`] = JSON.stringify(p);
+                updates[`students/${s.id_firestore}/data_nilai`] = JSON.stringify(p);
             }
             await update(ref(db), updates);
             window.showToast(`${window.tempBulkUpdates.length} nilai e-Rapor diupdate!`, 'success'); window.closePopup('modal-bulk-import'); window.refreshDataLocal();
@@ -1263,7 +1296,7 @@
     }
 
     window.editNilai = function(nis) { 
-        const s = window.allData.find(d => d.type === 'student' && d.nis === nis); if(!s) return; window.editingStudentId = s.id_firestore; 
+        const s = window.allStudents.find(d => d.nis === nis); if(!s) return; window.editingStudentId = s.id_firestore; 
         document.getElementById('nilai-student-info').textContent = s.nama; 
         const p = window.parseNilai(s.data_nilai); 
         const c = document.getElementById('nilai-inputs'); c.innerHTML = ''; 
@@ -1290,7 +1323,7 @@
     }
 
     window.saveNilai = async function() { 
-        const s = window.allData.find(d => d.id_firestore === window.editingStudentId); if(!s) return; 
+        const s = window.allStudents.find(d => d.id_firestore === window.editingStudentId); if(!s) return; 
         const btn = document.getElementById('btn-save-nilai'); btn.disabled = true; 
         try { 
             const p = window.parseNilai(s.data_nilai); 
@@ -1309,7 +1342,7 @@
 
                 if(Object.keys(p[m.key]).length === 0) delete p[m.key];
             }); 
-            await update(ref(db, 'data_sekolah/' + window.editingStudentId), { data_nilai: JSON.stringify(p) }); 
+            await update(ref(db, 'students/' + window.editingStudentId), { data_nilai: JSON.stringify(p) }); 
             window.closePopup('modal-nilai'); window.showToast('Nilai Rapor Disimpan!'); 
         } catch(e) {} finally { btn.disabled = false; } 
     }
@@ -1431,14 +1464,14 @@
       const tSel = document.getElementById('upload-soal-tingkat'); const currT = tSel.value || 'Semua Tingkat'; tSel.innerHTML = '<option value="Semua Tingkat">Semua Tingkat</option><option value="X">Kelas X</option><option value="XI">Kelas XI</option><option value="XII">Kelas XII</option>'; tSel.value = currT; window.popUploadJurusan();
       const sel = document.getElementById('soal-mapel-select'); if(sel) { const currM = sel.value; sel.innerHTML = ''; let mapels = window.mapelList.filter(m => window.guruMapel.includes(m.key)); mapels.forEach(m => sel.innerHTML+=`<option value="${m.key}">${m.name}</option>`); sel.value = currM; if (sel.selectedIndex === -1 && sel.options.length > 0) sel.selectedIndex = 0; }
       const c = document.getElementById('uploaded-soal-list'); if(!c) return;
-      let lst = window.allData.filter(d=>d.type==='soal').filter(s => window.guruMapel.includes(s.soal_mapel) && (s.tingkat === 'Semua Tingkat' || window.guruKelas.includes(`${s.tingkat}|${s.jurusan_kelas}`)));
+      let lst = window.allSoals.filter(s => window.guruMapel.includes(s.soal_mapel) && (s.tingkat === 'Semua Tingkat' || window.guruKelas.includes(`${s.tingkat}|${s.jurusan_kelas}`)));
       c.innerHTML = lst.length ? lst.map(s => {
         let formatBadge = s.format_soal === 'pg' ? '<span class="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-700 ml-1">Kuis PG</span>' : (s.format_soal === 'esai' ? '<span class="text-[10px] bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded font-700 ml-1">Esai Ketik</span>' : (s.format_soal === 'pg_esai' ? '<span class="text-[10px] bg-gradient-to-r from-emerald-500 to-blue-500 text-white px-2 py-0.5 rounded font-700 ml-1">Campuran (PG+Esai)</span>' : '<span class="text-[10px] bg-slate-500/20 text-slate-300 px-2 py-0.5 rounded font-700 ml-1">File Berkas</span>'));
-        return `<div class="bg-slate-900/80 p-4 rounded-xl border border-white/10 relative group"><button onclick="window.doDelete('${s.id_firestore}')" class="absolute top-4 right-4 text-red-400 opacity-0 group-hover:opacity-100 transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button><div class="mb-2"><p class="text-sm text-indigo-300 font-800">${s.soal_mapel} ${formatBadge}</p><span class="text-xs text-slate-400">${s.tingkat} ${s.jurusan_kelas}</span></div></div>`;
+        return `<div class="bg-slate-900/80 p-4 rounded-xl border border-white/10 relative group"><button onclick="window.doDelete('soals', '${s.id_firestore}')" class="absolute top-4 right-4 text-red-400 opacity-0 group-hover:opacity-100 transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button><div class="mb-2"><p class="text-sm text-indigo-300 font-800">${s.soal_mapel} ${formatBadge}</p><span class="text-xs text-slate-400">${s.tingkat} ${s.jurusan_kelas}</span></div></div>`;
       }).join('') : '<p class="text-center text-slate-400 text-sm mt-4">Belum ada soal.</p>'; lucide.createIcons();
     }
 
-    window.doDelete = async function(docId) { if(confirm("Yakin ingin menghapus data ini?")) { await remove(ref(db, 'data_sekolah/' + docId)); window.showToast('Data dihapus!'); } }
+    window.doDelete = async function(folder, docId) { if(confirm("Yakin ingin menghapus data ini?")) { await remove(ref(db, folder + '/' + docId)); window.showToast('Data dihapus!'); } }
 
     window.handleSoalFileSelect = function(inp) { if(inp.files.length) { window.selectedSoalFile=inp.files[0]; document.getElementById('soal-file-name').innerHTML=`<i data-lucide="check" class="w-4 h-4 inline"></i> File Siap`; document.getElementById('soal-file-name').classList.remove('hidden'); } }
 
@@ -1452,60 +1485,60 @@
           if(format === 'pg') {
               const items = document.querySelectorAll('.pg-q-item'); if(items.length === 0) throw new Error("Buat minimal 1 pertanyaan PG!");
               let qs = []; items.forEach(item => { qs.push({ text: item.querySelector('.q-text').value, correct: item.querySelector('.q-correct').value, optA: item.querySelector('.q-opt-A').value, optB: item.querySelector('.q-opt-B').value, optC: item.querySelector('.q-opt-C').value, optD: item.querySelector('.q-opt-D').value, optE: item.querySelector('.q-opt-E').value }); });
-              dbData.pg_questions = JSON.stringify(qs); await set(push(ref(db, 'data_sekolah')), dbData); document.getElementById('pg-builder-list').innerHTML = ''; window.showToast('Kuis PG Berhasil Dibuat!');
+              dbData.pg_questions = JSON.stringify(qs); await set(push(ref(db, 'soals')), dbData); document.getElementById('pg-builder-list').innerHTML = ''; window.showToast('Kuis PG Berhasil Dibuat!');
           } else if (format === 'esai') {
               const items = document.querySelectorAll('.esai-q-item'); if(items.length === 0) throw new Error("Buat minimal 1 pertanyaan Esai!");
               let qs = []; items.forEach(item => { qs.push({ text: item.querySelector('.q-text-esai').value }); });
-              dbData.esai_questions = JSON.stringify(qs); await set(push(ref(db, 'data_sekolah')), dbData); document.getElementById('esai-builder-list').innerHTML = ''; window.showToast('Soal Esai Berhasil Dibuat!');
+              dbData.esai_questions = JSON.stringify(qs); await set(push(ref(db, 'soals')), dbData); document.getElementById('esai-builder-list').innerHTML = ''; window.showToast('Soal Esai Berhasil Dibuat!');
           } else if (format === 'pg_esai') {
               const pgItems = document.querySelectorAll('.pg-q-item'); const esaiItems = document.querySelectorAll('.esai-q-item'); 
               if(pgItems.length === 0 || esaiItems.length === 0) throw new Error("Buat minimal 1 PG dan 1 Esai!");
               let qsPG = []; pgItems.forEach(item => { qsPG.push({ text: item.querySelector('.q-text').value, correct: item.querySelector('.q-correct').value, optA: item.querySelector('.q-opt-A').value, optB: item.querySelector('.q-opt-B').value, optC: item.querySelector('.q-opt-C').value, optD: item.querySelector('.q-opt-D').value, optE: item.querySelector('.q-opt-E').value }); });
               let qsEsai = []; esaiItems.forEach(item => { qsEsai.push({ text: item.querySelector('.q-text-esai').value }); });
               dbData.pg_questions = JSON.stringify(qsPG); dbData.esai_questions = JSON.stringify(qsEsai); 
-              await set(push(ref(db, 'data_sekolah')), dbData); 
+              await set(push(ref(db, 'soals')), dbData); 
               document.getElementById('pg-builder-list').innerHTML = ''; document.getElementById('esai-builder-list').innerHTML = ''; window.showToast('Soal Campuran Berhasil Dibuat!');
           } else {
               if(!window.selectedSoalFile) throw new Error("Pilih file PDF/Word dulu!");
-              const r = new FileReader(); r.onload = async (ev) => { dbData.soal_file_name = window.selectedSoalFile.name; dbData.soal_file = ev.target.result; await set(push(ref(db, 'data_sekolah')), dbData); window.selectedSoalFile=null; document.getElementById('soal-file-name').classList.add('hidden'); window.showToast('Soal Berhasil Didistribusikan!'); btn.disabled = false; btn.innerHTML = oldTxt; }; return r.readAsDataURL(window.selectedSoalFile);
+              const r = new FileReader(); r.onload = async (ev) => { dbData.soal_file_name = window.selectedSoalFile.name; dbData.soal_file = ev.target.result; await set(push(ref(db, 'soals')), dbData); window.selectedSoalFile=null; document.getElementById('soal-file-name').classList.add('hidden'); window.showToast('Soal Berhasil Didistribusikan!'); btn.disabled = false; btn.innerHTML = oldTxt; }; return r.readAsDataURL(window.selectedSoalFile);
           }
       } catch(err) { window.showToast(err.message || 'Gagal menyimpan soal!', 'error'); } finally { btn.disabled = false; btn.innerHTML = oldTxt; }
     }
 
     window.downloadJawaban = function(idFirestore) {
-        const j = window.allData.find(d => d.id_firestore === idFirestore); if(!j) return;
+        const j = window.allJawabans.find(d => d.id_firestore === idFirestore); if(!j) return;
         if(j.jawaban_text) { const blob = new Blob([j.jawaban_text], {type: "text/plain;charset=utf-8"}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `Jawaban_${j.jawaban_nis}_${j.jawaban_mapel}.txt`; a.click();
         } else if(j.jawaban_file_data) { const a = document.createElement('a'); a.href = j.jawaban_file_data; a.download = j.jawaban_file_name || 'jawaban_siswa.jpg'; a.click(); }
     }
 
     window.koreksiEssay = async function(docId) {
-        const jData = window.allData.find(d => d.id_firestore === docId); if(!jData) return;
+        const jData = window.allJawabans.find(d => d.id_firestore === docId); if(!jData) return;
         let parsedEssay = []; try { parsedEssay = JSON.parse(jData.jawaban_essay); } catch(e) { return; }
         let benar = 0; let detailText = `--- HASIL KOREKSI GURU (ESAI) ---\n\n`;
         parsedEssay.forEach((ans, i) => { const isBenar = document.querySelector(`input[name="koreksi-${docId}-${i}"]:checked`)?.value === 'benar'; if(isBenar) benar++; detailText += `Nomor ${ans.no}: ${isBenar ? 'BENAR' : 'SALAH'}\n${ans.question && !ans.question.startsWith('Nomor') ? `Pertanyaan: ${ans.question}\n` : ''}Jawaban: ${ans.text}\n\n`; });
         const finalScore = Math.round((benar / parsedEssay.length) * 100) || 0; detailText = `NILAI AKHIR: ${finalScore} / 100\n\n` + detailText;
         try {
-            await update(ref(db, 'data_sekolah/' + docId), { jawaban_text: detailText, jawaban_essay: null, format_soal_jawaban: null });
+            await update(ref(db, 'jawabans/' + docId), { jawaban_text: detailText, jawaban_essay: null, format_soal_jawaban: null });
             if (jData.jenis_tugas === 'remedial' && jData.kategori_remedial && jData.student_id_firestore) {
-                const stu = window.allData.find(d => d.id_firestore === jData.student_id_firestore);
-                if(stu) { const p = window.parseNilai(stu.data_nilai); if (!p[jData.jawaban_mapel]) p[jData.jawaban_mapel] = {}; p[jData.jawaban_mapel][jData.kategori_remedial] = finalScore; await update(ref(db, 'data_sekolah/' + stu.id_firestore), { data_nilai: JSON.stringify(p) }); }
+                const stu = window.allStudents.find(d => d.id_firestore === jData.student_id_firestore);
+                if(stu) { const p = window.parseNilai(stu.data_nilai); if (!p[jData.jawaban_mapel]) p[jData.jawaban_mapel] = {}; p[jData.jawaban_mapel][jData.kategori_remedial] = finalScore; await update(ref(db, 'students/' + stu.id_firestore), { data_nilai: JSON.stringify(p) }); }
             }
             window.showToast('Nilai koreksi Esai berhasil disimpan!', 'success');
         } catch(e) { window.showToast('Gagal menyimpan nilai koreksi!', 'error'); }
     }
 
     window.koreksiCampuran = async function(docId) {
-        const jData = window.allData.find(d => d.id_firestore === docId); if(!jData) return;
+        const jData = window.allJawabans.find(d => d.id_firestore === docId); if(!jData) return;
         let parsedEssay = []; try { parsedEssay = JSON.parse(jData.jawaban_essay); } catch(e) { return; }
         let benarEsai = 0; let esaiDetailText = `--- KOREKSI GURU (ESAI) ---\n`;
         parsedEssay.forEach((ans, i) => { const isBenar = document.querySelector(`input[name="koreksi-campuran-${docId}-${i}"]:checked`)?.value === 'benar'; if(isBenar) benarEsai++; esaiDetailText += `No ${ans.no}: ${isBenar ? 'BENAR' : 'SALAH'}\nQ: ${ans.question}\nA: ${ans.text}\n\n`; });
         const esaiScore = Math.round((benarEsai / parsedEssay.length) * 100) || 0; const pgScore = jData.jawaban_pg_score || 0; const finalScore = Math.round((pgScore + esaiScore) / 2); 
         let detailText = `NILAI AKHIR KESELURUHAN: ${finalScore} / 100\n(Rincian: PG ${pgScore}, Esai ${esaiScore})\n\n` + (jData.jawaban_pg_detail || '') + "\n\n" + esaiDetailText;
         try {
-            await update(ref(db, 'data_sekolah/' + docId), { jawaban_text: detailText, jawaban_essay: null, format_soal_jawaban: null });
+            await update(ref(db, 'jawabans/' + docId), { jawaban_text: detailText, jawaban_essay: null, format_soal_jawaban: null });
             if (jData.jenis_tugas === 'remedial' && jData.kategori_remedial && jData.student_id_firestore) {
-                const stu = window.allData.find(d => d.id_firestore === jData.student_id_firestore);
-                if(stu) { const p = window.parseNilai(stu.data_nilai); if (!p[jData.jawaban_mapel]) p[jData.jawaban_mapel] = {}; p[jData.jawaban_mapel][jData.kategori_remedial] = finalScore; await update(ref(db, 'data_sekolah/' + stu.id_firestore), { data_nilai: JSON.stringify(p) }); }
+                const stu = window.allStudents.find(d => d.id_firestore === jData.student_id_firestore);
+                if(stu) { const p = window.parseNilai(stu.data_nilai); if (!p[jData.jawaban_mapel]) p[jData.jawaban_mapel] = {}; p[jData.jawaban_mapel][jData.kategori_remedial] = finalScore; await update(ref(db, 'students/' + stu.id_firestore), { data_nilai: JSON.stringify(p) }); }
             }
             window.showToast('Nilai Campuran berhasil disimpan!', 'success');
         } catch(e) { window.showToast('Gagal menyimpan nilai!', 'error'); }
@@ -1514,7 +1547,7 @@
     window.renderJawaban = function() {
       const c = document.getElementById('jawaban-list'); if(!c) return;
       const tFilt = document.getElementById('filter-tingkat').value; const jFilt = document.getElementById('filter-jurusan').value; const mFilt = document.getElementById('filter-mapel').value; const sFilt = document.getElementById('search-siswa').value.toLowerCase();
-      let jwb = window.allData.filter(d => d.type === 'jawaban').map(jawaban => { const student = window.allData.find(s => s.type === 'student' && s.nis === jawaban.jawaban_nis); return { ...jawaban, student: student || {} }; });
+      let jwb = window.allJawabans.map(jawaban => { const student = window.allStudents.find(s => s.nis === jawaban.jawaban_nis); return { ...jawaban, student: student || {} }; });
       jwb = jwb.filter(x => window.guruMapel.includes(x.jawaban_mapel) && window.guruKelas.includes(`${x.student.tingkat}|${x.student.jurusan_kelas}`));
       if(tFilt !== 'all') jwb = jwb.filter(x => x.student.tingkat === tFilt); if(jFilt !== 'all') jwb = jwb.filter(x => x.student.jurusan_kelas === jFilt); if(mFilt !== 'all') jwb = jwb.filter(x => x.jawaban_mapel === mFilt); if(sFilt) jwb = jwb.filter(x => (x.student.nama || '').toLowerCase().includes(sFilt) || x.jawaban_nis.includes(sFilt));
 
@@ -1537,84 +1570,11 @@
              let parsedEssay = []; try { parsedEssay = JSON.parse(jData.jawaban_essay); } catch(e){}
              contentHtml = `<div class="text-xs font-mono bg-black/40 p-3 rounded-xl text-slate-300 max-h-32 overflow-y-auto mb-3 whitespace-pre-wrap">${parsedEssay.map(e => `No ${e.no}: ${e.text}`).join('\n\n')}</div>`;
         }
-        return `<div class="bg-slate-900/80 p-5 rounded-2xl relative border border-white/10 group"><button onclick="window.doDelete('${jData.id_firestore}')" class="absolute top-3 right-3 text-red-400 p-1 opacity-0 group-hover:opacity-100 transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button><div class="mb-4"><p class="text-sm text-indigo-300 font-800">${stuName}</p><p class="text-xs text-slate-400 mt-1"><i data-lucide="book" class="w-3 h-3 inline"></i> ${jData.jawaban_mapel} (${jData.jenis_tugas}) <br> <i data-lucide="users" class="w-3 h-3 inline"></i> Kelas: ${jData.student.tingkat} ${jData.student.jurusan_kelas}</p></div>${contentHtml}</div>`;
+        return `<div class="bg-slate-900/80 p-5 rounded-2xl relative border border-white/10 group"><button onclick="window.doDelete('jawabans', '${jData.id_firestore}')" class="absolute top-3 right-3 text-red-400 p-1 opacity-0 group-hover:opacity-100 transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button><div class="mb-4"><p class="text-sm text-indigo-300 font-800">${stuName}</p><p class="text-xs text-slate-400 mt-1"><i data-lucide="book" class="w-3 h-3 inline"></i> ${jData.jawaban_mapel} (${jData.jenis_tugas}) <br> <i data-lucide="users" class="w-3 h-3 inline"></i> Kelas: ${jData.student.tingkat} ${jData.student.jurusan_kelas}</p></div>${contentHtml}</div>`;
       }).join(''); lucide.createIcons();
     }
 
     window.renderSettings = function() { const mc = document.getElementById('mapel-list-settings'); const kc = document.getElementById('kelas-list-settings'); if(!mc||!kc) return; const guruMapels = window.mapelList.filter(m => window.guruMapel.includes(m.key)); mc.innerHTML = guruMapels.map(m => `<div class="flex justify-between items-center bg-slate-900/50 p-3 rounded-xl mb-2"><div class="flex flex-col"><span class="text-sm font-600 text-slate-300">${m.name}</span><span class="text-xs text-indigo-400 mt-1">KKM: X(${m.kkm_X||75}) | XI(${m.kkm_XI||75}) | XII(${m.kkm_XII||75})</span></div></div>`).join(''); let guruKelasObj = {}; window.guruKelas.forEach(gk => { let p = gk.split('|'); if(p.length===2) { if(!guruKelasObj[p[0]]) guruKelasObj[p[0]]=[]; guruKelasObj[p[0]].push(p[1]); } }); kc.innerHTML = Object.entries(guruKelasObj).map(([t, cs]) => `<div class="mb-4 bg-slate-900/30 p-4 rounded-xl"><p class="text-xs text-purple-400 font-800 mb-3 tracking-widest uppercase">Tingkat ${t}</p><div class="flex flex-wrap gap-2">${cs.map(c => `<span class="bg-purple-500/10 px-3 py-1.5 text-xs font-600 text-purple-200 rounded-lg">${c}</span>`).join('')}</div></div>`).join(''); lucide.createIcons(); }
-
-    window.renderWaliKelasView = function() {
-        const label = document.getElementById('label-kelas-wali'); if(label) label.textContent = window.kelasWali.replace('|', ' ');
-        if(!window.kelasWali) return; const [tingkat, jurusan] = window.kelasWali.split('|');
-        const anakWali = window.allData.filter(d => d.type === 'student' && d.tingkat === tingkat && d.jurusan_kelas === jurusan);
-        
-        const thead = document.getElementById('leger-table-head'); const tbody = document.getElementById('leger-table-body');
-        let headHtml = `<tr><th class="p-3">Nama Siswa</th><th class="p-3">NIS</th>`;
-        window.mapelList.forEach(m => { headHtml += `<th class="p-3 text-center border-l border-white/5">${m.name}</th>`; });
-        headHtml += `</tr>`; if(thead) thead.innerHTML = headHtml;
-        
-        let bodyHtml = "";
-        anakWali.forEach(s => {
-            if(s.status_mutasi !== 'pending_pindah') {
-                const p = window.parseNilai(s.data_nilai);
-                let row = `<tr class="hover:bg-white/5 border-b border-white/5"><td class="p-3 font-bold text-white">${s.nama}</td><td class="p-3 font-mono text-slate-400">${s.nis}</td>`;
-                window.mapelList.forEach(m => { const avg = window.calculateAvg(p[m.key]); row += `<td class="p-3 text-center font-mono border-l border-white/5 font-bold ${avg>0?'text-emerald-400':'text-slate-600'}">${avg>0?avg:'-'}</td>`; });
-                row += `</tr>`; bodyHtml += row;
-            }
-        });
-        if(bodyHtml === "") bodyHtml = `<tr><td colspan="${window.mapelList.length + 2}" class="p-4 text-center text-slate-500">Kosong.</td></tr>`;
-        if(tbody) tbody.innerHTML = bodyHtml;
-        
-        const keluarList = document.getElementById('mutasi-keluar-list');
-        if(keluarList) {
-            keluarList.innerHTML = anakWali.map(s => `
-                <div class="flex items-center justify-between p-3 bg-slate-800/80 border border-white/5 rounded-xl mb-2 text-xs">
-                    <div><p class="font-bold text-white">${s.nama}</p></div>
-                    ${s.status_mutasi !== 'pending_pindah' ? `
-                        <select onchange="if(this.value) window.ajukanMutasiSiswa('${s.id_firestore}', this.value)" class="bg-purple-600 text-white p-1 rounded font-bold outline-none cursor-pointer text-[11px]">
-                            <option value="">Mutasikan Ke...</option>
-                            ${Object.entries(window.kelasList).flatMap(([t, js]) => js.map(j => `<option value="${t}|${j}">Kelas ${t} ${j}</option>`)).join('')}
-                        </select>
-                    ` : `<span class="text-[10px] font-bold text-amber-400 bg-amber-500/10 px-2 py-1 rounded">Pending ACC...</span>`}
-                </div>
-            `).join('');
-        }
-        
-        const masukList = document.getElementById('mutasi-masuk-list');
-        const requestMasuk = window.allData.filter(d => d.type === 'student' && d.status_mutasi === 'pending_pindah' && d.kelas_tujuan === window.kelasWali);
-        if(masukList) {
-            if(requestMasuk.length === 0) { masukList.innerHTML = `<p class="text-xs text-slate-500 text-center py-2">Tidak ada permintaan masuk.</p>`; }
-            else {
-                masukList.innerHTML = requestMasuk.map(s => `
-                    <div class="flex items-center justify-between p-3 bg-purple-950/30 border border-purple-500/30 rounded-xl mb-2 text-xs">
-                        <div><p class="font-bold text-white">${s.nama}</p><p class="text-[10px] text-purple-300">Asal: ${s.tingkat} ${s.jurusan_kelas}</p></div>
-                        <div class="flex gap-1"><button onclick="window.eksekusiApprovalMutasi('${s.id_firestore}', true)" class="px-2 py-1 bg-emerald-600 rounded font-bold text-white text-[11px]">Terima</button><button onclick="window.eksekusiApprovalMutasi('${s.id_firestore}', false)" class="px-2 py-1 bg-red-600 rounded font-bold text-white text-[11px]">Tolak</button></div>
-                    </div>
-                `).join('');
-            }
-        }
-        lucide.createIcons();
-    }
-
-    window.ajukanMutasiSiswa = async function(studentId, kelasTujuan) {
-        if(confirm(`Ajukan pindah kelas untuk siswa ini?`)) {
-            try { await update(ref(db, 'data_sekolah/' + studentId), { status_mutasi: 'pending_pindah', kelas_tujuan: kelasTujuan }); window.showToast("Request mutasi terkirim!"); window.renderWaliKelasView(); }
-            catch(e) { window.showToast("Gagal mengajukan mutasi.", "error"); }
-        }
-    }
-
-    window.eksekusiApprovalMutasi = async function(studentId, isDiterima) {
-        if(isDiterima) {
-            const s = window.allData.find(d => d.id_firestore === studentId); if(!s) return;
-            const [tTujuan, jTujuan] = s.kelas_tujuan.split('|');
-            try { await update(ref(db, 'data_sekolah/' + studentId), { tingkat: tTujuan, jurusan_kelas: jTujuan, status_mutasi: 'aktif', kelas_tujuan: "" }); window.showToast("Siswa sukses dipindahkan!"); }
-            catch(e) { window.showToast("Gagal menyerap siswa.", "error"); }
-        } else {
-            try { await update(ref(db, 'data_sekolah/' + studentId), { status_mutasi: 'aktif', kelas_tujuan: "" }); window.showToast("Permintaan mutasi ditolak."); }
-            catch(e) { window.showToast("Gagal memproses penolakan.", "error"); }
-        }
-        window.renderWaliKelasView();
-    }
 
     window.togglePasswordVisibility = function(id, ic) { const i = document.getElementById(id); const c = document.getElementById(ic); if (i.type === 'password') { i.type = 'text'; c.setAttribute('data-lucide', 'eye-off'); } else { i.type = 'password'; c.setAttribute('data-lucide', 'eye'); } lucide.createIcons(); }
   </script>
